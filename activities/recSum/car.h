@@ -33,6 +33,8 @@ class Car {
         int getYear(){ return year; };
 };
 
+
+// Default constructo
 Car::Car(){
     code = 0;
     brand = "";
@@ -40,6 +42,7 @@ Car::Car(){
     year = 0;
 }
 
+// Constructor overload
 Car::Car(int c, string b, string m, int y){
     code = c;
     brand = b;

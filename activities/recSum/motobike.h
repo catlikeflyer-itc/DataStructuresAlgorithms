@@ -25,10 +25,12 @@ class Motorbike: public Car {
         int getCylinders(){ return cylinders; };
 };
 
+// Default constructor  
 Motorbike::Motorbike(): Car(){
     cylinders = 0;
 };
 
+// Overloaded constructor
 Motorbike::Motorbike(int c, string b, string m, int y, int cy): Car(c, b, m, y){
     cylinders = cy;
 }

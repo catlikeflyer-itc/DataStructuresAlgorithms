@@ -25,10 +25,12 @@ class Suv: public Car {
         string getTraction(){ return traction; };
 };
 
+// Default constructor
 Suv::Suv(): Car(){
     traction = "";
 };
 
+// Overloaded constructor
 Suv::Suv(int c, string b, string m, int y, string t): Car(c, b, m, y){
     traction = t;
 }

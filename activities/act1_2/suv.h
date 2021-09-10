@@ -1,5 +1,5 @@
 /**
- * @file autos.cpp
+ * @file suv.h
  * @author your name (you@domain.com)
  * @brief 
  * @version 0.1
@@ -18,7 +18,7 @@ class Suv: public Car {
     
     public: 
         Suv();
-        Suv(int c, string b, string m, int y, string t);
+        Suv(int c, string b, string m, int y, float p, string t);
 
         void setTraction(string t){ traction = t; };
 
@@ -31,6 +31,6 @@ Suv::Suv(): Car(){
 };
 
 // Overloaded constructor
-Suv::Suv(int c, string b, string m, int y, string t): Car(c, b, m, y){
+Suv::Suv(int c, string b, string m, int y, float p, string t): Car(c, b, m, y, p){
     traction = t;
 }

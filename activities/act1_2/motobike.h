@@ -1,5 +1,5 @@
 /**
- * @file autos.cpp
+ * @file motorbike.h
  * @author your name (you@domain.com)
  * @brief 
  * @version 0.1
@@ -18,7 +18,7 @@ class Motorbike: public Car {
 
     public: 
         Motorbike();
-        Motorbike(int c, string b, string m, int y, int cy);
+        Motorbike(int c, string b, string m, int y, float p, int cy);
 
         void setCylinders(int c){ cylinders = c; };
 
@@ -31,6 +31,6 @@ Motorbike::Motorbike(): Car(){
 };
 
 // Overloaded constructor
-Motorbike::Motorbike(int c, string b, string m, int y, int cy): Car(c, b, m, y){
+Motorbike::Motorbike(int c, string b, string m, int y, float p, int cy): Car(c, b, m, y, p){
     cylinders = cy;
 }

@@ -33,4 +33,4 @@ class Sale {
         vector<Motorbike> getBikesSold(){ return soldBikes; };
         vector<Suv> getSuvsSold(){ return soldSuvs; };
         Buyer getClient(){ return client; };
-}
+};

@@ -1,3 +1,13 @@
+/**
+ * @file buyer.h
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2021-09-09
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #include <iostream>
 using namespace std;
 
@@ -18,6 +28,8 @@ class Buyer {
         string getSurname(){ return surname; };
         string getName(){ return name; };
         string getIne(){ return ine; };
+
+        void print();
 };
 
 Buyer::Buyer() {
@@ -30,4 +42,9 @@ Buyer::Buyer(string sn, string n, string i) {
     surname = sn;
     name = n;
     ine = i;
+}
+
+void Buyer::print(){
+    std::cout << "--- Cliente ---" << std::endl;
+    std::cout << name << " " << surname << "\tINE: " << ine << std::endl;
 }

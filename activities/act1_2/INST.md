@@ -3,6 +3,7 @@ Clase de Auto
 - str Marca
 - str Modelo
 - int Ano
+- float Kilometraje
 
 Clase SUV (Auto)
 - str Traccion

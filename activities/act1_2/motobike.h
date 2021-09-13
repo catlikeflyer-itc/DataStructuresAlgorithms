@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2021
  * 
  */
+#ifndef Motorbike_h
+#define Motorbike_h
 #include <iostream>
 #include "car.h"
 using namespace std;
@@ -42,3 +44,5 @@ void Motorbike::print(){
     std::cout << "Modelo: " << brand << " " << year << "\tCodigo: " << code << std::endl;
     std::cout << "Cilindraje: " << cylinders << "\tKilometraje: " << km << "Precio: $" << price << std::endl;
 }
+
+#endif

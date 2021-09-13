@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2021
  * 
  */
+#ifndef Order_h
+#define Order_h
 #include <iostream>
 #include <vector>
 
@@ -64,9 +66,11 @@ std::vector<T> Order<T>::quickSort(std::vector<T> v, int first, int last, bool c
         
         std::swap(v[first], v[right]);
         
-        v = quicksort(v, first, right-1, comp);
-        v = quicksort(v, left, last, comp);
+        v = quickSort(v, first, right-1, comp);
+        v = quickSort(v, left, last, comp);
     }
     
     return v;
 }
+
+#endif

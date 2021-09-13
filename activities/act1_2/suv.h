@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2021
  * 
  */
+#ifndef Suv_h
+#define Suv_h
 #include <iostream>
 #include "car.h"
 using namespace std;
@@ -42,3 +44,5 @@ void Suv::print(){
     std::cout << "Modelo: " << brand << " " << year << "\tCodigo: " << code << std::endl;
     std::cout << "Traccion: " << traction << "\tKilometraje: " << km << "Precio: $" << price << std::endl;
 }
+
+#endif

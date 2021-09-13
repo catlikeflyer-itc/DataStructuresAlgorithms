@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2021
  * 
  */
+#ifndef Buyer_h
+#define Buyer_h
 #include <iostream>
 using namespace std;
 
@@ -48,3 +50,5 @@ void Buyer::print(){
     std::cout << "--- Cliente ---" << std::endl;
     std::cout << name << " " << surname << "\tINE: " << ine << std::endl;
 }
+
+#endif

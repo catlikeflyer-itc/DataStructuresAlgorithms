@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2021
  * 
  */
+#ifndef Sale_h
+#define Sale_h
 #include <iostream>
 #include <vector>
 #include "car.h"
@@ -51,3 +53,4 @@ class Sale {
         Buyer getClient(){ return client; };
 };
 
+#endif

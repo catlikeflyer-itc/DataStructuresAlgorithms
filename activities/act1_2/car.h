@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2021
  * 
  */
+#ifndef Car_h
+#define Car_h
 #include <iostream>
 using namespace std;
  
@@ -61,3 +63,5 @@ void Car::print(){
     std::cout << "Modelo: " << brand << " " << year << "\tCodigo: " << code << std::endl;
     std::cout << "Kilometraje: " << km << "Precio: $" << price << std::endl;
 }
+
+#endif

@@ -83,6 +83,7 @@ int main(){
                     switch(tolower(car_op))
                     {
                         case 'c':
+                            // User-entered data
                             std::cout << "Ingrese el codigo del automovil" << std::endl;
                             std::cin >> code;
                             
@@ -98,9 +99,11 @@ int main(){
                             std::cout << "Ingrese el monto a pagar del automovil" << std::endl;
                             std::cin >> monto;
 
+                            // Creates Sale object parameters: Buyer object and Car object
                             venta.setClient(Buyer(full_name[1], full_name[0], ine));
                             venta.setCar(Car(code,marca,yy,monto,km));
 
+                            // adds Sale item to Sale vector
                             ventas.push_back(venta);
 
                             inner_cont = false;
@@ -108,6 +111,7 @@ int main(){
                             break;
 
                         case 'm':
+                            // User-entered data
                             std::cout << "Ingrese el codigo de la motocicleta" << std::endl;
                             std::cin >> code;
                             
@@ -125,10 +129,12 @@ int main(){
 
                             std::cout << "Ingrese el cilindraje de la motocicleta" << std::endl;
                             std::cin >> cc;
-
+                            
+                            // Creates Sale object parameters: Buyer object and Motorbike object
                             venta.setClient(Buyer(full_name[1], full_name[0], ine));
                             venta.setBike(Motorbike(code,marca,yy,monto,km,cc));
 
+                            // adds Sale item to Sale vector
                             ventas.push_back(venta);
 
                             inner_cont = false;
@@ -136,6 +142,7 @@ int main(){
                             break;
 
                         case 's':
+                            // User-entered data
                             std::cout << "Ingrese el codigo de la camioneta" << std::endl;
                             std::cin >> code;
                             
@@ -153,10 +160,12 @@ int main(){
 
                             std::cout << "Ingrese la traccion de la camioneta" << std::endl;
                             std::cin >> trac;
-
+                            
+                            // Creates Sale object parameters: Buyer object and Suv object
                             venta.setClient(Buyer(full_name[1], full_name[0], ine));
                             venta.setSuv(Suv(code,marca,yy,monto,km,trac));
 
+                            // adds Sale item to Sale vector
                             ventas.push_back(venta);
 
                             inner_cont = false;
@@ -164,6 +173,7 @@ int main(){
                             break;
 
                         default:
+                            // default case to loop until an acceptable char is entered
                             std::cout << "Tipo de vehiculo invalido" << std::endl;
                             break;
                     }
@@ -194,7 +204,7 @@ int main(){
                 for(int i = 0; i<ventas.size()-1; i++) // loop that goes through the sales vector
                 {
                     Sale item = ventas[i];
-                    if(item.getClient().getName() == full_name[0] && item.getClient().getSurname() == full_name[1]) // chscks if the required name is the same
+                    if(item.getClient().getName() == full_name[0] && item.getClient().getSurname() == full_name[1]) // checks if the required name is the same
                     {
                         // prints everything
                         item.getClient().print();
@@ -216,7 +226,7 @@ int main(){
                 for(int i = 0; i<ventas.size()-1; i++) // loop that goes through the sales vector
                 {
                     Sale item = ventas[i];
-                    if(item.getCarsSold().getYear() == yy)
+                    if(item.getCarsSold().getYear() == yy) // prints in case vehicle is a Car
                     {
                         if(item.getCarsSold().getKm() > km)
                         {
@@ -224,7 +234,7 @@ int main(){
                             item.getCarsSold().print();
                         }
                     }
-                    if(item.getBikesSold().getYear() == yy)
+                    if(item.getBikesSold().getYear() == yy) // prints in case vehicle is a Motorbike
                     {
                         if(item.getBikesSold().getKm() > km)
                         {
@@ -232,7 +242,7 @@ int main(){
                             item.getBikesSold().print();
                         }
                     }
-                    if(item.getSuvsSold().getYear() == yy)
+                    if(item.getSuvsSold().getYear() == yy) // prints in case vehicle is an Suv
                     {
                         if(item.getSuvsSold().getKm() > km)
                         {
@@ -244,12 +254,13 @@ int main(){
 
                 break;
 
-            case 5: // exit
+            case 5: // exit case
                 cont = false;
                 finalize();
                 break;
 
             default:
+                // default case to loop until an accepted int is entered
                 std::cout << "Opcion invalida" << std::endl;
                 break;
         }

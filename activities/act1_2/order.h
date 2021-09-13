@@ -14,14 +14,13 @@
 #include <vector>
 
 template <class T>
-class Order
+class Order //template class for ordering, courtesy of Prof. Vicente Cubells
 {
     public:
         static std::vector<T> quickSort(std::vector<T>, bool(*)(T,T));
         static std::vector<T> quickSort(std::vector<T>, int, int, bool(*)(T,T));
     
         static bool asc(T,T);
-        static bool desc(T,T);
 };
 
 template <class T>
@@ -31,20 +30,14 @@ bool Order<T>::asc(T a, T b)
 }
 
 template <class T>
-bool Order<T>::desc(T a, T b)
-{
-    return a > b;
-}
-
-template <class T>
-std::vector<T> Order<T>::quickSort(std::vector<T> v, bool comp (T, T))
+std::vector<T> Order<T>::quickSort(std::vector<T> v, bool comp (T, T)) // initial quicksort method, calls on its alternate method
 {
     int size = (int) v.size() - 1;
     return quickSort(v, 0, size, comp);
 }
 
 template <class T>
-std::vector<T> Order<T>::quickSort(std::vector<T> v, int first, int last, bool comp (T, T))
+std::vector<T> Order<T>::quickSort(std::vector<T> v, int first, int last, bool comp (T, T)) // secondary quicksort method, calls on itself
 {
     int left = first;
     int right = last;

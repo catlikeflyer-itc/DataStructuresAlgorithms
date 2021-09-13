@@ -13,7 +13,11 @@
 #include <iostream>
 #include "car.h"
 using namespace std;
- 
+
+/*
+Class that inherits from the Car class and adds as attribute the traction of the vehicle
+as it is an Sports Utility Vehicle
+*/
 class Suv: public Car { 
     private:
         string traction;
@@ -39,6 +43,7 @@ Suv::Suv(int c, string b, int y, float p, float k, string t): Car(c, b, y, p, k)
     traction = t;
 }
 
+// Overloaded function to show the data over terminal
 void Suv::print(){
     std::cout << "--- Vehiculo ---" << std::endl;
     std::cout << "Modelo: " << brand << " " << year << "\tCodigo: " << code << std::endl;

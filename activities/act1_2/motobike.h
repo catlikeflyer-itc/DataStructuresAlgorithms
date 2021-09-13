@@ -14,6 +14,9 @@
 #include "car.h"
 using namespace std;
 
+/*
+Class that inherits from the Car class and adds as attribute the cylindrage of the bike
+*/
 class Motorbike: public Car { 
     private:
         int cylinders;
@@ -22,8 +25,10 @@ class Motorbike: public Car {
         Motorbike();
         Motorbike(int c, string b, int y, float p, float k, int cy);
 
+        // Setters
         void setCylinders(int c){ cylinders = c; };
 
+        // Getters
         int getCylinders(){ return cylinders; };
 
         void print();
@@ -39,6 +44,7 @@ Motorbike::Motorbike(int c, string b, int y, float p, float k, int cy): Car(c, b
     cylinders = cy;
 }
 
+// Overloaded function to show the data over terminal
 void Motorbike::print(){
     std::cout << "--- Vehiculo ---" << std::endl;
     std::cout << "Modelo: " << brand << " " << year << "\tCodigo: " << code << std::endl;

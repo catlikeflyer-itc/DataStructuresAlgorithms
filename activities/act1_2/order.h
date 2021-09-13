@@ -55,8 +55,8 @@ std::vector<T> Order<T>::quickSort(std::vector<T> v, int first, int last, bool c
     {
         while(left < right)
         {
-            while((left < right) && !compara(pivot, v[left])) left++; // <=
-            while(compara(pivot, v[right]) ) right--; // >
+            while((left < right) && !comp(pivot, v[left])) left++; // <=
+            while(comp(pivot, v[right]) ) right--; // >
             
             if(left < right)
             {

@@ -20,7 +20,8 @@ using namespace std;
 
 /*
 Class that stores a sale made by the dealership, with each sale having 
-the vehicles sold and to whom they were sold to as attributes
+the vehicles sold and to whom they were sold to as attributes. The attributes are made 
+up by the Car class and its childres, as well as the Buyer class.
 */
 class Sale {
     private:

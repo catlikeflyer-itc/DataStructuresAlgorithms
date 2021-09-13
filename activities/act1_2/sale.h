@@ -1,6 +1,6 @@
 /**
  * @file sale.h
- * @author your name (you@domain.com)
+ * @Emiliano Cabrera A01025453, Do Hyun Nam A01025276
  * @brief 
  * @version 0.1
  * @date 2021-09-09

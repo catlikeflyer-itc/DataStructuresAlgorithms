@@ -4,5 +4,6 @@
     "*.py": "python",
     "*.js": "javascript",
     "vector": "cpp"
-  }
+  },
+  "workbench.colorTheme": "SynthWave '84"
 }

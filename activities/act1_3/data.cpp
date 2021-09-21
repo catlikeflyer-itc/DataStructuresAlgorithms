@@ -2,12 +2,12 @@
 #include <vector>
 #include <sstream>
 
-//definition of setter/getter methods
+// definition of setter/getter methods
 void Data::setFecha(std::string _fecha){
     fecha = _fecha;
 }
 
-std::string Data::getFecha(){
+std::vector<std::string> Data::getFecha(){
     return fecha;
 }
 

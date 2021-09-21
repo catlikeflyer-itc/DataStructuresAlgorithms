@@ -49,7 +49,7 @@ class Data{
 
         // setters / getters
         void setFecha(std::string);
-        std::string getFecha();
+        std::vector<std::string> getFecha();
 
         void setHora(std::string);
         std::string getHora();

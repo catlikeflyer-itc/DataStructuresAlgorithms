@@ -1,10 +1,10 @@
-#include "data.hpp"
 #include <vector>
 #include <sstream>
+#include "data.hpp"
 
 // definition of setter/getter methods
 void Data::setFecha(std::string _fecha){
-    fecha = _fecha;
+    fecha = Data::splitter(_fecha, "-");
 }
 
 std::vector<std::string> Data::getFecha(){
@@ -36,10 +36,10 @@ std::string Data::getPuertoO(){
 }
 
 void Data::setNombreO(std::string _nombre_o){
-    nombre_o = _nombre_o;
+    nombre_o = Data::splitter(_nombre_o,".");
 }
 
-std::string Data::getNombreO(){
+std::vector<std::string> Data::getNombreO(){
     return nombre_o;
 }
 
@@ -64,36 +64,44 @@ void Data::setNombreD(std::string _nombre_d){
 }
 
 std::string Data::getNombreD(){
-    return nombre_d;
+    return nombre_d; 
 }
 
-// splits a string, returns a vector<string> in the format [dd,mm,yy]
-std::vector<std::string> Date::splitter(std::string s){
-    std::vector<std::string> date;
-    std::string del = "-"
+// splits a string, returns a vector<string>. In the case of fecha, returns in the format [dd,mm,yy]
+std::vector<std::string> Data::splitter(std::string s, std::string del = " "){
+    std::vector<std::string> data;    
 
     int start = 0; // starts at looking for words at char 0
     int end = s.find(del); // ends looking when it encounters char "-"
 
     while (end != -1) { // loop to repeat the search, adding the resulting string into the return vector
-        date.push_back(s.substr(start, end - start));
+        data.push_back(s.substr(start, end - start));
         start = end + del.size(); // moves the start of the search to after the found "-" char
         end = s.find(del, start);
     }
 
-    date.push_back(s.substr(start, end - start));
-    return date;
+    data.push_back(s.substr(start, end - start));
+    return data;
 }
 
-// overloading operator <
-int Data::operator<(Data const &d){
-    if(fecha[2] < d.fecha[2]){ // checks if first object's year is lower than the second's
+// overloading operator < : fecha
+bool Data::operator<(Data const &d){
+    if(stoi(fecha[2]) < stoi(d.fecha[2])){ // checks if first object's year is lower than the second's
         return true;
     }
-    else if(fecha[2] == d.fecha[2] && fecha[1] < d.fecha[1]){ // checks if first object's month is lower than the second's, in the case the year is the same
-        return true
+    else if(stoi(fecha[2]) == stoi(d.fecha[2]) && stoi(fecha[1]) < stoi(d.fecha[1])){ // checks if first object's month is lower than the second's, in the case the year is the same
+        return true;
     }
-    else if(fecha[2] == d.fecha[2] && fecha[1] == d.fecha[1] && fecha[0] < d.fecha[0]){ // checks if first object's day is lower than the second's, in the case the year and month are the same
+    else if(stoi(fecha[2]) == stoi(d.fecha[2]) && stoi(fecha[1]) == stoi(d.fecha[1]) && stoi(fecha[0]) < stoi(d.fecha[0])){ // checks if first object's day is lower than the second's, in the case the year and month are the same
+        return true;
+    }
+
+    return false;
+}
+
+// overloading operator == : nombre_o
+bool Data::operator==(Data const &d){
+    if(nombre_o[0] == d.nombre_o[0]){
         return true;
     }
 

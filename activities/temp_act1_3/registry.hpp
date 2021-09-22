@@ -55,7 +55,7 @@ Registry::Registry(
     struct tm tm; // Time structure that stores time broken into components
 
     const char *f = _date.c_str();
-    strptime(f, "%d-%m-%y", &this -> date_a);
+    strptime(f, "%d-%m-%y", &this -> date_a); // Only works with Unix systems
 
     this -> dateString_a = _date;
     this -> hour_a = _hour;

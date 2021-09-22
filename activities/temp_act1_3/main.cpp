@@ -3,8 +3,8 @@
 #include <map>
 #include "reader.hpp"
 
-std::map <std::string, int> mails;
-std::map <int, int> puertos;
+std::map <std::string, int> mails; // Stores mail domain count
+std::map <int, int> ports; // Stores each port's count
 
 // Print each vector
 void print_vector(std::vector<Registry> vec){
@@ -14,7 +14,7 @@ void print_vector(std::vector<Registry> vec){
 
 // Sequential search
 int sequentialSearch( std::vector<Registry> d, bool (*condition)(Registry r) ){
-    for(int i = 0; i<d.size(); i++){
+    for(int i = 0; i < d.size(); i++){
         if( condition(d[i]) ) return i;
     }
     return -1;
@@ -43,8 +43,10 @@ int binarySearch(std::vector<Registry>d, bool (*condition)(Registry r), int star
     return -1;
 }
 
-// ============================================================================
+
 bool goesAfter(Registry a, Registry b){
+    // Compares two different registry dates 
+
     return (
         a.date_a.tm_mday > b.date_a.tm_mday &&
         a.date_a.tm_mon >= b.date_a.tm_mon &&
@@ -53,6 +55,8 @@ bool goesAfter(Registry a, Registry b){
 }
 
 bool belongsTo(Registry r){
+    // Checks if it belongs to Jeffrey, Betty, Katherine, Scott, Benjamin, Samuel, Raymond
+
     return(
         r.sourceName_a == "jeffrey.reto.com" ||
         r.sourceName_a == "betty.reto.com" ||
@@ -65,26 +69,32 @@ bool belongsTo(Registry r){
 }
 
 bool isServerCalled(Registry r){
+    // Checks server name
+
     return r.sourceName_a == "server.reto.com" || r.destinationName_a == "server.com";
 }
 
 bool isEmail(Registry r){
-    //El puerto 993 se usa para mail
+    // Check if it is port 993, used for emails
+
     if(r.destinationPort_a == 993){
-        mails[r.destinationName_a]++; 
+        mails[r.destinationName_a]++;  // Adds mail to mail counter dictionary (map)
     }
     return false; 
 }
 
 bool isPort(Registry r){
+    // Checks if port is valid between 1  to 999
+
     if(r.destinationPort_a < 1000 && r.destinationPort_a > 0){
-        // Añadir al diccionario
-        puertos[r.destinationPort_a]++;
+        ports[r.destinationPort_a]++; // Adds to ports dictionary (map)
     }
     return false; 
 }
 
 std::string getBaseIp(std::vector<Registry> d){
+    // Returns the base IP after parsing source
+
     int i = sequentialSearch(d, [](Registry r){ return r.sourceIp_a != "-";});
     std::string ip = d[i+1].sourceIp_a;
 
@@ -100,53 +110,51 @@ int main(void){
 
     //1. ¿Cuántos registros tiene tu archivo?
     std::cout << "1. ¿Cuántos registros tiene tu archivo?" << std::endl
-        << "El archivo tiene " << data.size() << " registros\n" << std::endl;
+        << data.size() << std::endl;
     
     //2.¿Cuántos récords hay del segundo día registrado? ¿Qué día es este?
     std::cout << "2. ¿Cuántos récords hay del segundo día registrado? ¿Qué día es?" << std::endl;
     int firstDay = sequentialSearch(data, *goesAfter, data[0]);
     int secondDay = sequentialSearch(data, *goesAfter, data[firstDay]) - firstDay;
     
-    /*
-    cout<<"En el primer día (";
-    datos[0].printDate();
-    cout<<") hubieron "<<primerDiaCount<<" datos"<<endl;
-    cout<<"En el segundo día (";
-    datos[segundoDiaCount].printDate();
-    cout<<") hubieron "<<segundoDiaCount<<" datos"<<endl<<endl;
+    std::cout << "Datos en el primer día (";
+    data[firstDay].printDate();
+    std::cout << "): " << firstDay << std::endl;S
+
+    std::cout << "Datos en el segundo día (";
+    data[secondDay].printDate();
+    std::cout << "): " << secondDay << std::endl;
 
     //3. ¿Alguna de las computadoras pertenece a Jeffrey, Betty, Katherine, Scott, Benjamin, Samuel o Raymond?
-    cout<<"3\t¿Alguna de las computadoras pertenece a Jeffrey, Betty, Katherine, Scott, Benjamin, Samuel o Raymond?"<<endl;
-    int perteneceCount = busquedaSecuencial(datos, *perteneceA);
-    cout<<( perteneceCount==0 ? "No." : "Sí." )<<endl;
+    std::cout << "3. ¿Alguna de las computadoras pertenece a Jeffrey, Betty, Katherine, Scott, Benjamin, Samuel o Raymond?" << std::endl;
+    int belongs = sequentialSearch(data, *belongsTo);
+    std::cout << (belongs == 0 ? "No" : "Si" ) << std::endl;
 
     //4. ¿Cuál es la dirección de la red interna de la compañía?
-    // Sustituir para usar comparadores y búsqueda secuencial. DONE
-    cout<<"4\t¿Cuál es la dirección de la red interna de la compañía?"<<endl;
-    cout<<"La dirección de la red interna es: "<<obtenerIPBase(datos)<<endl;
+    std::cout << "4. ¿Cuál es la dirección de la red interna de la compañía?" << std::endl;
+    std::cout << getBaseIp(data) << std::endl;
     
     //5. ¿Alguna computadora se llama server.reto.com?
-    cout<<"5\t¿Alguna computadora se llama server.reto.com?"<<endl;
-    int serverCount = busquedaSecuencial(datos, *seLlamaServer);
-    cout<<( serverCount<0 ? "No." : "Sí." )<<endl;
+    std::cout << "5. ¿Alguna computadora se llama server.reto.com?" << std::endl;
+    int serverCount = sequentialSearch(data, *isServerCalled);
+    std::cout << (serverCount < 0 ? "No" : "Si" ) << std::endl;
 
     //6. ¿Qué servicio de mail utilizan? 
-    cout<<"6\t¿Qué servicio de mail utilizan?"<<endl;
-    int mailCount = busquedaSecuencial(datos, *esCorreo);
+    std::cout << "6. ¿Qué servicio de mail utilizan?" << std::endl;
+    int mailCount = sequentialSearch(data, *isEmail);
     std::cout << "Mail" << "\t\t" << "Cantidad"<< "\n";
     for (const auto& x : mails ) {
         std::cout << x.first << " \t" << x.second << "\n";
     }
 
-    //7. Considerando solamento los puertos destino: 
     //¿Qué puertos abajo del 1000 se están usando? Lista los puertos. 
-    cout<<"7\t¿Qué puertos abajo del 1000 se están usando?"<<endl;
-    int puertosCount = busquedaSecuencial(datos, *esPuerto);
+    std::cout << "7. ¿Qué puertos abajo del 1000 se están usando?" << std::endl;
+    int puertosCount = sequentialSearch(data, *isPort);
+
     std::cout << "Puerto" << " \t" << "Cantidad"<< "\n";
-    for (const auto& x : puertos ) {
+    for (const auto& x : ports ) {
         std::cout << x.first << " \t" << x.second << "\n";
     }
-    */
    
     return 0;
 }

@@ -51,7 +51,6 @@ Registry::Registry(
     std::string _destinationPort,
     std::string _destinationName
 ){
-
     struct tm tm; // Time structure that stores time broken into components
 
     const char *f = _date.c_str();
@@ -74,7 +73,7 @@ Registry::Registry(
     }
 };
 void Registry::print(){
-    this->printDate();
+    this -> printDate();
     std::cout << "\t" << this -> hour_a
     << "\t" << this -> sourceIp_a
     << "\t" << this -> sourcePort_a 

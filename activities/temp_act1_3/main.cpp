@@ -14,15 +14,16 @@ void print_vector(std::vector<Registry> vec){
 
 // Sequential search
 int sequentialSearch( std::vector<Registry> d, bool (*condition)(Registry r) ){
-    for(int i = 0; i < d.size(); i++){
-        if( condition(d[i]) ) return i;
+    for (int i = 0; i < d.size(); i++){
+        if ( condition(d[i]) ) return i;
     }
     return -1;
 }
+
 // Sequential search overloading
 int sequentialSearch( std::vector<Registry> d, bool (*condition)(Registry a, Registry b), Registry r ){
-    for(int i = 0; i<d.size(); i++){
-        if( condition(d[i], r) ) return i;
+    for (int i = 0; i < d.size(); i++){
+        if ( condition(d[i], r) ) return i;
     }
     return -1;
 }
@@ -57,7 +58,7 @@ bool goesAfter(Registry a, Registry b){
 bool belongsTo(Registry r){
     // Checks if it belongs to Jeffrey, Betty, Katherine, Scott, Benjamin, Samuel, Raymond
 
-    return(
+    return (
         r.sourceName_a == "jeffrey.reto.com" ||
         r.sourceName_a == "betty.reto.com" ||
         r.sourceName_a == "katherine.reto.com" ||
@@ -75,9 +76,27 @@ bool isServerCalled(Registry r){
 }
 
 bool isEmail(Registry r){
-    // Check if it is port 993, used for emails
+    /*
+    Incoming mails
+    Port 993 for IMAPS 
+    Port 995 for SSL POP3
+    Port 110 for POP3
+    Port 143 IMAP
 
-    if(r.destinationPort_a == 993){
+    Outgoing mails
+    Port 25 for SMTP 
+    Port 587 for TLS SMTP
+    Port 465 for SSL SMTP
+    */
+
+    if (r.destinationPort_a == 993 ||
+        r.destinationPort_a == 995 ||
+        r.destinationPort_a == 110 ||
+        r.destinationPort_a == 143 ||
+        r.destinationPort_a == 25 ||
+        r.destinationPort_a == 587 ||
+        r.destinationPort_a == 465
+    ) {
         mails[r.destinationName_a]++;  // Adds mail to mail counter dictionary (map)
     }
     return false; 
@@ -95,7 +114,7 @@ bool isPort(Registry r){
 std::string getBaseIp(std::vector<Registry> d){
     // Returns the base IP after parsing source
 
-    int i = sequentialSearch(d, [](Registry r){ return r.sourceIp_a != "-";});
+    int i = sequentialSearch1(d, [](Registry r){ return r.sourceIp_a != "-";});
     std::string ip = d[i+1].sourceIp_a;
 
     for(int i = 0; i<3; i++) ip.pop_back();
@@ -119,7 +138,7 @@ int main(void){
     
     std::cout << "Datos en el primer día (";
     data[firstDay].printDate();
-    std::cout << "): " << firstDay << std::endl;S
+    std::cout << "): " << firstDay << std::endl;
 
     std::cout << "Datos en el segundo día (";
     data[secondDay].printDate();

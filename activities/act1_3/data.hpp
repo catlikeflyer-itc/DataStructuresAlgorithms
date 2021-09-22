@@ -1,7 +1,9 @@
 #ifndef data_hpp
 #define data_hpp
-#include <iostream>
 #include <vector>
+#include <string>
+
+#pragma once
 
 class Data{
     protected:
@@ -9,13 +11,13 @@ class Data{
         std::string hora;
         std::string ip_o;
         std::string puerto_o;
-        std::string nombre_o;
+        std::vector<std::string> nombre_o;
         std::string ip_d;
         std::string puerto_d;
         std::string nombre_d;
 
     private:
-        std::vector<std::string> splitter(std::string); // splits the date string by looking for "-"
+        std::vector<std::string> splitter(std::string, std::string); // splits strings by looking for a char
 
     public:
         Data(){ // default constructor
@@ -23,7 +25,7 @@ class Data{
             hora = "";
             ip_o = "";
             puerto_o = "";
-            nombre_o = "";
+            nombre_o = {""};
             ip_d = "";
             puerto_d = "";
             nombre_d = "";
@@ -33,19 +35,21 @@ class Data{
         std::string _ip_o, std::string _puerto_o, std::string _nombre_o, 
         std::string _ip_d, std::string _puerto_d, std::string _nombre_d){ // overloaded constructor
             
-            fecha = splitter(_fecha);
+            fecha = splitter(_fecha, "-");
             hora = _hora;
             ip_o = _ip_o;
             puerto_o = _puerto_o;
-            nombre_o = _nombre_o;
+            nombre_o = splitter(_nombre_o, ".");
             ip_d = _ip_d;
             puerto_d = _puerto_d;
             nombre_d = _nombre_d;
         }
 
-        ~Data(){}; // destructor
+        ~Data(){} // destructor
 
-        int operator<(Data const &d); // overloaded operator <
+        bool operator<(Data const &d); // overloaded operator < : works for fecha
+        bool operator==(Data const &d); //overloaded operator == : works for nombre_o
+
 
         // setters / getters
         void setFecha(std::string);
@@ -61,7 +65,7 @@ class Data{
         std::string getPuertoO();
 
         void setNombreO(std::string);
-        std::string getNombreO();
+        std::vector<std::string> getNombreO();
 
         void setIPD(std::string);
         std::string getIPD();

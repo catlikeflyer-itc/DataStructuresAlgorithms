@@ -2,14 +2,33 @@
 #include <sstream>
 #include <fstream>
 #include <string>
+#include <algorithm>
+#include "search.hpp"
 #include "data.hpp"
 
+// misc splitting function, same as in Data class
+std::vector<std::string> splitString(std::string s, std::string del = " "){
+    std::vector<std::string> data;    
+
+    int start = 0; // starts at looking for words at char 0
+    int end = s.find(del); // ends looking when it encounters char "-"
+
+    while (end != -1) { // loop to repeat the search, adding the resulting string into the return vector
+        data.push_back(s.substr(start, end - start));
+        start = end + del.size(); // moves the start of the search to after the found "-" char
+        end = s.find(del, start);
+    }
+
+    data.push_back(s.substr(start, end - start));
+    return data;
+}
+
 //question-solution functions
-void stage_1(std::vector<Data> data_vector){ // cleaner implementation of first question's solution
+void stage_1(std::vector<Data> &data_vector){ // cleaner implementation of first question's solution
     std::cout << "Registros totales: " << data_vector.size() << std::endl;
 }
 
-void stage_2(std::vector<Data> data_vector){ // cleaner implementation of second question's solution
+void stage_2(std::vector<Data> &data_vector){ // cleaner implementation of second question's solution
     std::vector<std::string> first_date = data_vector[0].getFecha();
     int first_day = stoi(first_date[0]);
 
@@ -34,7 +53,7 @@ void stage_2(std::vector<Data> data_vector){ // cleaner implementation of second
     std::cout << "Registros del segundo dia: " << count << "\tFecha: " << chosen_date[0] << "-" << chosen_date[1] << "-" << chosen_date[2] << std::endl;
 }
 
-void stage_3(std::vector<Data> data_vector){ // cleaner implementation of third question's solution
+void stage_3(std::vector<Data> data_vector){ // cleaner implementation of third question's solution 
 
 }
 
@@ -46,12 +65,48 @@ void stage_5(std::vector<Data> data_vector){ // cleaner implementation of fifth 
     
 }
 
-void stage_6(std::vector<Data> data_vector){ // cleaner implementation of sixth question's solution
+void stage_6(std::vector<Data> &data_vector){ // cleaner implementation of sixth question's solution
+    std::vector<std::string> mails, mail_i;
+    
+    for(int i = 0; i < data_vector.size(); i++){ // loop to check all destination names
+        mail_i = splitString(data_vector[i].getNombreD());
+        mails.push_back(mail_i[0]);
+    }
+    
+    // removes all repeated elements from the vector<string>
+    std::vector<std::string>::iterator it;
+    it = std::unique(mails.begin(), mails.end());
+    mails.resize(std::distance(mails.begin(),it));
+    
+    // prints all mail services from the vector<string>
+    std::cout << "Servicios de mail: ";
+    for(int i = 0; i < mails.size(); i++){
+        std::cout << mails[i] << "\t";
+    }
+    std::cout << std::endl;
     
 }
 
-void stage_7(std::vector<Data> data_vector){ // cleaner implementation of seventh question's solution
+void stage_7(std::vector<Data> &data_vector){ // cleaner implementation of seventh question's solution
+    std::vector<int> ports;
     
+    for(int i = 0; i < data_vector.size(); i++){ // loop to check all destination ports, being added into a vector<int> if they are lower than 1000
+        if(stoi(data_vector[i].getPuertoD()) < 1000){
+            ports.push_back(stoi(data_vector[i].getPuertoD()));
+        }
+    }
+    
+    // removes all repeated elements from the vector<int>
+    std::vector<int>::iterator it;
+    it = std::unique(ports.begin(), ports.end());
+    ports.resize(std::distance(ports.begin(),it));
+    
+    // prints all ports lower than 1000 from the vector<int>
+    std::cout << "Puertos destino: ";
+    for(int i = 0; i < ports.size(); i++){
+        std::cout << ports[i] << "\t";
+    }
+    std::cout << std::endl;
 }
 
 int main(int argc, const char * argv[]){
@@ -78,7 +133,7 @@ int main(int argc, const char * argv[]){
             row.push_back(word); // add each 'word' into a vector
         }
         
-        // turns all .csv rows into DAta objects and adds them into a vector<Data>
+        // turns all .csv rows into Data objects and adds them into a vector<Data>
         data_vector.push_back(Data(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7]));
     }
 

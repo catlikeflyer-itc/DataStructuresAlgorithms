@@ -1,5 +1,3 @@
-#include <vector>
-#include "data.hpp"
 #include "search.hpp"
 
 int Search::binarySearch(std::vector<Data> item_vector, Data value){

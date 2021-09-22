@@ -1,5 +1,3 @@
-#include <vector>
-#include <sstream>
 #include "data.hpp"
 
 // definition of setter/getter methods

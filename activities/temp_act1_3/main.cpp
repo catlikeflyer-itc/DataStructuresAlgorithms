@@ -114,7 +114,7 @@ bool isPort(Registry r){
 std::string getBaseIp(std::vector<Registry> d){
     // Returns the base IP after parsing source
 
-    int i = sequentialSearch1(d, [](Registry r){ return r.sourceIp_a != "-";});
+    int i = sequentialSearch(d, [](Registry r){ return r.sourceIp_a != "-";});
     std::string ip = d[i+1].sourceIp_a;
 
     for(int i = 0; i<3; i++) ip.pop_back();

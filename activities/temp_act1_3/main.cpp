@@ -28,23 +28,6 @@ int sequentialSearch( std::vector<Registry> d, bool (*condition)(Registry a, Reg
     return -1;
 }
 
-// Binary search
-int binarySearch(std::vector<Registry>d, bool (*condition)(Registry r), int start, int end){    
-    int med = start + (end - start)/2;
-
-    if (end <= start) return -1;
-    if (condition(d[med])) return med;
-
-    int left = binarySearch(d, *condition, start, med-1);
-    if (left != -1) return left; 
-
-    int right = binarySearch(d, *condition, med+1, end);
-    if (right != -1) return right;
-
-    return -1;
-}
-
-
 bool goesAfter(Registry a, Registry b){
     // Compares two different registry dates 
 
@@ -127,6 +110,8 @@ int main(void){
     Reader r; 
     std::vector<Registry> data = r.readFile(); 
 
+    // print_vector(data);
+
     //1. ¿Cuántos registros tiene tu archivo?
     std::cout << "1. ¿Cuántos registros tiene tu archivo?" << std::endl
         << data.size() << std::endl;
@@ -137,12 +122,14 @@ int main(void){
     int secondDay = sequentialSearch(data, *goesAfter, data[firstDay]) - firstDay;
     
     std::cout << "Datos en el primer día (";
-    data[firstDay].printDate();
+    // Prints date of the last data from the first day, -1 added since index starts at 0
+    data[firstDay - 1].printDate(); 
     std::cout << "): " << firstDay << std::endl;
 
     std::cout << "Datos en el segundo día (";
-    data[secondDay].printDate();
+    // Prints date of the last data from the second day, -1 and "firstDay" added since index starts at 0 and to jump positions
     std::cout << "): " << secondDay << std::endl;
+    data[secondDay + firstDay - 1].printDate(); 
 
     //3. ¿Alguna de las computadoras pertenece a Jeffrey, Betty, Katherine, Scott, Benjamin, Samuel o Raymond?
     std::cout << "3. ¿Alguna de las computadoras pertenece a Jeffrey, Betty, Katherine, Scott, Benjamin, Samuel o Raymond?" << std::endl;

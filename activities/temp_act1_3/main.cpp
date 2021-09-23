@@ -14,19 +14,35 @@ void print_vector(std::vector<Registry> vec){
 
 // Sequential search
 int sequentialSearch( std::vector<Registry> d, bool (*condition)(Registry r) ){
-    for (int i = 0; i < d.size(); i++){
-        if ( condition(d[i]) ) return i;
+    for(int i = 0; i < d.size(); i++){
+        if( condition(d[i]) ) return i;
+    }
+    return -1;
+}
+// Sequential search overloading
+int sequentialSearch( std::vector<Registry> d, bool (*condition)(Registry a, Registry b), Registry r ){
+    for(int i = 0; i<d.size(); i++){
+        if( condition(d[i], r) ) return i;
     }
     return -1;
 }
 
-// Sequential search overloading
-int sequentialSearch( std::vector<Registry> d, bool (*condition)(Registry a, Registry b), Registry r ){
-    for (int i = 0; i < d.size(); i++){
-        if ( condition(d[i], r) ) return i;
-    }
+// Binary search
+int binarySearch(std::vector<Registry>d, bool (*condition)(Registry r), int start, int end){    
+    int med = start + (end - start)/2;
+
+    if (end <= start) return -1;
+    if (condition(d[med])) return med;
+
+    int left = binarySearch(d, *condition, start, med-1);
+    if (left != -1) return left; 
+
+    int right = binarySearch(d, *condition, med+1, end);
+    if (right != -1) return right;
+
     return -1;
 }
+
 
 bool goesAfter(Registry a, Registry b){
     // Compares two different registry dates 
@@ -41,7 +57,7 @@ bool goesAfter(Registry a, Registry b){
 bool belongsTo(Registry r){
     // Checks if it belongs to Jeffrey, Betty, Katherine, Scott, Benjamin, Samuel, Raymond
 
-    return (
+    return(
         r.sourceName_a == "jeffrey.reto.com" ||
         r.sourceName_a == "betty.reto.com" ||
         r.sourceName_a == "katherine.reto.com" ||
@@ -52,6 +68,39 @@ bool belongsTo(Registry r){
     );
 }
 
+std::vector<bool> checkNames(Registry r, std::vector<bool> name_flags){     
+    if(name_flags[0] == true && r.sourceName_a == "jeffrey.reto.com"){
+        std::cout << "Jeffrey" << std::endl;
+        name_flags[0] = false;
+    }
+    else if(name_flags[1] == true && r.sourceName_a == "betty.reto.com"){
+        std::cout << "Betty" << std::endl;
+        name_flags[1] = false;
+    }
+    else if(name_flags[2] == true && r.sourceName_a == "katherine.reto.com"){
+        std::cout << "Katherine" << std::endl;
+        name_flags[2] = false;
+    }
+    else if(name_flags[3] == true && r.sourceName_a == "scott.reto.com"){
+        std::cout << "Scott" << std::endl;
+        name_flags[3] = false;
+    }
+    else if(name_flags[4] == true && r.sourceName_a == "benjamin.reto.com"){
+        std::cout << "Benjamin" << std::endl;
+        name_flags[4] = false;
+    }
+    else if(name_flags[5] == true && r.sourceName_a == "samuel.reto.com"){
+        std::cout << "Samuel" << std::endl;
+        name_flags[5] = false;
+    }
+    else if(name_flags[6] == true && r.sourceName_a == "raymond.reto.com"){
+        std::cout << "Raymond" << std::endl;
+        name_flags[6] = false;
+    }
+
+    return name_flags;
+}
+
 bool isServerCalled(Registry r){
     // Checks server name
 
@@ -59,27 +108,9 @@ bool isServerCalled(Registry r){
 }
 
 bool isEmail(Registry r){
-    /*
-    Incoming mails
-    Port 993 for IMAPS 
-    Port 995 for SSL POP3
-    Port 110 for POP3
-    Port 143 IMAP
+    // Check if it is port 993, used for emails
 
-    Outgoing mails
-    Port 25 for SMTP 
-    Port 587 for TLS SMTP
-    Port 465 for SSL SMTP
-    */
-
-    if (r.destinationPort_a == 993 ||
-        r.destinationPort_a == 995 ||
-        r.destinationPort_a == 110 ||
-        r.destinationPort_a == 143 ||
-        r.destinationPort_a == 25 ||
-        r.destinationPort_a == 587 ||
-        r.destinationPort_a == 465
-    ) {
+    if(r.destinationPort_a == 993){
         mails[r.destinationName_a]++;  // Adds mail to mail counter dictionary (map)
     }
     return false; 
@@ -110,8 +141,6 @@ int main(void){
     Reader r; 
     std::vector<Registry> data = r.readFile(); 
 
-    // print_vector(data);
-
     //1. ¿Cuántos registros tiene tu archivo?
     std::cout << "1. ¿Cuántos registros tiene tu archivo?" << std::endl
         << data.size() << std::endl;
@@ -122,19 +151,22 @@ int main(void){
     int secondDay = sequentialSearch(data, *goesAfter, data[firstDay]) - firstDay;
     
     std::cout << "Datos en el primer día (";
-    // Prints date of the last data from the first day, -1 added since index starts at 0
-    data[firstDay - 1].printDate(); 
+    data[firstDay].printDate();
     std::cout << "): " << firstDay << std::endl;
 
     std::cout << "Datos en el segundo día (";
-    // Prints date of the last data from the second day, -1 and "firstDay" added since index starts at 0 and to jump positions
+    data[secondDay].printDate();
     std::cout << "): " << secondDay << std::endl;
-    data[secondDay + firstDay - 1].printDate(); 
 
     //3. ¿Alguna de las computadoras pertenece a Jeffrey, Betty, Katherine, Scott, Benjamin, Samuel o Raymond?
     std::cout << "3. ¿Alguna de las computadoras pertenece a Jeffrey, Betty, Katherine, Scott, Benjamin, Samuel o Raymond?" << std::endl;
     int belongs = sequentialSearch(data, *belongsTo);
-    std::cout << (belongs == 0 ? "No" : "Si" ) << std::endl;
+    std::cout << (belongs > 0 ? "No" : "Si" ) << std::endl;
+
+    std::vector<bool> name_flags = {true,true,true,true,true,true,true};
+    for(int i = 0; i<data.size() - 1; i++){
+        name_flags = checkNames(data[i] ,name_flags);
+    }
 
     //4. ¿Cuál es la dirección de la red interna de la compañía?
     std::cout << "4. ¿Cuál es la dirección de la red interna de la compañía?" << std::endl;

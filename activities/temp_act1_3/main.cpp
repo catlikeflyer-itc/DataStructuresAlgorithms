@@ -2,6 +2,7 @@
 #include <vector>
 #include <map>
 #include "reader.hpp"
+#include <regex>
 
 std::map <std::string, int> mails; // Stores mail domain count
 std::map <int, int> ports; // Stores each port's count
@@ -38,17 +39,17 @@ bool goesAfter(Registry a, Registry b){
     );
 }
 
+bool nameRegex(std::string domName) {
+    const std::regex pattern("^(jeffrey|betty|katherine|scott|benjamin|samuel|raymond)(.*)$");
+
+    return std::regex_match(domName, pattern);
+}
+
 bool belongsTo(Registry r){
     // Checks if it belongs to Jeffrey, Betty, Katherine, Scott, Benjamin, Samuel, Raymond
 
     return (
-        r.sourceName_a == "jeffrey.reto.com" ||
-        r.sourceName_a == "betty.reto.com" ||
-        r.sourceName_a == "katherine.reto.com" ||
-        r.sourceName_a == "scott.reto.com" ||
-        r.sourceName_a == "benjamin.reto.com" ||
-        r.sourceName_a == "samuel.reto.com" ||
-        r.sourceName_a == "raymond.reto.com"
+        nameRegex(r.sourceName_a)
     );
 }
 

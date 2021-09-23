@@ -2,6 +2,7 @@
 #define data_hpp
 #include <vector>
 #include <string>
+#include <sstream>
 
 #pragma once
 

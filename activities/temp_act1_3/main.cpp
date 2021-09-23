@@ -151,11 +151,13 @@ int main(void){
     int secondDay = sequentialSearch(data, *goesAfter, data[firstDay]) - firstDay;
     
     std::cout << "Datos en el primer día (";
-    data[firstDay].printDate();
+    // Gets the date of the last data from the first day, -1 added since index starts at 0
+    data[firstDay-1].printDate(); 
     std::cout << "): " << firstDay << std::endl;
 
     std::cout << "Datos en el segundo día (";
-    data[secondDay].printDate();
+    // Gets the date of the last data from the second day, -1 added as index starts at 0 and 'firstDay' to jump all the first day data
+    data[secondDay+firstDay-1].printDate();
     std::cout << "): " << secondDay << std::endl;
 
     //3. ¿Alguna de las computadoras pertenece a Jeffrey, Betty, Katherine, Scott, Benjamin, Samuel o Raymond?

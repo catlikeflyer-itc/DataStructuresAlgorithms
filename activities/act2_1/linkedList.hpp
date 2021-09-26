@@ -43,10 +43,6 @@ class LinkedList {
         void sortedInsert(Node<T> * newNode);
         void removeDuplicates();
         void reverse();
-
-        // Overloading
-        Node<T> *operator[](int i_in);
-        void operator = (std::initializer_list<T> list);
 };
 
 template<class T>
@@ -89,9 +85,13 @@ void LinkedList<T>::addLast(T data){
     size++;
 }
 
-//insert at
-//inserts data by given index
-//O(n)
+
+/* 
+Inserts data at a given index 
+Time complexity of O(n)
+
+Return void
+*/
 template<class T>
 void LinkedList<T>::insertAt(int i, T data){
     if (!isEmpty() && i >= 1 && i <= size) {
@@ -118,12 +118,17 @@ void LinkedList<T>::insertAt(int i, T data){
     }
 }
 
-//getData
-//gets the data from input index
-//O(n)
+/*
+Gets the data in the given index position
+Time complexity of O(n)
+
+Returns data of any type
+*/
 template<class T>
 T LinkedList<T>::getData(int i){
-    if (!isEmpty() && i > 0 && i <= size) {//itera hasta encontrar el nodo adecuado
+    if (!isEmpty() && i > 0 && i <= size) {
+        // Iterates until node is found, if not it errors out
+
         int counter = 1;
         Node<T> *aux = head;
 
@@ -136,18 +141,22 @@ T LinkedList<T>::getData(int i){
             aux = aux->next;
         }
     }
+
     throw std::runtime_error("OUT OF RANGE\n");
 }
 
-//print
-//displays list
-//O(n)
+/*
+Prints list
+Time complexity of O(n)
+
+Return void
+*/
 template<class T>
 void LinkedList<T>::print(){
     Node<T> *aux = head;
 
-    if(size > 0){
-        for(int i = 0; i < size; i++){//imprime de manera iterativa
+    if (size > 0) {
+        for (int i = 0; i < size; i++) {
             std::cout << aux -> data << " ";
             aux = aux -> next;
         }
@@ -158,9 +167,12 @@ void LinkedList<T>::print(){
     std::cout << "\n";
 }
 
-//deleteData
-//deletes the data of the node with the input data
-//O(n)
+/*
+Deletes the given date in its node
+Time complexity of O(n)
+
+Returns success of operation as a boolean
+*/
 template<class T>
 bool LinkedList<T>::deleteData(T data){
     if (!isEmpty()) {//mientras que no este vacio
@@ -198,9 +210,12 @@ bool LinkedList<T>::deleteData(T data){
     return false;
 }
 
-//deleteAt
-//deletes from input index
-//O(n)
+/*
+Deletes the data at a given node
+Time complexity of O(n)
+
+Returns success of operation as a boolean
+*/
 template<class T>
 bool LinkedList<T>::deleteAt(int i) {
     if (!isEmpty() && i <= size && i > 0){
@@ -314,9 +329,13 @@ int LinkedList<T>::count(T searchFor){
     return counter; 
 }; 
 
-//clear
-//deltes data structure
-//O(n)
+
+/*
+Deletes the linked list's nodes completely. Resets the list with NULL head
+Time complexity of O(n)
+
+Return void
+*/
 template<class T>
 void LinkedList<T>::clear(){
     while(size>0){
@@ -351,12 +370,16 @@ void LinkedList<T>::sortedInsert(Node<T> * newNode){
     std::cout << "Node was inserted" << std::endl; 
 }; 
 
-//removeDuplicates
-//removes duplicates in the list
-//O(n^2)
+/*
+Removes all the duplicate data over the list
+If list is empty throws error
+Time complexity of O(n^2)
+
+Return void
+*/
 template<class T>
 void LinkedList<T>::removeDuplicates(){
-    if(!isEmpty()){
+    if (!isEmpty()) {
         Node<T> *aux = head;
         std::vector<T> temp;
 
@@ -369,7 +392,7 @@ void LinkedList<T>::removeDuplicates(){
             }
             if (continues) {
                 temp.push_back(aux -> data);
-            } else{
+            } else {
                 deleteData(aux -> data);
             }
             aux = aux -> next;
@@ -382,18 +405,25 @@ void LinkedList<T>::removeDuplicates(){
     }
 }
 
+/*
+Reverse list storing values over temporal vector
+Time complexity of O(n^2)
+
+Return void
+*/
 template<class T>
 void LinkedList<T>::reverse(){
     if (!isEmpty()) {
-        std::vector<T> temp;
+        std::vector<T> temp; // Temporal vector to store the values
         Node<T> *aux = head;
 
         while(aux != NULL){
             temp.push_back(aux -> data);
             aux = aux -> next;
         }
-        clear();//vacia la lista y la vuelve a llenar con los valores del vector
-        for(T i : temp){//copies from vector
+        clear(); // Clears list
+        for(T i : temp) {
+            // Repopulates list in inverse order
             addFirst(i);
         }
     } else{

@@ -1,3 +1,9 @@
+/**
+ * Main file
+ * main.cpp
+ * Emiliano Cabrera A01025453  , Do Hyun Nam A01025276
+ * 
+ */
 #include "linkedList.hpp"
 #include <iostream>
 
@@ -17,6 +23,7 @@ int main(){
     list.addLast(1);
     list.addLast(1);
     list.addLast(1); 
+
     list.print(); 
     list.count(4); 
     list.removeDuplicates(); 

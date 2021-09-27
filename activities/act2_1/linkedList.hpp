@@ -1,7 +1,7 @@
 /**
  * Linked List Type
  * linkedList.hpp
- * Emiliano Cabrera A010  , Do Hyun Nam A01025276
+ * Emiliano Cabrera A01025453  , Do Hyun Nam A01025276
  * 
  */
 #ifndef linkedList_hpp
@@ -345,24 +345,50 @@ void LinkedList<T>::clear(){
     std::cout << "CLEARED" << std::endl;
 }
 
-/*
+/* v1.0 (Ascending Order)
+Given the linked list with increasing order and a node, it inserts the node at the correct position.
+Time complexity of O(n)
+
+Return void
+
+template<class T>
+void LinkedList<T>::sortedInsert(Node<T> * newNode){ 
+    T addValue = newNode -> data; 
+    int index = 1; 
+    Node<T> *aux = head;     
+
+    while (aux != NULL && aux -> data > addValue){
+        aux = aux -> next; 
+        index++; 
+    } 
+
+    insertAt(index, addValue);
+    if (index == size) {
+        addLast(addValue); 
+    }
+
+    std::cout << "Node was inserted" << std::endl; 
+}; 
+*/
+
+/* v2.0 (Descending Order)
 Given the linked list with increasing order and a node, it inserts the node at the correct position.
 Time complexity of O(n)
 
 Return void
 */
 template<class T>
-void LinkedList<T>::sortedInsert(Node<T> * newNode){
+void LinkedList<T>::sortedInsert(Node<T> * newNode){ 
     T addValue = newNode -> data; 
-    int index = 0; 
-    Node<T> *aux = head;  
+    int index = 1; 
+    Node<T> *aux = head;     
 
-    while (aux != NULL && aux -> data < addValue){
+    while (aux != NULL && aux -> data > addValue){
         aux = aux -> next; 
         index++; 
-    }
+    } 
 
-    insertAt(index, addValue); 
+    insertAt(index, addValue);
     if (index == size) {
         addLast(addValue); 
     }

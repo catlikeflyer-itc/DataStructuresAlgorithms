@@ -1,7 +1,7 @@
 /**
  * Node type
  * node.hpp
- * Emiliano Cabrera A010  , Do Hyun Nam A01025276
+ * Emiliano Cabrera A01025453  , Do Hyun Nam A01025276
  * 
  */
 #ifndef node_hpp
@@ -9,7 +9,7 @@
 
 template<class T>
 struct Node {
-    T data; // Contains a data and a pointes as index to next node
+    T data; // Contains a data and a pointer as index to next node
     Node<T> *next;
     Node(T data);
     Node(T data, Node<T> *next);

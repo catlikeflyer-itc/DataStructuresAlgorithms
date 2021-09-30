@@ -1,7 +1,7 @@
 /**
  * Linked List Type
  * linkedList.hpp
- * Emiliano Cabrera A01025453  , Do Hyun Nam A01025276
+ * Emiliano Cabrera A01025453, Do Hyun Nam A01025276
  * 
  */
 #ifndef linkedList_hpp
@@ -45,7 +45,7 @@ class LinkedList {
         void reverse();
 
         // Methods for homework V2
-        LinkedList<T> subList(int start, int stop);
+        LinkedList<T> * subList(int start, int stop);
         void deleteRange(int start, int stop);
         LinkedList<T> * unionn(LinkedList<T> * B);
         LinkedList<T> * intersection(LinkedList<T> * B);
@@ -477,15 +477,15 @@ Time complexity of O(n)
 Returns a linked list
 */
 template <class T>
-LinkedList<T> LinkedList<T>::subList(int start, int stop) {
-    LinkedList<T> temp;
+LinkedList<T> *LinkedList<T>::subList(int start, int stop) {
+    LinkedList<T> * temp = new LinkedList<T>();
     Node<T> *aux = head;
     int count = 1;
 
     if (!isEmpty() && start != 0 && stop != size) {
         while (aux != NULL) {
             if (count >= start && count <= stop) {
-                temp.addLast(aux -> data);
+                temp -> addLast(aux -> data);
             }
 
             aux = aux -> next;
@@ -536,18 +536,18 @@ Returns new LinkedList
 template <class T>
 LinkedList<T> * LinkedList<T>::unionn(LinkedList<T> * B){
     LinkedList<T> * list = new LinkedList<T>();
-    Node<T> * tmp_1 = this->head;
-    Node<T> * tmp_2 = B->head;
+    Node<T> * tmp_1 = this -> head;
+    Node<T> * tmp_2 = B -> head;
         
-    while (tmp_1 != nullptr) {
-        list->addLast(tmp_1->data);
+    while (tmp_1 != NULL) {
+        list -> addLast(tmp_1 -> data);
         
-        tmp_1 = tmp_1->next;
+        tmp_1 = tmp_1 -> next;
     }
-    while (tmp_2 != nullptr) {
-        list->addLast(tmp_2->data);
+    while (tmp_2 != NULL) {
+        list -> addLast(tmp_2 -> data);
         
-        tmp_2 = tmp_2->next;
+        tmp_2 = tmp_2 -> next;
     }
 
     return list;
@@ -566,20 +566,20 @@ LinkedList<T> * LinkedList<T>::intersection(LinkedList<T> * B){
     Node<T> * tmp_1 = this->head;
     Node<T> * tmp_2;
         
-    while (tmp_1 != nullptr) {
+    while (tmp_1 != NULL) {
 
-        tmp_2 = B->head;
+        tmp_2 = B -> head;
 
-        while (tmp_2 != nullptr) {
-            if(tmp_1->data == tmp_2->data){
-                list->addLast(tmp_1->data);
+        while (tmp_2 != NULL) {
+            if(tmp_1 -> data == tmp_2 -> data){
+                list -> addLast(tmp_1 -> data);
                 break;
             }
         
-            tmp_2 = tmp_2->next;
+            tmp_2 = tmp_2 -> next;
         }
 
-        tmp_1 = tmp_1->next;
+        tmp_1 = tmp_1 -> next;
     }
     
 
@@ -603,15 +603,15 @@ LinkedList<T> * LinkedList<T>::clone()
     LinkedList<T> * list = new LinkedList<T>();
     
     /* Obtener una referencia al primer elemento */
-    Node<T> * tmp = this->head;
+    Node<T> * tmp = this -> head;
     
     /* Recorrer la lista */
-    while (tmp != nullptr) {
+    while (tmp != NULL) {
         /* Insertar un elemento en la lista nueva */
-        list->addLast(tmp->data);
+        list -> addLast(tmp -> data);
         
         /* Desplazarse al siguiente elemento */
-        tmp = tmp->next;
+        tmp = tmp -> next;
     }
     
     return list;
@@ -626,14 +626,14 @@ Returns new LinkedList
 template <class T>
 LinkedList<T> * LinkedList<T>::except(LinkedList<T> * B){
     LinkedList<T> * list = new LinkedList<T>;
-    Node<T> * tmp = B->head;
+    Node<T> * tmp = B -> head;
 
-    list = this->clone();
+    list = this -> clone();
 
     while(tmp != nullptr){
-        list->deleteData(tmp->data);
+        list -> deleteData(tmp -> data);
 
-        tmp = tmp->next;
+        tmp = tmp -> next;
     }
 
     return list;

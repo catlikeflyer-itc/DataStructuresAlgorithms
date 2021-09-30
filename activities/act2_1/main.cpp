@@ -26,20 +26,20 @@ int main(){
     list.addLast(1); 
     list.print();
 
-    std::cout << "Checking count of 4s" << std::endl;
+    std::cout << "\nChecking count of 4s" << std::endl;
     list.count(4); 
 
-    std::cout << "Remove duplicates" << std::endl;
+    std::cout << "\nRemove duplicates" << std::endl;
     list.removeDuplicates(); 
     list.print(); 
 
     // Sublist test
-    std::cout << "Creating sublist" << std::endl;
-    LinkedList<int> sublist = list.subList(2, 3);
-    sublist.print();
+    std::cout << "\nCreating sublist" << std::endl;
+    LinkedList<int> * sublist = list.subList(2, 3);
+    sublist -> print();
 
     // Delete range test
-    std::cout << "Deleting range from list" << std::endl;
+    std::cout << "\nDeleting range from list" << std::endl;
     list.deleteRange(2, 3);
     list.print();
 
@@ -56,21 +56,21 @@ int main(){
     list.print();
 
     // Union
-    std::cout << "Uniting B and list" << std::endl;
+    std::cout << "\nUniting B and list" << std::endl;
     LinkedList<int> * u_list = list.unionn(&B);
-    u_list->print();
+    u_list -> print();
 
     //Intersection
-    std::cout << "Intersecting B and list" << std::endl;
+    std::cout << "\nIntersecting B and list" << std::endl;
     LinkedList<int> * i_list = list.intersection(&B);
-    i_list->print();
+    i_list -> print();
 
     //Except
-    std::cout << "Excepting B from list" << std::endl;
+    std::cout << "\nExcepting B from list" << std::endl;
     LinkedList<int> * e_list = list.except(&B);
-    e_list->print();
+    e_list -> print();
     
-    std::cout << "Inserting 3 into list" << std::endl;
+    std::cout << "\nInserting 3 into list" << std::endl;
     Node<int> newNode(3, NULL); 
     list.sortedInsert(&newNode); 
     list.print(); 
@@ -78,5 +78,6 @@ int main(){
     list.print(); 
     list.clear(); 
     list.print(); 
+
     return 0; 
 }

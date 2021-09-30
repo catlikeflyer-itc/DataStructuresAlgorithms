@@ -594,7 +594,7 @@ Courtesy of Prof. Vincente Cubells
 Clones a LinkedList into a new Linked List
 Time complexity of O(n)
 
-Retuns the cloned LinkedList
+Returns the cloned LinkedList
 */
 template <class T>
 LinkedList<T> * LinkedList<T>::clone()
@@ -619,7 +619,7 @@ LinkedList<T> * LinkedList<T>::clone()
 
 /*
 Checks two LinkedLists and adds item that exist in the first but not the second to a new LinkedList
-Time complexity of O(n^2)
+Time complexity of O(n)
 
 Returns new LinkedList
 */

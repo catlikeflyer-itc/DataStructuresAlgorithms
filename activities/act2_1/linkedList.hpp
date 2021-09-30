@@ -47,9 +47,9 @@ class LinkedList {
         // Methods for homework V2
         LinkedList<T> subList(int start, int stop);
         void deleteRange(int start, int stop);
-        LinkedList<T> unionn();
-        LinkedList<T> intersection();
-        LinkedList<T> except();
+        LinkedList<T> * unionn(LinkedList<T> * B);
+        LinkedList<T> * intersection(LinkedList<T> * B);
+        LinkedList<T> * except(LinkedList<T> * B);
 };
 
 template<class T>
@@ -524,6 +524,106 @@ void LinkedList<T>::deleteRange(int start, int stop) {
     } else {
         throw std::runtime_error("EMPTY LIST or RANGE INVALID\n");
     }
+}
+
+/*
+Merges two LinkedLists by adding all their items into a new LinkedList
+Time complexity of O(n)
+
+Returns new LinkedList
+*/
+template <class T>
+LinkedList<T> * LinkedList<T>::unionn(LinkedList<T> * B){
+    LinkedList<T> * list = new LinkedList<T>();
+    Node<T> * tmp_1 = this->head;
+    Node<T> * tmp_2 = B->head;
+        
+    while (tmp_1 != nullptr) {
+        list->addLast(tmp_1->data);
+        
+        tmp_1 = tmp_1->next;
+    }
+    while (tmp_2 != nullptr) {
+        list->addLast(tmp_2->data);
+        
+        tmp_2 = tmp_2->next;
+    }
+
+    return list;
+}
+
+/*
+Adds items that appear in two LinkedLists into a new LinkedList
+Time complexity of O(n^2)
+
+Returns new LinkedList
+*/
+template <class T>
+LinkedList<T> * LinkedList<T>::intersection(LinkedList<T> * B){
+    LinkedList<T> * list = new LinkedList<T>;
+
+    Node<T> * tmp_1 = this->head;
+    Node<T> * tmp_2;
+        
+    while (tmp_1 != nullptr) {
+
+        tmp_2 = b->head;
+
+        while (tmp_2 != nullptr) {
+            if(tmp_1->data == tmp_2->data){
+                list->addLast(tmp_1->data);
+                break;
+            }
+        
+            tmp_2 = tmp_2->next;
+        }
+
+        tmp_1 = tmp_1->next;
+    }
+    
+
+    list->removeDuplicates();
+
+    return list;
+}
+
+/*
+Checks two LinkedLists and adds item that exist in the first but not the second to a new LinkedList
+Time complexity of O(n^2)
+
+Returns new LinkedList
+*/
+template <class T>
+LinkedList<T> * LinkedList<T>::except(LinkedList<T> * B){
+    LinkedList<T> * list = new LinkedList<T>;
+    
+    Node<T> * tmp_1;
+    Node<T> * tmp_2 = B->head;
+
+    bool flag;
+        
+    while (tmp_2 != nullptr) {
+
+        flag = true;
+        tmp_1 = this->head;
+
+        while (tmp_1 != nullptr) {
+            if(tmp_2->data == tmp_1->data){
+                flag = false;
+                break;
+            }
+        
+            tmp_2 = tmp_2->next;
+        }
+
+        if(flag == true){
+            list->addLast(tmp_1->data);
+        }
+
+        tmp_2 = tmp_1->next;
+    }
+
+    return list;
 }
 
 #endif

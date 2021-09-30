@@ -47,9 +47,10 @@ class LinkedList {
         // Methods for homework V2
         LinkedList<T> subList(int start, int stop);
         void deleteRange(int start, int stop);
-        LinkedList<T> unionn();
-        LinkedList<T> intersection();
-        LinkedList<T> except();
+        LinkedList<T> * unionn(LinkedList<T> * B);
+        LinkedList<T> * intersection(LinkedList<T> * B);
+        LinkedList<T> * clone();
+        LinkedList<T> * except(LinkedList<T> * B);
 };
 
 template<class T>
@@ -176,7 +177,7 @@ void LinkedList<T>::print(){
 }
 
 /*
-Deletes the given date in its node
+Deletes the given data in its node
 Time complexity of O(n)
 
 Returns success of operation as a boolean
@@ -524,6 +525,118 @@ void LinkedList<T>::deleteRange(int start, int stop) {
     } else {
         throw std::runtime_error("EMPTY LIST or RANGE INVALID\n");
     }
+}
+
+/*
+Merges two LinkedLists by adding all their items into a new LinkedList
+Time complexity of O(n)
+
+Returns new LinkedList
+*/
+template <class T>
+LinkedList<T> * LinkedList<T>::unionn(LinkedList<T> * B){
+    LinkedList<T> * list = new LinkedList<T>();
+    Node<T> * tmp_1 = this->head;
+    Node<T> * tmp_2 = B->head;
+        
+    while (tmp_1 != nullptr) {
+        list->addLast(tmp_1->data);
+        
+        tmp_1 = tmp_1->next;
+    }
+    while (tmp_2 != nullptr) {
+        list->addLast(tmp_2->data);
+        
+        tmp_2 = tmp_2->next;
+    }
+
+    return list;
+}
+
+/*
+Adds items that appear in two LinkedLists into a new LinkedList
+Time complexity of O(n^2)
+
+Returns new LinkedList
+*/
+template <class T>
+LinkedList<T> * LinkedList<T>::intersection(LinkedList<T> * B){
+    LinkedList<T> * list = new LinkedList<T>;
+
+    Node<T> * tmp_1 = this->head;
+    Node<T> * tmp_2;
+        
+    while (tmp_1 != nullptr) {
+
+        tmp_2 = B->head;
+
+        while (tmp_2 != nullptr) {
+            if(tmp_1->data == tmp_2->data){
+                list->addLast(tmp_1->data);
+                break;
+            }
+        
+            tmp_2 = tmp_2->next;
+        }
+
+        tmp_1 = tmp_1->next;
+    }
+    
+
+    list->removeDuplicates();
+
+    return list;
+}
+
+/* 
+Courtesy of Prof. Vincente Cubells
+
+Clones a LinkedList into a new Linked List
+Time complexity of O(n)
+
+Returns the cloned LinkedList
+*/
+template <class T>
+LinkedList<T> * LinkedList<T>::clone()
+{
+    /* Crear una lista vacía */
+    LinkedList<T> * list = new LinkedList<T>();
+    
+    /* Obtener una referencia al primer elemento */
+    Node<T> * tmp = this->head;
+    
+    /* Recorrer la lista */
+    while (tmp != nullptr) {
+        /* Insertar un elemento en la lista nueva */
+        list->addLast(tmp->data);
+        
+        /* Desplazarse al siguiente elemento */
+        tmp = tmp->next;
+    }
+    
+    return list;
+}
+
+/*
+Checks two LinkedLists and adds item that exist in the first but not the second to a new LinkedList
+Time complexity of O(n)
+
+Returns new LinkedList
+*/
+template <class T>
+LinkedList<T> * LinkedList<T>::except(LinkedList<T> * B){
+    LinkedList<T> * list = new LinkedList<T>;
+    Node<T> * tmp = B->head;
+
+    list = this->clone();
+
+    while(tmp != nullptr){
+        list->deleteData(tmp->data);
+
+        tmp = tmp->next;
+    }
+
+    return list;
 }
 
 #endif

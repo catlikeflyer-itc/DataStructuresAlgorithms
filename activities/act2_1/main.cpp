@@ -42,7 +42,35 @@ int main(){
     std::cout << "Deleting range from list" << std::endl;
     list.deleteRange(2, 3);
     list.print();
+
+    // Creating new LinkedList, B
+    LinkedList<int> B;
+    B.addLast(4);
+    B.addLast(6);
+    B.addLast(8);
+    B.addLast(1); 
+    B.addLast(1);
+    B.addLast(3); 
+    B.addLast(4);
+    B.addLast(4); 
+    list.print();
+
+    // Union
+    std::cout << "Uniting B and list" << std::endl;
+    LinkedList<int> * u_list = list.unionn(&B);
+    u_list->print();
+
+    //Intersection
+    std::cout << "Intersecting B and list" << std::endl;
+    LinkedList<int> * i_list = list.intersection(&B);
+    i_list->print();
+
+    //Except
+    std::cout << "Excepting B from list" << std::endl;
+    LinkedList<int> * e_list = list.except(&B);
+    e_list->print();
     
+    std::cout << "Inserting 3 into list" << std::endl;
     Node<int> newNode(3, NULL); 
     list.sortedInsert(&newNode); 
     list.print(); 

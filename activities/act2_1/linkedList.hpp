@@ -49,6 +49,7 @@ class LinkedList {
         void deleteRange(int start, int stop);
         LinkedList<T> * unionn(LinkedList<T> * B);
         LinkedList<T> * intersection(LinkedList<T> * B);
+        LinkedList<T> * clone();
         LinkedList<T> * except(LinkedList<T> * B);
 };
 
@@ -176,7 +177,7 @@ void LinkedList<T>::print(){
 }
 
 /*
-Deletes the given date in its node
+Deletes the given data in its node
 Time complexity of O(n)
 
 Returns success of operation as a boolean
@@ -567,7 +568,7 @@ LinkedList<T> * LinkedList<T>::intersection(LinkedList<T> * B){
         
     while (tmp_1 != nullptr) {
 
-        tmp_2 = b->head;
+        tmp_2 = B->head;
 
         while (tmp_2 != nullptr) {
             if(tmp_1->data == tmp_2->data){
@@ -587,6 +588,35 @@ LinkedList<T> * LinkedList<T>::intersection(LinkedList<T> * B){
     return list;
 }
 
+/* 
+Courtesy of Prof. Vincente Cubells
+
+Clones a LinkedList into a new Linked List
+Time complexity of O(n)
+
+Retuns the cloned LinkedList
+*/
+template <class T>
+LinkedList<T> * LinkedList<T>::clone()
+{
+    /* Crear una lista vacía */
+    LinkedList<T> * list = new LinkedList<T>();
+    
+    /* Obtener una referencia al primer elemento */
+    Node<T> * tmp = this->head;
+    
+    /* Recorrer la lista */
+    while (tmp != nullptr) {
+        /* Insertar un elemento en la lista nueva */
+        list->addLast(tmp->data);
+        
+        /* Desplazarse al siguiente elemento */
+        tmp = tmp->next;
+    }
+    
+    return list;
+}
+
 /*
 Checks two LinkedLists and adds item that exist in the first but not the second to a new LinkedList
 Time complexity of O(n^2)
@@ -596,31 +626,14 @@ Returns new LinkedList
 template <class T>
 LinkedList<T> * LinkedList<T>::except(LinkedList<T> * B){
     LinkedList<T> * list = new LinkedList<T>;
-    
-    Node<T> * tmp_1;
-    Node<T> * tmp_2 = B->head;
+    Node<T> * tmp = B->head;
 
-    bool flag;
-        
-    while (tmp_2 != nullptr) {
+    list = this->clone();
 
-        flag = true;
-        tmp_1 = this->head;
+    while(tmp != nullptr){
+        list->deleteData(tmp->data);
 
-        while (tmp_1 != nullptr) {
-            if(tmp_2->data == tmp_1->data){
-                flag = false;
-                break;
-            }
-        
-            tmp_2 = tmp_2->next;
-        }
-
-        if(flag == true){
-            list->addLast(tmp_1->data);
-        }
-
-        tmp_2 = tmp_1->next;
+        tmp = tmp->next;
     }
 
     return list;

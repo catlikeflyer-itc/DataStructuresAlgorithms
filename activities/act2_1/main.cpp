@@ -56,17 +56,21 @@ int main(){
     list.print();
 
     // Union
+    std::cout << "Uniting B and list" << std::endl;
     LinkedList<int> * u_list = list.unionn(&B);
     u_list->print();
 
     //Intersection
+    std::cout << "Intersecting B and list" << std::endl;
     LinkedList<int> * i_list = list.intersection(&B);
     i_list->print();
 
     //Except
+    std::cout << "Excepting B from list" << std::endl;
     LinkedList<int> * e_list = list.except(&B);
     e_list->print();
     
+    std::cout << "Inserting 3 into list" << std::endl;
     Node<int> newNode(3, NULL); 
     list.sortedInsert(&newNode); 
     list.print(); 

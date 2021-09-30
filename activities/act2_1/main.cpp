@@ -8,6 +8,7 @@
 #include <iostream>
 
 int main(){
+    std::cout << "Creating example list" << std::endl;
     LinkedList<int> list; 
     list.addLast(5);
     list.addLast(5);
@@ -23,16 +24,22 @@ int main(){
     list.addLast(1);
     list.addLast(1);
     list.addLast(1); 
-    list.print(); 
+    list.print();
+
+    std::cout << "Checking count of 4s" << std::endl;
     list.count(4); 
+
+    std::cout << "Remove duplicates" << std::endl;
     list.removeDuplicates(); 
     list.print(); 
 
     // Sublist test
+    std::cout << "Creating sublist" << std::endl;
     LinkedList<int> sublist = list.subList(2, 3);
     sublist.print();
 
     // Delete range test
+    std::cout << "Deleting range from list" << std::endl;
     list.deleteRange(2, 3);
     list.print();
     

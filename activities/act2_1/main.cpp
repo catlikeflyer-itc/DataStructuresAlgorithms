@@ -28,9 +28,13 @@ int main(){
     list.removeDuplicates(); 
     list.print(); 
 
+    // Sublist test
     LinkedList<int> sublist = list.subList(2, 3);
     sublist.print();
 
+    // Delete range test
+    list.deleteRange(2, 3);
+    list.print();
     
     Node<int> newNode(3, NULL); 
     list.sortedInsert(&newNode); 

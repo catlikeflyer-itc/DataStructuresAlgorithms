@@ -45,7 +45,11 @@ class LinkedList {
         void reverse();
 
         // Methods for homework V2
-        LinkedList<T> subList(int begin, int end);
+        LinkedList<T> subList(int start, int stop);
+        void deleteRange(int start, int stop);
+        LinkedList<T> unionn();
+        LinkedList<T> intersection();
+        LinkedList<T> except();
 };
 
 template<class T>
@@ -465,15 +469,21 @@ void LinkedList<T>::reverse(){
 
 // ----- Methods for act 2.1 V2 -----
 
+/*
+Creates a new linked list from a range of begin to end
+Time complexity of O(n)
+
+Returns a linked list
+*/
 template <class T>
-LinkedList<T> LinkedList<T>::subList(int begin, int end) {
+LinkedList<T> LinkedList<T>::subList(int start, int stop) {
     LinkedList<T> temp;
     Node<T> *aux = head;
     int count = 1;
 
-    if (!isEmpty && begin != 0 && end != size) {
+    if (!isEmpty() && start != 0 && stop != size) {
         while (aux != NULL) {
-            if (count >= begin && count <= end) {
+            if (count >= start && count <= stop) {
                 temp.addLast(aux -> data);
             }
 
@@ -485,6 +495,35 @@ LinkedList<T> LinkedList<T>::subList(int begin, int end) {
     }
     
     return temp;
+}
+
+/*
+Takes a start value and stop value and deletes all data between those 
+indexes at the linked list calling the method delete at.
+Time complexity of 0(n)
+
+Returns void
+*/
+template <class T>
+void LinkedList<T>::deleteRange(int start, int stop) {
+    Node<T> *aux = head;
+    int count = 1;
+    // Del Index is used as the deleteAt method deletes a node and pulls the next to the deleted position, 
+    // it fixates the index to be deleted at the start position.
+    int delIndex = start;
+
+    if (!isEmpty() && start > 0 && start < size && stop <= size && stop > start) {
+        while (aux != NULL) {
+            if (count >= start && count <= stop) {
+                deleteAt(delIndex);
+            }
+
+            aux = aux -> next;
+            count++;
+        }
+    } else {
+        throw std::runtime_error("EMPTY LIST or RANGE INVALID\n");
+    }
 }
 
 #endif

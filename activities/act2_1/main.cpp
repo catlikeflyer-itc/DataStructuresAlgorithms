@@ -23,11 +23,14 @@ int main(){
     list.addLast(1);
     list.addLast(1);
     list.addLast(1); 
-
     list.print(); 
     list.count(4); 
     list.removeDuplicates(); 
     list.print(); 
+
+    LinkedList<int> sublist = list.subList(2, 3);
+    sublist.print();
+
     
     Node<int> newNode(3, NULL); 
     list.sortedInsert(&newNode); 

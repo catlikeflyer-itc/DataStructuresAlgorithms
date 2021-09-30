@@ -37,19 +37,24 @@ class LinkedList {
         bool updateAt(int i, T data);
         bool updateData(T prevData, T newData);
 
-        // Methods for homework
+        // Methods for homework V1 
         int count(T searchValue);
         void clear();
         void sortedInsert(Node<T> * newNode);
         void removeDuplicates();
         void reverse();
+
+        // Methods for homework V2
+        LinkedList<T> subList(int begin, int end);
 };
 
 template<class T>
 LinkedList<T>::LinkedList(){
-    this-> head = NULL;
-    this-> size = 0;
+    this -> head = NULL;
+    this -> size = 0;
 }
+
+// ----- Basic methods -----
 
 /*
 Adds node and heads it, also receives data
@@ -84,7 +89,6 @@ void LinkedList<T>::addLast(T data){
     }
     size++;
 }
-
 
 /* 
 Inserts data at a given index 
@@ -306,6 +310,8 @@ bool LinkedList<T>::updateData(T prevData, T newData) {
     throw std::runtime_error("NOT FOUND\n");
 }
 
+// ----- Methods for act 2.1 V1 -----
+
 /*
 Given an element to seach for, it counts the number of times the element appears on the linked list
 Time complexity of O(n)
@@ -455,6 +461,30 @@ void LinkedList<T>::reverse(){
     } else{
         throw std::runtime_error("EMPTY LIST\n");
     }
+}
+
+// ----- Methods for act 2.1 V2 -----
+
+template <class T>
+LinkedList<T> LinkedList<T>::subList(int begin, int end) {
+    LinkedList<T> temp;
+    Node<T> *aux = head;
+    int count = 1;
+
+    if (!isEmpty && begin != 0 && end != size) {
+        while (aux != NULL) {
+            if (count >= begin && count <= end) {
+                temp.addLast(aux -> data);
+            }
+
+            aux = aux -> next;
+            count++;
+        }
+    } else {
+        throw std::runtime_error("EMPTY LIST or RANGE INVALID\n");
+    }
+    
+    return temp;
 }
 
 #endif

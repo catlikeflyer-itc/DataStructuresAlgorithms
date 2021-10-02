@@ -501,7 +501,7 @@ LinkedList<T> *LinkedList<T>::subList(int start, int stop) {
 /*
 Takes a start value and stop value and deletes all data between those 
 indexes at the linked list calling the method delete at.
-Time complexity of 0(n)
+Time complexity of 0(n^2)
 
 Returns void
 */
@@ -529,7 +529,7 @@ void LinkedList<T>::deleteRange(int start, int stop) {
 
 /*
 Merges two LinkedLists by adding all their items into a new LinkedList
-Time complexity of O(n)
+Time complexity of O(2n)
 
 Returns new LinkedList
 */
@@ -619,7 +619,7 @@ LinkedList<T> * LinkedList<T>::clone()
 
 /*
 Checks two LinkedLists and adds item that exist in the first but not the second to a new LinkedList
-Time complexity of O(n)
+Time complexity of O(n^2)
 
 Returns new LinkedList
 */

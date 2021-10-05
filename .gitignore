@@ -1,4 +1,7 @@
 .vscode/settings.json
 .vscode/
-*.tar.xz
-*.zip
+
+*.zip/
+*.tar.zx
+*.out
+*.exe

@@ -7,19 +7,19 @@ Class to create a conection between machines
 */
 class Connection{
     public:
+        std::string ip;
+        int port;
+        std::string host;
+
+        Connection(){}
+
         Connection(std::string IP, int port, std::string host){
             this -> ip = IP;
             this -> port = port;
             this -> host = host;
         }
-        ~Connection() {}; 
-        std::string ip;
-        int port;
-        std::string host;
 
-        std::string getIP(){
-            return ip; 
-        }
+        ~Connection() {};
 }; 
 
 #endif

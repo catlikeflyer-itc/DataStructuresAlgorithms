@@ -10,10 +10,25 @@
 #include <vector>
 #include <stack>
 #include <queue>
-
 #include "compConections.hpp"
 #include "connection.hpp"
 #include "reader.hpp"
+
+bool ThreeInaRow(CompConnections &connectionInput){
+    // [ ... x x x ...  ]
+    auto Ptr1 = connectionInput.outConnections.begin();
+    auto Ptr2 = std::next(Ptr1, 1);
+    auto Ptr3 = std::next(Ptr2, 1);
+    
+    for(int i=0; i<connectionInput.outConnections.size() - 3; i++){
+        if(Ptr1 -> getIP() == Ptr2 -> getIP() &&  Ptr2 -> getIP() == Ptr3 -> getIP()) return true;
+
+        Ptr1 = std::next(Ptr1, 1);
+        Ptr2 = std::next(Ptr2, 1);
+        Ptr3 = std::next(Ptr3, 1);
+    }
+    return false;
+}
 
 int main(int argc, const char * argv[]){
     if(argc != 2){
@@ -37,6 +52,8 @@ int main(int argc, const char * argv[]){
     }
 
     CompConnections connect(ip,name);
+    CompConnections knownComputer = CompConnections("172.26.89.142", "janet.reto.com");
+
 
     for(int i = 0; i < data.size() - 1; i++){
         if(data[i].sourceIp_a == ip){
@@ -114,9 +131,8 @@ int main(int argc, const char * argv[]){
 
     // ---    
     std::cout << "5.- Tiene esta computadora 3 conexiones seguidas a un mismo sitio web?" << std::endl;
-    /*
-        <code>
-    */
+    std::cout << "\t" << (ThreeInaRow(knownComputer) ? "Sí tiene 3 conexiones seguidas" : "No tiene 3 conexiones seguidas") << std::endl;
+
 
     // ---
 

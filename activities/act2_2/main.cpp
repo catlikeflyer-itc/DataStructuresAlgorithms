@@ -10,25 +10,10 @@
 #include <vector>
 #include <stack>
 #include <queue>
+
 #include "compConections.hpp"
 #include "connection.hpp"
 #include "reader.hpp"
-
-bool ThreeInaRow(CompConnections &connectionInput){
-    // [ ... x x x ...  ]
-    auto Ptr1 = connectionInput.outConnections.begin();
-    auto Ptr2 = std::next(Ptr1, 1);
-    auto Ptr3 = std::next(Ptr2, 1);
-    
-    for(int i=0; i<connectionInput.outConnections.size() - 3; i++){
-        if(Ptr1 -> getIP() == Ptr2 -> getIP() &&  Ptr2 -> getIP() == Ptr3 -> getIP()) return true;
-
-        Ptr1 = std::next(Ptr1, 1);
-        Ptr2 = std::next(Ptr2, 1);
-        Ptr3 = std::next(Ptr3, 1);
-    }
-    return false;
-}
 
 int main(int argc, const char * argv[]){
     if(argc != 2){
@@ -39,9 +24,8 @@ int main(int argc, const char * argv[]){
     Reader r; 
     std::vector<Registry> data = r.readFile(); 
 
-    std::string ip = "192.168.29." + std::string(argv[1]);
+    std::string ip_base = "192.168.29.", ip = ip_base + std::string(argv[1]);
     std::string name;
-    bool io_flag = true; // true = outgoing, false = incoming
     std::string last_ip;
 
     for(int i = 0; i < data.size() - 1; i++){
@@ -52,19 +36,15 @@ int main(int argc, const char * argv[]){
     }
 
     CompConnections connect(ip,name);
-    CompConnections knownComputer = CompConnections("172.26.89.142", "janet.reto.com");
 
 
     for(int i = 0; i < data.size() - 1; i++){
         if(data[i].sourceIp_a == ip){
             connect.addToOutgoingConnections(data[i].destinationIp_a,data[i].destinationPort_a,data[i].destinationName_a);
-            last_ip = data[i].destinationIp_a;
-            io_flag = true;
         }
         else if(data[i].destinationIp_a == ip){
             connect.addToIncomingConnections(data[i].sourceIp_a,data[i].sourcePort_a,data[i].sourceName_a);
             last_ip = data[i].sourceIp_a;
-            io_flag = false;
         }
     }
 
@@ -76,12 +56,14 @@ int main(int argc, const char * argv[]){
     // ---
     std::cout << "2.- Cual fue la direccion IP de la ultima conexion que recibio esta computadora? Es interna o externa?" << std::endl;
     std::cout << "IP: " << last_ip;
-    if(io_flag == true){
-        std::cout << "\tSaliente" << std::endl;
+
+    if(last_ip.find(ip_base) != std::string::npos){
+        std::cout << "\tInterna" << std::endl;
     }
-    else if(io_flag == false){
-        std::cout << "\tEntrante" << std::endl;
+    else{
+        std::cout << "\tExterna" << std::endl;
     }
+    
     // ---
     
     Connection aux_c;
@@ -108,6 +90,8 @@ int main(int argc, const char * argv[]){
     }
     // ---
 
+    std::vector<Connection> out_connections;
+
     // ---
     std::cout << "4.- Cuantas conexiones salientes tiene esta computadora?" << std::endl;
     
@@ -119,6 +103,7 @@ int main(int argc, const char * argv[]){
         connect.outConnections.pop();
         counter++;
         out_aux_s.push(aux_c);
+        out_connections.push_back(aux_c);
     }
 
     std::cout << "Conexiones salientes: " << counter << std::endl;
@@ -131,9 +116,27 @@ int main(int argc, const char * argv[]){
 
     // ---    
     std::cout << "5.- Tiene esta computadora 3 conexiones seguidas a un mismo sitio web?" << std::endl;
-    std::cout << "\t" << (ThreeInaRow(knownComputer) ? "Sí tiene 3 conexiones seguidas" : "No tiene 3 conexiones seguidas") << std::endl;
 
+    bool r_flag; // true = si hay 3 repetidas, false = no hay 3 repetidas
+    std::string r_ip;
 
+    for(int i = 0; i < out_connections.size() - 3; i++){
+        if(out_connections[i].ip == out_connections[i + 1].ip && out_connections[i + 1].ip == out_connections[i + 2].ip){
+            r_flag = true;
+            r_ip = out_connections[i].ip;
+            break;
+        }
+        else{
+            r_flag = false;
+        }
+    }
+
+    if(r_flag == true){
+            std::cout << "Si hay una conexion seguida a " << r_ip << std::endl;
+        }
+        else if(r_flag == false){
+            std::cout << "No hay una conexion repetida" << std::endl;
+        }
     // ---
 
     return 0;

@@ -3,24 +3,31 @@
 
 using namespace std;
 
-//funcion para desplegar el menu
-void menu(){
-    cout<<endl;
-    cout<<"1)Insert"<<endl;
-    cout<<"2)delete"<<endl;
-    cout<<"3)find"<<endl;
-    cout<<"4)print"<<endl;
-    cout<<"-----------------------"<<endl;
-    cout<<"5)visit"<<endl;
-    cout<<"6)height"<<endl;
-    cout<<"7)ancestors"<<endl;
-    cout<<"8)what level am I"<<endl;
-    cout<<"9)exit"<<endl;
-    cout<<endl;
+/*
+Displays menu to test the BST
+Return void
+*/
+void menu() {
+    std::cout << "\n-----------Basics------------" << std::endl;
+    std::cout << std::endl;
+    std::cout << "1) Insert" << std::endl;
+    std::cout << "2) Delete" << std::endl;
+    std::cout << "3) Find" << std::endl;
+    std::cout << "4) Print" << std::endl;
+    std::cout << "-----------Activity 3.3------------" << std::endl;
+    std::cout << "5) Visit" << std::endl;
+    std::cout << "6) Height" << std::endl;
+    std::cout << "7) Ancestors" << std::endl;
+    std::cout << "8) What level am I" << std::endl;
+    std::cout << "9) Exit" << std::endl;
+    std::cout << "\n" << std::endl;
 }
 
-//funcion para llenar el arbol binario con datos iniciales
-void initializer(BinarySearchTree<int> &tree){
+/*
+Initializes a tree with the given values 
+Return void
+*/
+void initTree(BinarySearchTree<int> &tree){
     tree.insert(10);
     tree.insert(5);
     tree.insert(20);
@@ -32,72 +39,92 @@ void initializer(BinarySearchTree<int> &tree){
     tree.insert(28);
 }
 
-int main(){
+int main() {
     BinarySearchTree<int> tree;
-    initializer(tree);
+    initTree(tree);
 	bool continues = true;
-    int selection,value,selection2;
+    int selection, value, selection2;
     bool found;
-    cout<<endl<<"Bienvenido a BST tester!"<<endl;
-    while (continues){//mientras continues sea verdadero
+
+    std::cout << "BST tester: " << endl;
+    while (continues) {
         menu();
-        cout<<endl<<"Ingresa una opcion del menu: >";cin>>selection;
-        switch (selection){//switch basado en la seleccion del usuario
+        std::cout << "Ingresa una opcion del menu: "; std::cin >> selection;
+
+        // Switch to call user function accordingly
+        switch (selection) {
             case 1:
-                cout<<endl<<"Ingresa el valor a insertar: >";cin>>value;
+                std::cout << std::endl << "Ingresa el valor a insertar: "; std::cin >> value;
                 tree.insert(value);
+
                 break;
+
             case 2:
-                cout<<endl<<"Ingresar el valor a borrar: >";cin>>value;
+                std::cout << std::endl << "Ingresar el valor a borrar: "; std::cin >> value;
                 tree.deletes(value);
+
                 break;
+
             case 3:
-                cout<<endl<<"Ingresar el valor a buscar: >";cin>>value;
+                std::cout << std::endl << "Ingresar el valor a buscar: "; std::cin >> value;
                 found = tree.find(value);
-                if(found){
-                    cout<<endl<<"El valor se encuentra en el arbol!"<<endl;
-                }else{
-                    cout<<endl<<"El valor no esta en el arbol"<<endl;
+
+                if (found) {
+                    std::cout << std::endl << "El valor se encuentra en el arbol!" << std::endl;
+                } else {
+                    std::cout << std::endl << "El valor no esta en el arbol" << std::endl;
                 }
+
                 break;
+
             case 4:
                 tree.print();
+
                 break;
+
             case 5:
-                cout<<endl<<"1) Preorder"<<endl;
-                cout<<"2) Inorder"<<endl;
-                cout<<"3) Postorder"<<endl;
-                cout<<"4) Level by level"<<endl<<endl;
-                cout<<endl<<"Ingresa una opcion de visita: >";cin>>selection2;
+                std::cout << std::endl << "1) Preorder" << std::endl;
+                std::cout << "2) Inorder" << std::endl;
+                std::cout << "3) Postorder" << std::endl;
+                std::cout << "4) Level by level\n" << std::endl;
+                std::cout << std::endl << "Ingresa una opcion de visita: "; std::cin >> selection2;
                 tree.visit(selection2);
+
                 break;
+            
             case 6:
-                cout<<"Altura del arbol: "<<tree.getHeight()<<endl;
+                std::cout << "Altura del arbol: " << tree.getHeight() << std::endl;
+
                 break;
+
             case 7:
-                cout<<endl<<"Ingresar el valor a buscar sus ancestros: >";cin>>value;
+                std::cout << std::endl << "Ingresar el valor a buscar sus ancestros: "; std::cin >> value;
                 tree.ancestors(value);
+
                 break;
+
             case 8:
-                cout<<endl<<"Ingresar el valor a encontrar su nivel: >";cin>>value;
-                cout<<"El nivel en el que esta "<<value<<": "<<tree.whatLevelAmI(value);
+                std::cout << std::endl << "Ingresar el valor a encontrar su nivel: "; std::cin >> value;
+                std::cout << "El nivel en el que esta " << value << ": " << tree.whatLevelAmI(value);
+
                 break;
+
             case 9:
                 continues = false;
+
                 break;
+
             default:
-                cout<<"------------------------------------"<<endl;
-                cout<<endl<<"Valor invalido!"<<endl;
-                cout<<"------------------------------------"<<endl;
+                std::cout << "------------------------------------"<< std::endl;
+                std::cout << std::endl << "Valor invalido!" << std::endl;
+                std::cout << "------------------------------------"<< std::endl;
+
                 break;
-        }
-        if(continues){
-           cout<<endl<<endl<<"------------------------------------"<<endl;
-            tree.print();
-            cout<<"------------------------------------"<<endl<<endl; 
         }
     }
-    cout<<"-----------------------"<<endl;
-    cout<<endl<<endl<<"GRACIAS POR USAR BST TESTER!"<<endl<<endl;
+
+    std::cout << "-----------------------" << std::endl;
+    std::cout << std::endl << std::endl << "Exit program\n" << std::endl;
+
     return 0;
 }

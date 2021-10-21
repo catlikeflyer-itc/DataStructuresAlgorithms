@@ -67,7 +67,9 @@
     "random": "cpp",
     "regex": "cpp",
     "string_view": "cpp",
-    "ranges": "cpp"
+    "ranges": "cpp",
+    "queue": "cpp",
+    "stack": "cpp"
   },
   "workbench.colorTheme": "Monokai Pro"
 }

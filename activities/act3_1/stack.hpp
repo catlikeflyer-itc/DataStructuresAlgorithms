@@ -4,18 +4,19 @@
 
 template<class T>
 class Stack{
-private:
-    Node2<T>* top;
-    int size;
-public:
-    Stack();
-    void push(T Data);
-    T pop();
-    T getTop();
-    int getSize();
-    void clear();
-    void print();
-    bool isEmpty();
+    private:
+        Node<T>* top;
+        int size;
+        
+    public:
+        Stack();
+        void push(T Data);
+        T pop();
+        T getTop();
+        int getSize();
+        void clear();
+        void print();
+        bool isEmpty();
 };
 
 template<class T>
@@ -26,7 +27,7 @@ Stack<T>::Stack() {
 
 template<class T>
 void Stack<T>::push(T data) {
-    top = new Node2<T>(data,top);
+    top = new Node<T>(data, top);
     size++;
 }
 
@@ -34,22 +35,23 @@ template<class T>
 T Stack<T>::pop() {
     T data;
     if (!isEmpty()) {
-        Node2<T>* aux = top;
-        data = aux->data;
-        top = aux->next;
+        Node<T>* aux = top;
+        data = aux -> data;
+        top = aux -> next;
         delete aux;
         size--;
+
         return data;
     }
-    throw runtime_error("The Stack is empty");
+    throw std::runtime_error("The Stack is empty");
 }
 
 template<class T>
 T Stack<T>::getTop() {
     if (!isEmpty()) {
-        return top->data;
+        return top -> data;
     }
-    throw runtime_error("The Stack is empty");
+    throw std::runtime_error("The Stack is empty");
 }
 
 template<class T>
@@ -60,8 +62,8 @@ int Stack<T>::getSize() {
 template<class T>
 void Stack<T>::clear() {
     while (top != NULL) {
-        Node2<T>* aux = top;
-        top = aux->next;
+        Node<T>* aux = top;
+        top = aux -> next;
         delete aux;
     }
     size = 0;
@@ -69,12 +71,12 @@ void Stack<T>::clear() {
 
 template<class T>
 void Stack<T>::print() {
-    Node2<T>* aux = top;
+    Node<T>* aux = top;
     while (aux != NULL) {
-        cout << aux->data << " ";
+        std::cout << aux -> data << " ";
         aux = aux->next;
     }
-    cout << endl;
+    std::cout << std::endl;
 }
 
 

@@ -5,8 +5,6 @@
 #include "queue.hpp"
 #include "stack.hpp"
 
-using namespace std;
-
 // Binary Search Tree Class
 template <class T>
 class BinarySearchTree {
@@ -47,6 +45,8 @@ BinarySearchTree<T>::BinarySearchTree() {
 
 /*
 Counts the number of children from the tree, iterates from left to right branches
+Returns an integer
+O(n)
 */
 template<class T>
 int BinarySearchTree<T>::countChildren(TreeNode<T>* aux){
@@ -56,269 +56,336 @@ int BinarySearchTree<T>::countChildren(TreeNode<T>* aux){
 	return count; 
 }
 
-//find
-//Funcion para verificar si el dato se encuentra en el binary tree
-//itera en el arbol y regresa un valor booleano
-//O(N)
+/*
+Iterates to find a given value through the tree
+Returns a boolean if value is found
+
+O(n)
+*/
 template<class T>
 bool BinarySearchTree<T>::find(T data){
 	TreeNode<T> *aux = root;
 	bool found = false;
-	while (!found && aux!=NULL){
-		if(data== aux->data){
+
+	while (!found && aux!=NULL) {
+		if (data == aux -> data){
 			found = true;
-		}else{
-			data<aux->data?aux=aux->left:aux=aux->right;
+		} else {
+			data < aux -> data ? aux = aux -> left : aux = aux -> right;
 		}
 	}
+
 	return found;
 	
 }
 
-//insert
-//funcion para insertar en el arbol el valor dado
-//hace add al valor al checar en que rama debe de ir y de que nodo
-//debe de ser hijo
-//O(N)
+/*
+Inserts a given value to the tree, checks the most fitting branch and node, it has to be a child
+Returns void
+
+O(n)
+*/
 template<class T>
 void BinarySearchTree<T>::insert(T data){
-    if(!isEmpty()){
+    if (!isEmpty()) {
         TreeNode<T> *aux = root;
-        while(aux != NULL){
-            if(aux->data > data){
-                if(aux->left == NULL){
-                    aux->left = new TreeNode<T>(data);
+
+        while (aux != NULL) {
+            if (aux -> data > data) {
+                if (aux -> left == NULL) {
+                    aux -> left = new TreeNode<T>(data);
+
                     return;
-                } else{
-                    aux = aux->left;
+                } else {
+                    aux = aux -> left;
                 }
-            } else{
-                if(aux->right == NULL){
-                    aux->right = new TreeNode<T>(data);
-                    return;
-                } else{
-                    aux = aux->right;
+            } else {
+                if (aux -> right == NULL) {
+                    aux -> right = new TreeNode<T>(data);
+                    
+					return;
+                } else {
+                    aux = aux -> right;
                 }
             }
         }
-    } else{
+    } else {
         root = new TreeNode<T>(data);
     }
 }
 
+/*
+Deletes the given value from the node. First it checks the node is not empty and the value is present. After deletion, 
+it moves the nodes accordingly and sets a child as a parent node
+Returns void
 
-//delete
-//Toma un dato de entrada y lo elimina del nodo
-//checa que este presente y que no este vacia
-// una vez realizado esto mueve los nodos dependiendo del valor
-//convirtiendo algun nodo en padre de otros
-//O(N2)
+O(n^2)
+*/
 template<class T>
 void BinarySearchTree<T>::deletes(T data){
-	if(isEmpty() ){
-		throw runtime_error("Binary tree is empty\n");
+	if (isEmpty()) {
+		throw std::runtime_error("Binary tree is empty\n");
 	}
+
 	TreeNode<T> *father = root;
 	TreeNode<T> *aux = father;
 	bool found = false;
-	while (!found && aux!=NULL){
-		if(data== aux->data){
+
+	while (!found && aux != NULL){
+		if (data == aux -> data) {
 			found = true;
-		}else{
+		} else {
 			father = aux;
-			data < aux->data?aux = aux->left : aux = aux->right;
+			data < aux -> data ? aux = aux -> left : aux = aux -> right;
 		}
 	}
-	if(found){
-		switch (countChildren(aux)){
+	if (found) {
+		switch (countChildren(aux)) {
 			case 0:
-				if(aux == root){
+				if (aux == root) {
 					delete aux;
 					root = NULL;
-				}
-				else{
-					cout<<father->data<<endl;
-					data< father -> data ? father -> left = NULL: father->right = NULL;
+				} else {
+					std::cout << father -> data << std::endl;
+					data < father -> data ? father -> left = NULL: father -> right = NULL;
 					delete aux;
 				}
+
 				break;
-			case 1: //un hijo
-				if(aux == NULL){
-					root ->left != NULL ? root = root -> left : root = root ->right;
-				}
-				else{
-					if(data<father->data){
-						aux->left != NULL ? father -> left = aux->left : father->left = aux->right;
-					}else{
-						aux->left != NULL ? father -> right = aux->left : father->right = aux->right;
+
+			case 1: // One child
+				if (aux == NULL) {
+					root -> left != NULL ? root = root -> left : root = root -> right;
+				} else {
+					if (data < father -> data) {
+						aux -> left != NULL ? father -> left = aux -> left : father -> left = aux -> right;
+					} else {
+						aux -> left != NULL ? father -> right = aux -> left : father -> right = aux -> right;
 					}
 				}
 				delete aux;
+
 				break;
-			case 2://dos hijos
+
+			case 2: // Two children
 				TreeNode<T> *father = aux;
-				TreeNode<T> *max = aux->left;
-				if(max->right ==NULL){
-					aux->data = max->data;
-					father->left = max ->left;
+				TreeNode<T> *max = aux -> left;
+
+				if (max -> right == NULL) {
+					aux -> data = max -> data;
+					father -> left = max -> left;
 					delete max;
-				}
-				else{
+				} else {
 					bool found = false;
-					while (!found){
-						if (max->right==NULL){
+
+					while (!found) {
+						if (max -> right == NULL) {
 							found = true;
-						}else{
+						} else {
 							father = max;
-							max = max ->right;
+							max = max -> right;
 						}
 					}
-					aux -> data = max ->data;
-					father -> right = max->left;
+
+					aux -> data = max -> data;
+					father -> right = max -> left;
 					delete max;
 				}
+
 				break;
 		}
-	}
-	else{
-		cout<<"EL VALOR NO ESTA EN EL ARBOL!"<<endl;
+	} else {
+		std::cout << "Value not on tree!" << std::endl;
 	}
 }
 
-//printTree
-//Funcion para imprimir el arbol
-//lo hace de manera horizontal, toma el nodo y el nivel
-//O(N)
+/*
+Prints tree horizontally given a level
+Returns void
+
+O(n)
+*/
 template<class T>
-void BinarySearchTree<T>::printTree(TreeNode<T> *TreeNode, int level){
-    if(TreeNode != NULL){
+void BinarySearchTree<T>::printTree(TreeNode<T> *TreeNode, int level) {
+    if (TreeNode != NULL) {
         printTree(TreeNode->right, level + 1);
-        for(int i = 0; i < level; i ++){
-            cout << " ";
+        for (int i = 0; i < level; i ++) {
+            std::cout << " ";
         }
-        cout << TreeNode->data << "\n";
-        printTree(TreeNode->left, level + 1);
+        std::cout << TreeNode -> data << "\n";
+        printTree(TreeNode -> left, level + 1);
     }
 }
 
-//print
-//Funcion para imprimir el arbol de manera completa
-//lo hace de manera horizontal
-//O(N)s
+/*
+Prints whole tree level by level
+Returns void
+
+O(n)n
+*/
 template<class T>
 void BinarySearchTree<T>::print(){
 	if(!isEmpty()){
 		int level = 0;
-		cout << endl;
+		std::cout << std::endl;
 		printTree(root,level);
-		cout<<endl;
+		std::cout << std::endl;
 	}
-	else{
-		cout<<endl<<"Tree is empty"<<endl<<endl;
+	else {
+		std::cout << std::endl << "Tree is empty" << std::endl;
 	}
 }
 
-//Avanzado-----------------------------------------
-
-//preorder
-//despliega los datos del nodo en modo
 /*
-1. Visita la raíz.
-2. Atraviesa el subárbol izquierdo, es decir, llama a Preorder (subárbol izquierdo)
-3. Atraviesa el subárbol derecho, es decir, llama a Preorder (subárbol derecho)
+Preorder
+1. Visits root
+2. Calls preorder from the left subtree
+3. Calls preorder from the right siubtree
+
+Returns void
+
+O(n)
 */
-//O(N)
 template<class T>
 void BinarySearchTree<T>::preOrder(TreeNode<T> *aux){
-	if(aux!=NULL){
-		cout<<aux->data<<" ";
-		preOrder(aux->left);
-		preOrder(aux->right);
+	if (aux != NULL) {
+		std::cout << aux -> data << " ";
+		preOrder(aux -> left);
+		preOrder(aux -> right);
 	}
 }
 
-//inOrder
-//despliega los datos del nodo
 /*
-1. Atraviesa el subárbol izquierdo, es decir, llama a Inorder (subárbol izquierdo)
-2. Visite la raíz.
-3. Atraviesa el subárbol derecho, es decir, llama a Inorder (subárbol derecho)
+Inorder
+1. Calls inorder from the left subtree
+2. Visits root
+3. Calls inorder from the right subtree
+
+Returns void
+
+O(n)
 */
-//O(N)
 template <class T>
 void BinarySearchTree<T>::inOrder(TreeNode<T>* aux){
-	if(aux!=NULL){
-		inOrder(aux->left);
-		cout<<aux->data<<" ";
-		inOrder(aux->right);
+	if (aux != NULL) {
+		inOrder(aux -> left);
+		std::cout << aux -> data << " ";
+		inOrder(aux -> right);
 	}
 }
 
-//postOrder
-//despliega los datos del nodo
 /*
-1. Atraviesa el subárbol izquierdo, es decir, llama a Postorder (subárbol izquierdo)
-2. Atraviesa el subárbol derecho, es decir, llama a Postorder (subárbol derecho)
-3. Visite la raíz.
+Post order
+1. Calls post orther from the left subtree
+2. Calls postorder from the right subtree
+3. Visits root
+
+Returns void
+
+O(n)
 */
-//O(N)
 template <class T>
 void BinarySearchTree<T>::postOrder(TreeNode<T>* aux){
-	if(aux!=NULL){
-		postOrder(aux->left);
-		postOrder(aux->right);
-		cout<<aux->data<<" ";
+	if (aux != NULL) {
+		postOrder(aux -> left);
+		postOrder(aux -> right);
+		std::cout << aux -> data << " ";
 	}
 }
 
-//level by level
-//despliega los datos del nodo por nivel
-//O(n^2)
+/*
+Level by level
+Shows values in tree by levels
+Returns void
+
+O(n^2)
+*/
 template <class T>
 void BinarySearchTree<T>::levelByLevel(){
 	if(!isEmpty()){
 		Queue<TreeNode<T>*> queue;
+
 		queue.enqueue(root);
-		while (!queue.isEmpty()){
+		while (!queue.isEmpty()) {
 			TreeNode<T> *aux = queue.dequeue();
-			cout<<aux->data<<" ";
-			if(aux->left !=NULL){
-				queue.enqueue(aux->left);
+			std::cout << aux -> data << " ";
+			if (aux -> left != NULL) {
+				queue.enqueue(aux -> left);
 			}
-			if(aux->right !=NULL){
-				queue.enqueue(aux->right);
+			if (aux -> right != NULL) {
+				queue.enqueue(aux -> right);
 			}
 		}
 		
 	}
 }
 
-//height
-//itera de manera recursiva sobre el arbol
-//O(log n)
+/*
+Function that displays a menu to choose method to parse the tree
+
+O(n)
+*/
+template <class T>
+void BinarySearchTree<T>::visit(int selection){
+	if(!isEmpty()){
+		switch (selection){
+			case 1:
+				std::cout << "Preorder: ";
+            	preOrder(root);
+				break;
+			case 2:
+				std::cout << "Inorder: ";
+				inOrder(root);
+				break;
+			case 3:
+				std::cout << "Postorder: ";
+				postOrder(root);
+				break;
+			case 4:
+				std::cout << "Level by level: ";
+				levelByLevel();
+				break;
+			default:
+				std::cout << "Seleccion invalida" << std::endl;
+				break;
+		}
+	}
+}
+
+/*
+Recursively iterates to tree to measure its height using a counter
+Returns integer of height
+
+O(log n)
+*/
 template <class T>
 int BinarySearchTree<T>::height(TreeNode<T> *TreeNode){
 	int h = 0;
 	int l,r;
-	if(TreeNode != NULL){
+	if (TreeNode != NULL){
 		h++;
-		l = height(TreeNode->left);
-		r = height(TreeNode->right);
-		(l>r)? h+=l:h+=r;
+		l = height(TreeNode -> left);
+		r = height(TreeNode -> right);
+		(l > r) ? h += l : h += r;
 	}
+
 	return h;
 
 }
 
-//getHeight
-//usado para llavar a la funcion recursiva
-//O(1)
+
+/*
+Used to call the above function
+Returns height
+
+O(n)
+*/
 template <class T>
 int BinarySearchTree<T>::getHeight(){
 	TreeNode<T>  *aux = root;
 	int h = height(root);
-	return h;
 
+	return h;
 }
 
 //ancestors
@@ -351,68 +418,41 @@ void BinarySearchTree<T>::ancestors(T data){
 				while (!stack.isEmpty()){
 					try{
 						T data = stack.pop();
-						cout<<data<<" ";
-					}catch(runtime_error& e){
-						cout<<e.what()<<endl;
+						std::cout << data <<" ";
+					} catch (std::runtime_error & e) {
+						std::cout << e.what() << std::endl;
 					}
 				}
 				
-			}else {
-				cout<<"No tiene ancestros"<<endl;
+			} else {
+				std::cout << "No tiene ancestros" << std::endl;
 			}
 		}
-	}else{
-		cout<<"EL ARBOL ESTA VACIO"<<endl;
+	} else {
+		std::cout << "EL ARBOL ESTA VACIO" << std::endl;
 	}
 }
 
-//whatLevelAmI
-//funcion para obtener el nivel donde te encuentras en un dato
-//O(N)
+/*
+Finds out what level a data is located at
+Returns int of level
+
+O(n)
+*/
 template <class T>
 int BinarySearchTree<T>::whatLevelAmI(T data){
-	if(!isEmpty()){
+	if (!isEmpty()) {
 		TreeNode<T> *aux = root;
 		int count = 0;
-		while (aux != NULL){
-			if(aux->data == data){
+		while (aux != NULL) {
+			if (aux -> data == data) {
                 return count;
             }
             count++;
-            aux->data > data ? aux = aux->left : aux = aux->right;
+            aux -> data > data ? aux = aux -> left : aux = aux -> right;
 		}	
 	}
-	throw runtime_error("Binary tree is empty\n");
-}
-
-//visit
-//funcion para llamar a los metodos de recorrido
-//O(1)
-template <class T>
-void BinarySearchTree<T>::visit(int selection){
-	if(!isEmpty()){
-		switch (selection){
-			case 1:
-				cout << "Preorder: ";
-            	preOrder(root);
-				break;
-			case 2:
-				cout << "Inorder: ";
-				inOrder(root);
-				break;
-			case 3:
-				cout << "Postorder: ";
-				postOrder(root);
-				break;
-			case 4:
-				cout << "Level by level: ";
-				levelByLevel();
-				break;
-			default:
-				cout <<"Seleccion invalida"<<endl;
-				break;
-		}
-	}
+	throw std::runtime_error("Binary tree is empty!\n");
 }
 
 #endif

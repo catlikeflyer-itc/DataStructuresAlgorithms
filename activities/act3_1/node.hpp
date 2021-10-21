@@ -3,26 +3,23 @@
 #include<iostream>
 
 template<class T>
-struct Node{
+struct Node {
     T data;
-    Node<T> *left;
-    Node<T> *right;
+    Node<T> *next;
     Node(T data);
-    Node(T data, Node<T> *left, Node<T> *right);
+    Node(T data, Node<T> *next);
 };
 
-template <class T>
-Node<T>::Node(T data){
+template<class T>
+Node<T>::Node(T data) {
     this -> data = data;
-    left = NULL;
-    right = NULL;
-}
+    this -> next = NULL;
+} 
 
-template <class T>
-Node<T>::Node(T data, Node<T> *left, Node<T> *right){
+template<class T>
+Node<T>::Node(T data, Node<T>* next) {
     this -> data = data;
-    this -> left = left;
-    this -> right = right;
-}
+    this -> next = next;
+} 
 
 #endif

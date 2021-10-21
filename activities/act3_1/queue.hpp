@@ -3,21 +3,22 @@
 #include "node.hpp"
 
 template<class T>
-class Queue{
-private:
-    Node2<T>* head;
-    Node2<T>* tail;
-    int size;
-public:
-    Queue();
-    void enqueue(T Data);
-    T dequeue();
-    T front();
-    T back();
-    int getSize();
-    void clear();
-    void print();
-    bool isEmpty();
+class Queue {
+    private:
+        Node<T>* head;
+        Node<T>* tail;
+        int size;
+        
+    public:
+        Queue();
+        void enqueue(T Data);
+        T dequeue();
+        T front();
+        T back();
+        int getSize();
+        void clear();
+        void print();
+        bool isEmpty();
 };
 
 template<class T>
@@ -29,7 +30,8 @@ Queue<T>::Queue() {
 
 template<class T>
 void Queue<T>::enqueue(T data) {
-    Node2<T>* aux = new Node2<T>(data);
+    Node<T>* aux = new Node<T>(data);
+
     if (isEmpty()) {
         head = aux;
         tail = aux;
@@ -44,17 +46,18 @@ template<class T>
 T Queue<T>::dequeue() {
     T data;
     if (!isEmpty()) {
-        Node2<T>* aux = head;
+        Node<T>* aux = head;
         data = aux -> data;
         head = aux -> next;
         delete aux;
         size--;
+
         if (head == NULL) {
             tail = NULL;
         }
         return data;
     }
-    throw runtime_error("The Queue is empty");
+    throw std::runtime_error("The Queue is empty");
 }
 
 template<class T>
@@ -62,7 +65,7 @@ T Queue<T>::front() {
     if (!isEmpty()) {
         return head -> data;
     }
-    throw runtime_error("The Queue is empty");
+    throw std::runtime_error("The Queue is empty");
 }
 
 template<class T>
@@ -70,7 +73,7 @@ T Queue<T>::back() {
     if (!isEmpty()) {
         return tail -> data;
     }
-    throw runtime_error("The Queue is empty");
+    throw std::runtime_error("The Queue is empty");
 }
 
 template<class T>
@@ -81,7 +84,7 @@ int Queue<T>::getSize() {
 template<class T>
 void Queue<T>::clear() {
     while (head != NULL) {
-        Node2<T>* aux = head;
+        Node<T>* aux = head;
         head = aux -> next;
         delete aux;
     }
@@ -91,12 +94,12 @@ void Queue<T>::clear() {
 
 template<class T>
 void Queue<T>::print() {
-    Node2<T>* aux = head;
+    Node<T>* aux = head;
     while (aux != NULL) {
-        cout << aux -> data << " ";
+        std::cout << aux -> data << " ";
         aux = aux -> next;
     }
-    cout << endl;
+    std::cout << std::endl;
 }
 
 

@@ -2,6 +2,7 @@
 #define registry_h
 #include <string>
 #include <iostream>
+#include <ctime>
 
 class Registry {
     public:
@@ -21,7 +22,7 @@ class Registry {
         Registry(); 
         
         // Attributes of class registry, differentiated from constructor params using an "_a"
-        std::string date_a;
+        tm date_a;
         std::string dateString_a;
         std::string hour_a; 
         std::string sourceIp_a; 
@@ -30,6 +31,9 @@ class Registry {
         std::string destinationIp_a; 
         int destinationPort_a; 
         std::string destinationName_a;
+
+        void print();
+        void printDate();
 };
 
 // Constructor overloading to set the class attributes from the params taken when constructed
@@ -45,6 +49,10 @@ Registry::Registry(
     std::string _destinationPort,
     std::string _destinationName
 ){
+    struct tm tm;
+    const char *f = _date.c_str();
+    strptime(f, "%d-%m-%y", &this -> date_a); // Doesn't work on Windows OS
+
     this -> dateString_a = _date;
     this -> hour_a = _hour;
     this -> sourceIp_a = _sourceIp;
@@ -61,5 +69,21 @@ Registry::Registry(
         this -> destinationPort_a = -1;
     }
 };
+
+void Registry::print(){
+    this -> printDate();
+    std::cout << "\t" << this -> hour_a
+    << "\t" << this -> sourceIp_a
+    << "\t" << this ->  sourcePort_a 
+    << "\t" << this -> sourceName_a
+    << "\t" << this -> destinationIp_a
+    << "\t" << this -> destinationPort_a
+    << "\t" << this -> destinationName_a
+    << std::endl << "========================" << std::endl;
+}
+
+void Registry::printDate(){
+    cout << this -> date_a.tm_mday << "/" << this -> date_a.tm_mon + 1 << "/" << this -> date_a.tm_year+1900;
+}
 
 #endif

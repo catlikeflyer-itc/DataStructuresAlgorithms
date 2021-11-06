@@ -69,7 +69,8 @@
     "string_view": "cpp",
     "ranges": "cpp",
     "queue": "cpp",
-    "stack": "cpp"
+    "stack": "cpp",
+    "set": "cpp"
   },
   "workbench.colorTheme": "Monokai Pro"
 }

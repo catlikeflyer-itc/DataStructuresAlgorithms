@@ -11,7 +11,6 @@
 #include <queue>
 #include <map>
 #include <algorithm>
-
 #include "bst.hpp"
 #include "compConections.hpp"
 #include "connection.hpp"
@@ -81,3 +80,4 @@ int main(int argc, const char* argv[]){
         top(5, dates[i], data);
     }
 }
+

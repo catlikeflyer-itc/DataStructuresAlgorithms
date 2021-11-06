@@ -5,78 +5,79 @@
  * Emiliano Cabrera A01025453, Do Hyun Nam A01025276
  * 
  */
-
 #include <iostream>
 #include <vector>
+#include <stack>
+#include <queue>
 #include <map>
-#include "reader.hpp"
-#include "compConnections.hpp"
-#include <set>
-#include <cwctype> 
-#include <ctime>
-#include <string>
+#include <algorithm>
 #include "bst.hpp"
-using namespace std;
+#include "compConections.hpp"
+#include "connection.hpp"
+#include "reader.hpp"
 
-class Date{
-    public:
-        tm date;
-        Date( tm date ){
-            this -> date = date;
-            // this->date.tm_mday = date.tm_mday;
-            // this->date.tm_mon = date.tm_mon; 
-            // this->date.tm_year = date.tm_year; 
+std::map<std::string,int> conexionesPorDia(std::string f, std::vector<Registry> d){
+    std::string reto = "reto.com";
+    std::string dash = "-";
+
+    std::vector<std::string> domain;
+
+    std::map<std::string, int> connect;
+
+    for(int i = 0; i < d.size(); i++){
+        if(d[i].destinationName_a != dash && d[i].destinationName_a.find(reto) == std::string::npos){
+        domain.push_back(d[i].destinationName_a);
         }
+    }
 
-        friend bool operator == (Date d, Date dd){
-            return (
-                d.date.tm_mday == dd.date.tm_mday &&
-                d.date.tm_mon == dd.date.tm_mon &&
-                d.date.tm_year == dd.date.tm_year
-            );
-        }
+    sort(domain.begin(),domain.end());
+    domain.erase(unique(domain.begin(), domain.end()),domain.end());
 
-        friend bool operator != (Date d, Date dd){
-            return (
-                d.date.tm_mday != dd.date.tm_mday ||
-                d.date.tm_mon != dd.date.tm_mon ||
-                d.date.tm_year != dd.date.tm_year
-            );
-        }
+    int counter;
 
-        friend bool operator < (Date d, Date dd){
-            return (
-                d.date.tm_mday < dd.date.tm_mday ||
-                d.date.tm_mon < dd.date.tm_mon ||
-                d.date.tm_year < dd.date.tm_year
-            );
+    for(auto dom : domain){
+        counter = 0;
+
+        for(int i = 0; i < d.size(); i++){
+            if(dom == d[i].destinationName_a && d[i].dateString_a == f){
+                counter++;
+            }
         }
         
+        connect.insert(std::pair<std::string,int>(dom,counter));
+    }    
 
-        string toString(){
-            return to_string(this -> date.tm_mday) + "/" + to_string(this -> date.tm_mon + 1) + "/" + to_string(this -> date.tm_year + 1990);
-        }
-
-};
-
-// Imprimir vectores
-void print_vector(vector<Registry> arr){
-    for (int i = 0; i < arr.size(); i++) arr[i].print();
-    cout << endl;
-};
-
-// Búsqueda secuencial
-int sequentialSearch( vector<Registry> d, bool (*condition)(Registry r) ){
-    for (int i = 0; i < d.size(); i++){
-        if (condition(d[i]) ) return i;
-    }
-    return -1;
+    return connect;
 }
-// Busqueda secuencial (overload)
-int sequentialSearch( vector<Registry> d, bool (*condition)(Registry a, Registry b), Registry r ){
-    for (int i = 0; i<d.size(); i++){
-        if (condition(d[i], r) ) return i;
+
+void top(int n, std::string f, std::vector<Registry> d){
+    std::map<std::string,int> connect = conexionesPorDia(f, d);
+
+    BinarySearchTree * bst = new BinarySearchTree();
+
+    for(auto con : connect){
+        bst->insertNode(con.first,con.second);
     }
-    return -1;
+
+    std::cout << "Fecha: " << f << "\tElementos: " << n << std::endl;
+    bst->printInOrder();
+}
+
+int main(int argc, const char* argv[]){
+    Reader r; 
+    std::vector<Registry> data = r.readFile();
+    std::vector<std::string> dates;
+    
+    for(int i = 0; i < data.size(); i++){
+        dates.push_back(data[i].dateString_a);
+    }
+
+    sort(dates.begin(),dates.end());
+    dates.erase(unique(dates.begin(), dates.end()),dates.end());
+
+    for(int i = 0; i < dates.size(); i++){
+        std::cout << std::endl;
+        top(5, dates[i], data);
+    }
 }
 

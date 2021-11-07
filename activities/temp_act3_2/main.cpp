@@ -13,8 +13,8 @@ using namespace std;
 class Date{
     public:
         tm date;
-        Date( tm date ){
-            this->date = date;
+        Date(tm date){
+            this -> date = date;
             // this->date.tm_mday = date.tm_mday;
             // this->date.tm_mon = date.tm_mon; 
             // this->date.tm_year = date.tm_year; 
@@ -46,101 +46,110 @@ class Date{
         
 
         string toString(){
-            return to_string(this->date.tm_mday) + "/" + to_string(this->date.tm_mon+1) + "/" + to_string(this->date.tm_year+1990);
+            return to_string(this -> date.tm_mday) + "/" + to_string(this -> date.tm_mon+1) + "/" + to_string(this -> date.tm_year+1990);
         }
 
 };
 
 // Imprimir vectores
-void print_vector(vector<Registro> arr){
+void print_vector(vector<Registry> arr){
     for (int i = 0; i < arr.size(); i++) arr[i].print();
     cout << endl;
 };
 
 // Búsqueda secuencial
-int busquedaSecuencial( vector<Registro> d, bool (*condicion)(Registro r) ){
-    for(int i = 0; i<d.size(); i++){
-        if( condicion(d[i]) ) return i;
+int sequentialSearch(vector<Registry> d, bool (*condition)(Registry r)){
+    for (int i = 0; i < d.size(); i++){
+        if (condition(d[i])) return i;
     }
+
     return -1;
 }
+
 // Busqueda secuencial (sobrecarga)
-int busquedaSecuencial( vector<Registro> d, bool (*condicion)(Registro a, Registro b), Registro r ){
-    for(int i = 0; i<d.size(); i++){
-        if( condicion(d[i], r) ) return i;
+int sequentialSearch(vector<Registry> d, bool (*condition)(Registry a, Registry b), Registry r ){
+    for (int i = 0; i < d.size(); i++){
+        if (condition(d[i], r)) return i;
     }
+
     return -1;
 }
 
-
-void agregarNoRetoASet(set<string> s, vector<Registro> datos){
-    for(int i=0; i<5000; i++){
-        if(datos[i].fuente_hostname.find(".reto.com") || datos[i].fuente_hostname.find("-") ){
-            s.insert(datos[i].fuente_hostname); 
+void addNoRetoToSet(set<string> s, vector<Registry> data){
+    for (int i = 0; i < 5000; i++){
+        if (data[i].sourceName.find(".reto.com") || data[i].sourceName.find("-") ){
+            s.insert(data[i].sourceName); 
         }
     }
 }
 
-void llenarComputadoras(map<string, ConexionesComputadora> &computadoras, vector<Registro> datos){
+void fillComputers(map<string, CompConnections> &comps, vector<Registry> data){
     // throwback a nuestro debugging de una hora, porque no estábamos editando el map original :)
-    for(int i=0; i<6000; i++){ //Cambiar a datos.size()
-        ConexionesComputadora c(datos[i].fuente_ip, datos[i].fuente_hostname);
-        c.llenar(datos);
-        computadoras.insert(pair<string,ConexionesComputadora>(datos[i].fuente_ip,c));
+    for (int i = 0; i < 6000; i++){ //Cambiar a datos.size()
+        CompConnections c(data[i].sourceIp, data[i].sourceName);
+        c.fill(data);
+        comps.insert(pair<string,CompConnections>(data[i].sourceIp,c));
     }
 }
 
-void agregarNoRetoASetyLlenarComputadoras(set<string> s, map<string, ConexionesComputadora> &computadoras, vector<Registro> datos){
-    for(size_t i=0; i<datos.size(); i++){
-        if(datos[i].fuente_hostname.find(".reto.com") || datos[i].fuente_hostname.find("-") ){
-            s.insert(datos[i].fuente_hostname); 
+void addNoRetoToSetFillComputers(set<string> s, map<string, CompConnections> &comps, vector<Registry> data){
+    for (size_t i = 0; i < data.size(); i++){
+        if (data[i].sourceName.find(".reto.com") || data[i].sourceName.find("-") ){
+            s.insert(data[i].sourceName); 
         }
+
         // Correr si la IP origen no está en el map
-        if( datos[i].fuente_ip != "-" && computadoras.find(datos[i].fuente_ip) == computadoras.end() ){
-            ConexionesComputadora c(datos[i].fuente_ip, datos[i].fuente_hostname);
-            c.llenar(datos);
-            computadoras.insert(pair<string,ConexionesComputadora>(datos[i].fuente_ip,c));
+        if( data[i].sourceIp != "-" && comps.find(data[i].sourceIp) == comps.end() ){
+            CompConnections c(data[i].sourceIp, data[i].sourceName);
+            c.fill(data);
+            comps.insert(pair<string, CompConnections>(data[i].sourceIp, c));
         }
+
         // Correr si la IP destino no está en el map
-        if( datos[i].destino_ip != "-" && computadoras.find(datos[i].destino_ip) == computadoras.end()){
-            ConexionesComputadora c(datos[i].destino_ip, datos[i].destino_hostname);
-            c.llenar(datos);
-            computadoras.insert(pair<string,ConexionesComputadora>(datos[i].destino_ip,c));
+        if (data[i].destinationIp != "-" && comps.find(data[i].destinationIp) == comps.end()){
+            CompConnections c(data[i].destinationIp, data[i].destinationName);
+            c.fill(data);
+            comps.insert(pair<string, CompConnections> (data[i].destinationIp, c));
         }
     }
 }
 
-bool esAnomalo(string nombre){
+bool isAbnormal(string name){
     // largo
     // caracteres alfanumericos
-    if (nombre.size() >= 20) return true;
-    for(int i=0; i<nombre.size(); i++){
-        if(isalpha(nombre[i]) == false && nombre[i] != '.' && nombre[i] != '-'&&  nombre[i] != '/' ){
+    if (name.size() >= 20) return true;
+
+    for (int i = 0; i < name.size(); i++){
+        if (isalpha(name[i]) == false && name[i] != '.' && name[i] != '-'&&  name[i] != '/' ){
             return true;  
         }
     }
+
     return false; 
 }
 
-string encontrarAnomalos(map<string, ConexionesComputadora> computadoras){
-    map<string, ConexionesComputadora>::iterator it;
-    for(it = computadoras.begin(); it != computadoras.end(); it++){
-        if( esAnomalo( it->second.nombre ) ) return it->first;
+string findAbnormalities(map<string, CompConnections> comps){
+    map<string, CompConnections>::iterator it;
+
+    for (it = comps.begin(); it != comps.end(); it++){
+        if( isAbnormal(it -> second.name)) return it ->first;
     }
+
     return "";
 }
 
 
-int computadorasConConexionesEntrantes(map<string, ConexionesComputadora> computadoras){ 
+int compsWithInConnections(map<string, CompConnections> comps){ 
     int n = 0;
-    map<string, ConexionesComputadora>::iterator it;
-    for(it = computadoras.begin(); it != computadoras.end(); it++ ){
-        if(it->second.nombre.find("reto.com") != string::npos && it->second.conexionesEntrantes.size() >= 1) n++;
+    map<string, CompConnections>::iterator it;
+    for (it = comps.begin(); it != comps.end(); it++ ){
+        if (it -> second.name.find("reto.com") != string::npos && it -> second.inConnections.size() >= 1) n++;
     }
+
     return n;
 } 
 
-set<string> obtenerIPsEntrantes(map<string, ConexionesComputadora> computadoras) {
+set<string> getInIps(map<string, CompConnections> comps) {
     /**
      * - for computadora in computadoras
      * -    si computadora.IP != server.reto.com
@@ -150,26 +159,28 @@ set<string> obtenerIPsEntrantes(map<string, ConexionesComputadora> computadoras)
      * regresar set
      * Los mensajes DHCP utilizan el puerto 67 (UDP) como puerto del servidor
     */
-    set<string> ipsUnicas;
+    set<string> uniqueIps;
 
-    map<string, ConexionesComputadora>::iterator it;
+    map<string, CompConnections>::iterator it;
     int n = 0;
-    for(it = computadoras.begin(); it != computadoras.end(); it++ ){
-        if( it->second.nombre.find(".reto.com") == string::npos /*no lo encontró*/ ){
+
+    for (it = comps.begin(); it != comps.end(); it++ ){
+        if (it -> second.name.find(".reto.com") == string::npos /*no lo encontró*/ ){
             n++;
             // Convertir a vector para poder acceder los índices de manera más fácil ;D
-            vector<Conexion> conexionesV{begin(it->second.conexionesEntrantes), end(it->second.conexionesEntrantes) };
-            set<string> nombresPorComputadoraUnicos;
-            for(int i=0; i< conexionesV.size(); i++ ){
-                if ( conexionesV[i].puerto != 67 ){
-                    nombresPorComputadoraUnicos.insert(conexionesV[i].host);
-                    ipsUnicas.insert( conexionesV[i].IP );
+            vector<Connection> connV{begin(it->second.inConnections), end(it->second.outConnections) };
+            set<string> uniqueCompNames;
+
+            for(int i=0; i< connV.size(); i++ ){
+                if ( connV[i].port != 67 ){
+                    uniqueCompNames.insert(connV[i].host);
+                    uniqueIps.insert( connV[i].IP );
                 }
             }
         }
     }
 
-   return ipsUnicas; 
+   return uniqueIps; 
 }
 
 /*
@@ -179,22 +190,26 @@ Regresa un map<string, int>
 Conteniendo la cantidad de numeroDeOcurrencias entrantes a cada sitio/página que no sea "-" 
 y que no pertenezca al dominio "reto.com" del día especificado por la fecha de entrada. 
 */
-map<string, int> conexionesPorDia(tm date, vector<Registro> datos){
-    map<string, int> numeroDeOcurrencias; 
-    for (int i = 0; i < datos.size(); i++){
-        if(datos[i].fecha.tm_mday == date.tm_mday && datos[i].fecha.tm_mon == date.tm_mon && datos[i].fecha.tm_year == date.tm_year){ 
-            if(datos[i].destino_hostname.find(".reto.com") == string::npos && datos[i].destino_hostname.find("-")== string::npos){
-                numeroDeOcurrencias[datos[i].destino_hostname]++; 
+map<string, int> connectionsPerDay(tm date, vector<Registry> data){
+    map<string, int> occurances; 
+
+    for (int i = 0; i < data.size(); i++){
+        if (data[i].date.tm_mday == date.tm_mday && data[i].date.tm_mon == date.tm_mon && data[i].date.tm_year == date.tm_year){ 
+            if (data[i].destinationName.find(".reto.com") == string::npos && data[i].destinationName.find("-")== string::npos){
+                occurances[data[i].destinationName]++; 
             }
         }
     }
-    return numeroDeOcurrencias; 
+
+    return occurances; 
 }
+
 // Imprime un mapa
-void printMap(map<string, int> numeroDeOcurrencias){
+void printMap(map<string, int> occ){
     map<string, int>::iterator it;
-    for(it = numeroDeOcurrencias.begin(); it != numeroDeOcurrencias.end(); it++ ){
-        cout<< it->first <<":\t" << it->second <<endl;
+
+    for (it = occ.begin(); it != occ.end(); it++ ){
+        cout << it -> first << ":\t" << it -> second << endl;
     }
 }
 
@@ -205,11 +220,12 @@ Para ello, puedes usar la función conexionesPorDia y debes agregar los sitios a
 BST utilizando como parámetro de ordenamiento la cantidad de numeroDeOcurrencias entrantes.
 */
 void top(
-    BinarySearchTree &tree, int n, tm date, map<string, int> &numeroDeOcurrencias, map <string, int> &promedioDiario, vector<Registro> datos){
-    map<string, int> conexionesDia = conexionesPorDia(date, datos); 
+    BinarySearchTree &tree, int n, tm date, map<string, int> &numeroDeOcurrencias, map <string, int> &promedioDiario, vector<Registry> datos){
+    map<string, int> conexionesDia = connectionsPerDay(date, datos); 
     map<string, int>::iterator it;
-    for(it = conexionesDia.begin(); it != conexionesDia.end(); it++ ){
-        tree.insertNode(it->first, it->second);
+
+    for (it = conexionesDia.begin(); it != conexionesDia.end(); it++ ){
+        tree.insertNode(it -> first, it -> second);
     }
     cout << endl << "El top " << n << " del día " << date.tm_mday << "/" << date.tm_mon+1 << "/" << date.tm_year+1900 << " es:" << endl;
     tree.printKth(n); 
@@ -217,22 +233,23 @@ void top(
     map<string, int> conexionesTemp;
     tree.saveKth(n, conexionesTemp);
 
-    for(map<string, int>::iterator i = conexionesTemp.begin(); i!=conexionesTemp.end(); ++i){
-        if(i->second > 1){ i->second = 1; }
-        i->second += numeroDeOcurrencias[i->first];
+    for (map<string, int>::iterator i = conexionesTemp.begin(); i!=conexionesTemp.end(); ++i){
+        if (i -> second > 1){ i -> second = 1; }
+        i -> second += numeroDeOcurrencias[i -> first];
     }
     tree.saveKth(n, promedioDiario);
-    for(map<string, int>::iterator i = promedioDiario.begin(); i!=promedioDiario.end(); ++i){
+
+    for (map<string, int>::iterator i = promedioDiario.begin(); i!=promedioDiario.end(); ++i){
         i->second += conexionesTemp[i->first];        
     }
 
     numeroDeOcurrencias = conexionesTemp;
 }
 
-set<Date> obtenerFechas(vector<Registro> datos){
+set<Date> obtenerFechas(vector<Registry> datos){
     set<Date> todasLasFechas;
     for(int i = 0; i<datos.size(); i++){
-        Date d(datos[i].fecha);
+        Date d(datos[i].date);
             todasLasFechas.insert( d );
     }
     return todasLasFechas;
@@ -244,13 +261,14 @@ set<Date> obtenerFechas(vector<Registro> datos){
 
 int main(void){
     Reader r; 
-    vector <Registro> datos = r.readFile(); 
-    map<string, ConexionesComputadora> computadoras;
+    vector <Registry> datos = r.readFile(); 
+    map<string, CompConnections> computadoras;
     // Utiliza estas funciones para imprimir por cada día de las bitácoras el top 5
     //Imprimir top 5 por día
     set<Date> todasLasFechas = obtenerFechas(datos);
     map<string, int> numeroDeOcurrencias;
     map<string, int> promedioDiario;
+
     for (set<Date>::iterator it = todasLasFechas.begin(); it != todasLasFechas.end(); ++it){
         BinarySearchTree tops; 
         top(tops,5,it->date, numeroDeOcurrencias, promedioDiario, datos); 
@@ -259,6 +277,7 @@ int main(void){
     cout << "RESPUESTAS" << endl; 
     cout << "1. ¿Existe algún sitio que se mantenga en el top 5 en todos los días?" << endl;
     cout << "Se mantuvieron en el top 5 diario: " << endl; 
+
     for(map<string, int>::iterator it = numeroDeOcurrencias.begin(); it != numeroDeOcurrencias.end(); ++it){
         if(it->second == todasLasFechas.size()){
             cout<<"\t"<<it->first<<"\t: "<<it->second<<endl;
@@ -267,13 +286,16 @@ int main(void){
 
     cout << "2. ¿Existe algún sitio que entre al top 5 a partir de un día y de ahí aparezca en todos los días subsecuentes?" << endl;
     cout << "Se mantuvieron en el top 5: " << endl;
+
     for(map<string, int>::iterator it = numeroDeOcurrencias.begin(); it != numeroDeOcurrencias.end(); ++it){    
         if(it->second > 1){
             cout<<"\t"<<it->first<<"\t : se mantuvo "<<it->second<< " días"<<endl;
         }
     }
+
     cout << "3. ¿Existe algún sitio que aparezca en el top 5 con una cantidad más alta de tráfico que lo normal?" << endl;
     cout << "\tLos siguientes sitios tienen una cantidad de tráfico notable: " << endl; 
+    
     for(map<string, int>::iterator it = promedioDiario.begin(); it != promedioDiario.end(); ++it){    
             if ((it->second)/todasLasFechas.size() > 100){
                 cout<<"\t"<<it->first<<"\t : "<<it->second<<endl;

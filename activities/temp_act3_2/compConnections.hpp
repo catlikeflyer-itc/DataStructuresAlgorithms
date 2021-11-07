@@ -5,56 +5,60 @@
 #include "connection.hpp"
 #include <iostream>
 
-class ConexionesComputadora{
+class CompConnections{
     public:
-        ConexionesComputadora(std::string IP, std::string nombre){
-            this->IP = IP;
-            this->nombre = nombre; 
+        CompConnections(std::string IP, std::string name){
+            this -> IP = IP;
+            this -> name = name; 
         };
-        ConexionesComputadora(){
-            this->IP="";
-            this->nombre="";
+
+        CompConnections(){
+            this -> IP = "";
+            this -> name = "";
         };
-        ~ConexionesComputadora() {}; 
+
+        ~CompConnections() {}; 
+
         std::string IP;
-        std::string nombre;
-        std::list<Conexion> conexionesEntrantes; //leer de última a primera
-        std::list<Conexion> conexionesSalientes; //leer de primera a última
+        std::string name;
+        std::list<Connection> inConnections; //leer de última a primera
+        std::list<Connection> outConnections; //leer de primera a última
 
-        void insertarEnConexionesEntrantes(std::string IP, int puerto, std::string host, tm fecha){
-            Conexion c(IP, puerto, host, fecha);
-            conexionesEntrantes.push_front(c);
+        void insertIncomingConnections(std::string IP, int port, std::string host, tm date){
+            Connection c(IP, port, host, date);
+            inConnections.push_front(c);
         }
 
-        void insertarEnConexionesSalientes(std::string IP, int puerto, std::string host, tm fecha){
-            Conexion c(IP, puerto, host, fecha); 
-            conexionesSalientes.push_back(c);
+        void insertOutgoingConnections(std::string IP, int port, std::string host, tm date){
+            Connection c(IP, port, host, date); 
+            outConnections.push_back(c);
         }
 
-        std::string ultimaConexionEntrante(){
-            return conexionesEntrantes.front().getIP(); 
+        std::string lastIncomingConnection(){
+            return inConnections.front().getIP(); 
         }
 
-        void llenar(vector <Registro> datos){
-            for(int i=0; i<datos.size(); i++){
-                if( datos[i].destino_ip == this->IP ){
-                    this->insertarEnConexionesEntrantes(
-                        datos[i].fuente_ip, 
-                        datos[i].fuente_puerto,
-                        datos[i].fuente_hostname,
-                        datos[i].fecha
+        void fill(std::vector<Registry> data){
+            for (int i = 0; i < data.size(); i++){
+                if (data[i].destinationIp == this -> IP){
+                    this -> insertIncomingConnections(
+                        data[i].sourceIp, 
+                        data[i].sourcePort,
+                        data[i].sourceName,
+                        data[i].date
                     );
                 } 
 
-                if( datos[i].fuente_ip == this->IP ){
-                    this->insertarEnConexionesSalientes(
-                        datos[i].destino_ip, 
-                        datos[i].destino_puerto,
-                        datos[i].destino_hostname,
-                        datos[i].fecha
+                if (data[i].sourceIp == this -> IP){
+                    this -> insertOutgoingConnections(
+                        data[i].destinationIp, 
+                        data[i].destinationPort,
+                        data[i].destinationName,
+                        data[i].date
                     );
                 } 
             }
         }
 };
+
 #endif

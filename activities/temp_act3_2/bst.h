@@ -216,7 +216,7 @@ class BinarySearchTree{
         } 
 
         void saveKth(int n, map<string, int> &mappy){
-            for(int i = 0; i <= n; i++){
+            for (int i = 0; i <= n; i++){
                 saveKthLargest(root, i, mappy); 
             }
         }

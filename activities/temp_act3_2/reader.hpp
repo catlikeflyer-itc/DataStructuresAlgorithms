@@ -4,43 +4,44 @@
 #include "registry.hpp"
 #include <fstream>
 #include <vector>
-using namespace std;
 
 class Reader{
     public: 
-    Reader() = default; 
-    ~Reader() = default;
-    vector<Registro> readFile(){
-        ifstream ip("equipo5.csv");
-        vector<Registro> registros; 
+        Reader() = default; 
+        ~Reader() = default;
         
-        if(!ip.is_open()){
-           std::cout << "Error: File Open" << endl; 
-        }
+        std::vector<Registry> readFile(){
+            std::ifstream ip("equipo5.csv");
+            std::vector<Registry> regs; 
+            
+            if (!ip.is_open()){
+                std::cout << "Error: File Open" << std::endl; 
+            }
 
-        string fecha; 
-        string hora; 
-        string fuente_ip; 
-        string fuente_puerto; 
-        string fuente_hostname; 
-        string destino_ip; 
-        string destino_puerto; 
-        string destino_hostname;
+            std::string date; 
+            std::string hour; 
+            std::string sourceIp; 
+            std::string sourcePort; 
+            std::string sourceName; 
+            std::string destinationIp; 
+            std::string destinationPort; 
+            std::string destinationName;
 
-        while(ip.good()){
-            getline(ip, fecha, ','); 
-            getline(ip, hora, ',');
-            getline(ip, fuente_ip, ',');
-            getline(ip, fuente_puerto, ',');
-            getline(ip, fuente_hostname, ',');
-            getline(ip, destino_ip, ',');
-            getline(ip, destino_puerto, ',');
-            getline(ip, destino_hostname, '\n');
-             registros.push_back(Registro(fecha,hora, fuente_ip, fuente_puerto, fuente_hostname, destino_ip, destino_puerto, destino_hostname)); 
-        }
+            while(ip.good()){
+                getline(ip, date, ','); 
+                getline(ip, hour, ',');
+                getline(ip, sourceIp, ',');
+                getline(ip, sourcePort, ',');
+                getline(ip, sourceName, ',');
+                getline(ip, destinationIp, ',');
+                getline(ip, destinationPort, ',');
+                getline(ip, destinationName, '\n');
+                regs.push_back(Registry(date, hour, sourceIp, sourcePort, sourceName, destinationIp, destinationPort, destinationName)); 
+            }
 
-        ip.close(); 
-        return registros; 
+            ip.close(); 
+            
+            return regs; 
     }
 };
 

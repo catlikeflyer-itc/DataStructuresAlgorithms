@@ -1,78 +1,81 @@
-#ifndef registro_hpp
-#define registro_hpp
+#ifndef registry_hpp
+#define registry_hpp
 #include <ctime>
 #include <string>
-using namespace std;
-class Registro{
+
+class Registry{
     public:
-        Registro(
-            string fecha, 
-            string hora, 
-            string ip_fuente,
-            string puerto_fuente, 
-            string hostname_fuente,
-            string ip_destino, 
-            string puerto_destino, 
-            string hostname_destino
+        Registry(
+            std::string date, 
+            std::string hour, 
+            std::string sourceIp,
+            std::string sourcePort, 
+            std::string sourceName,
+            std::string destinationIp, 
+            std::string destinationPort, 
+            std::string destinationName
         );
-        Registro();
-        // ~Registro();
-        tm fecha; 
-        string fechaString;
-        string hora; 
-        string fuente_ip; 
-        int fuente_puerto; 
-        // string fuente_puerto; 
-        string fuente_hostname; 
-        string destino_ip; 
-        int destino_puerto; 
-        // string destino_puerto; 
-        string destino_hostname; 
+
+        Registry();
+
+        tm date; 
+        std::string dateString;
+        std::string hour; 
+        std::string sourceIp; 
+        int sourcePort; 
+        std::string sourceName; 
+        std::string destinationIp; 
+        int destinationPort; 
+        std::string destinationName; 
+
         void print();
         void printDate();
 };
-Registro::Registro(
-    string _fecha, 
-    string _hora, 
-    string _fuente_ip,
-    string _fuente_puerto, 
-    string _fuente_hostname,
-    string _destino_ip, 
-    string _destino_puerto,
-    string _destino_hostname
+
+Registry::Registry(
+    std::string _date, 
+    std::string _hour, 
+    std::string _sourceIp,
+    std::string _sourcePort, 
+    std::string _sourceName,
+    std::string _destinationIp, 
+    std::string _destinationPort,
+    std::string _destinationName
 ){
     struct tm tm;
-    const char *f = _fecha.c_str();
-    strptime(f, "%d-%m-%y", &this->fecha);
-    this->fechaString = _fecha;
-    this->hora = _hora;
-    this->fuente_ip = _fuente_ip;
-    this->fuente_hostname = _fuente_hostname;
-    this->destino_ip = _destino_ip;
-    this->destino_hostname = _destino_hostname;
+    const char *f = _date.c_str();
+    strptime(f, "%d-%m-%y", &this -> date);
+    this -> dateString = _date;
+    this -> hour = _hour;
+    this -> sourceIp = _sourceIp;
+    this -> sourceName = _sourceName;
+    this -> destinationIp = _destinationIp;
+    this -> destinationName = _destinationName;
 
-    try{
-        this->fuente_puerto = stoi(_fuente_puerto, nullptr, 10);
-        this->destino_puerto = stoi(_destino_puerto, nullptr, 10);
-    }catch(...){
-        this->fuente_puerto = -1;
-        this->destino_puerto = -1;
-    }
-    // TODO: Convertir a ints
+    try {
+        this -> sourcePort = stoi(_sourcePort, nullptr, 10);
+        this -> destinationPort = stoi(_destinationPort, nullptr, 10);
+    } catch(...){
+        this -> sourcePort = -1;
+        this -> destinationPort = -1;
+    } 
+     // TODO: Convertir a ints
 };
-void Registro::print(){
-    this->printDate();
-    cout<<"\t"<<this->hora
-    <<"\t"<<this->fuente_ip
-    <<"\t"<<this->fuente_puerto 
-    <<"\t"<<this->fuente_hostname
-    <<"\t"<<this->destino_ip
-    <<"\t"<<this->destino_puerto
-    <<"\t"<<this->destino_hostname
-    <<endl<<"========================"<<endl;
-    // cout<<"🐱‍💻"<<endl<<"==============="<<endl;
+
+void Registry::print(){
+    this -> printDate();
+    std::cout << "\t" << this -> hour
+    << "\t" << this -> sourceIp
+    << "\t" << this -> sourcePort 
+    << "\t" << this -> sourceName
+    << "\t" << this -> destinationIp
+    << "\t" << this -> destinationPort
+    << "\t" << this -> destinationName
+    << std::endl << "========================" << std::endl;
 }
-void Registro::printDate(){
-    cout<<this->fecha.tm_mday<<"/"<<this->fecha.tm_mon+1<<"/"<<this->fecha.tm_year+1900;
+
+void Registry::printDate(){
+    std::cout << this -> date.tm_mday << "/" << this -> date.tm_mon+1 << "/" << this -> date.tm_year+1900;
 }
+
 #endif

@@ -2,29 +2,33 @@
 #define connection_hpp
 #include <string>
 
-class Conexion{
+class Connection{
     public:
-        Conexion(std::string IP, int puerto, std::string host){
-            this->IP = IP;
-            this->puerto = puerto;
-            this->host = host;
+        Connection(std::string IP, int port, std::string host){
+            this -> IP = IP;
+            this -> port = port;
+            this -> host = host;
         }
-        Conexion(std::string IP, int puerto, std::string host, tm fecha){
-            this->IP = IP;
-            this->puerto = puerto;
-            this->host = host;
-            this->fecha = fecha;
+
+        Connection(std::string IP, int port, std::string host, tm date){
+            this -> IP = IP;
+            this -> port = port;
+            this -> host = host;
+            this -> date = date;
         }
-        ~Conexion() {}; 
+
+        ~Connection() {}; 
         std::string IP;
-        int puerto;
+        int port;
         std::string host;
-        tm fecha;
+        tm date;
+
         std::string getIP(){
             return IP; 
         }
-        void imprimirFecha(){
-            std::cout<<this->fecha.tm_mday<<"/"<<this->fecha.tm_mon+1<<"/"<<this->fecha.tm_year+1900;
+
+        void printDate(){
+            std::cout << this -> date.tm_mday << "/" << this -> date.tm_mon+1 << "/" << this -> date.tm_year+1900;
         }
 }; 
 

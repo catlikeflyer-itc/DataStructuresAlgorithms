@@ -83,7 +83,7 @@ void Registry::print(){
 }
 
 void Registry::printDate(){
-    cout << this -> date_a.tm_mday << "/" << this -> date_a.tm_mon + 1 << "/" << this -> date_a.tm_year+1900;
+    std::cout << this -> date_a.tm_mday << "/" << this -> date_a.tm_mon + 1 << "/" << this -> date_a.tm_year+1900;
 }
 
 #endif

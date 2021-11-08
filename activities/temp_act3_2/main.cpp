@@ -15,11 +15,11 @@ class Date{
         tm date;
         Date(tm date){
             this -> date = date;
-            // this->date.tm_mday = date.tm_mday;
-            // this->date.tm_mon = date.tm_mon; 
-            // this->date.tm_year = date.tm_year; 
         }
 
+        /*
+        Revisar y verificar formartos de la fecha
+        */
         friend bool operator == (Date d, Date dd){
             return (
                 d.date.tm_mday == dd.date.tm_mday &&
@@ -51,13 +51,23 @@ class Date{
 
 };
 
-// Imprimir vectores
+/*
+Imprimir vectores
+O(n)
+
+Return void
+*/
 void print_vector(vector<Registry> arr){
     for (int i = 0; i < arr.size(); i++) arr[i].print();
     cout << endl;
 };
 
-// Búsqueda secuencial
+/*
+Busqueda secuencial
+O(n)
+
+Returns flag
+*/
 int sequentialSearch(vector<Registry> d, bool (*condition)(Registry r)){
     for (int i = 0; i < d.size(); i++){
         if (condition(d[i])) return i;
@@ -66,7 +76,7 @@ int sequentialSearch(vector<Registry> d, bool (*condition)(Registry r)){
     return -1;
 }
 
-// Busqueda secuencial (sobrecarga)
+// Busqueda secuencial (overload)
 int sequentialSearch(vector<Registry> d, bool (*condition)(Registry a, Registry b), Registry r ){
     for (int i = 0; i < d.size(); i++){
         if (condition(d[i], r)) return i;
@@ -75,6 +85,12 @@ int sequentialSearch(vector<Registry> d, bool (*condition)(Registry a, Registry 
     return -1;
 }
 
+/*
+Insertar las fuentes que no corresponden a "reto" a set
+O(n)
+
+Return void
+*/
 void addNoRetoToSet(set<string> s, vector<Registry> data){
     for (int i = 0; i < 5000; i++){
         if (data[i].sourceName.find(".reto.com") || data[i].sourceName.find("-") ){
@@ -83,6 +99,12 @@ void addNoRetoToSet(set<string> s, vector<Registry> data){
     }
 }
 
+/*
+Llenar datos de coputadoras conectadas
+O(n)
+
+Return void
+*/
 void fillComputers(map<string, CompConnections> &comps, vector<Registry> data){
     // throwback a nuestro debugging de una hora, porque no estábamos editando el map original :)
     for (int i = 0; i < 6000; i++){ //Cambiar a datos.size()
@@ -92,6 +114,12 @@ void fillComputers(map<string, CompConnections> &comps, vector<Registry> data){
     }
 }
 
+/*
+Utilizando las dos funciones posteriores, ejecutarlas una tras otra 
+O(2n)
+
+Return void
+*/
 void addNoRetoToSetFillComputers(set<string> s, map<string, CompConnections> &comps, vector<Registry> data){
     for (size_t i = 0; i < data.size(); i++){
         if (data[i].sourceName.find(".reto.com") || data[i].sourceName.find("-") ){
@@ -128,17 +156,28 @@ bool isAbnormal(string name){
     return false; 
 }
 
+/*
+Buscar conexiones anomalas
+O(n)
+
+Return first anomaly or empty string if not found
+*/
 string findAbnormalities(map<string, CompConnections> comps){
     map<string, CompConnections>::iterator it;
 
     for (it = comps.begin(); it != comps.end(); it++){
-        if( isAbnormal(it -> second.name)) return it ->first;
+        if (isAbnormal(it -> second.name)) return it -> first;
     }
 
     return "";
 }
 
+/*
+Revisar cantidad de computadoras con conexiones entrantes
+O(n)
 
+Return int with quantity
+*/
 int compsWithInConnections(map<string, CompConnections> comps){ 
     int n = 0;
     map<string, CompConnections>::iterator it;
@@ -149,16 +188,13 @@ int compsWithInConnections(map<string, CompConnections> comps){
     return n;
 } 
 
+/*
+Revisar las IPs entrantes en las conexiones
+O(n^2)
+
+Return set of strings with IPs (no repetition)
+*/
 set<string> getInIps(map<string, CompConnections> comps) {
-    /**
-     * - for computadora in computadoras
-     * -    si computadora.IP != server.reto.com
-     *          iterar por numeroDeOcurrencias entrantes
-     *              si conexionEntrante.puerto != 67
-     *                  agregar IP al set (para que no se repita :))
-     * regresar set
-     * Los mensajes DHCP utilizan el puerto 67 (UDP) como puerto del servidor
-    */
     set<string> uniqueIps;
 
     map<string, CompConnections>::iterator it;
@@ -168,7 +204,7 @@ set<string> getInIps(map<string, CompConnections> comps) {
         if (it -> second.name.find(".reto.com") == string::npos /*no lo encontró*/ ){
             n++;
             // Convertir a vector para poder acceder los índices de manera más fácil ;D
-            vector<Connection> connV{begin(it->second.inConnections), end(it->second.outConnections) };
+            vector<Connection> connV{begin(it->second.inConnections), end(it->second.outConnections)};
             set<string> uniqueCompNames;
 
             for(int i=0; i< connV.size(); i++ ){
@@ -246,18 +282,21 @@ void top(
     numeroDeOcurrencias = conexionesTemp;
 }
 
+/*
+Obtinene un set de las fechas de las conexiones
+O(n)
+
+Return set of dates
+*/
 set<Date> obtenerFechas(vector<Registry> datos){
     set<Date> todasLasFechas;
     for(int i = 0; i<datos.size(); i++){
         Date d(datos[i].date);
             todasLasFechas.insert( d );
     }
+
     return todasLasFechas;
 }
-
-
-
-
 
 int main(void){
     Reader r; 

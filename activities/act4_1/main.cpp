@@ -127,18 +127,6 @@ void BFS(Graph<int, int> * graph, int u)
             cuenta = q.front()->getInfo();
         }
     }
-
-    int cuenta = 0;
-    int valor;
-    /* Defición de queue para alamcenar los nodos */
-    std::queue< Vertex <int, int>* > q;
-    std::vector<int> valores;
-    /* Nodo auxiliar para comparar */
-    q.push(graph->getVertex(cuenta));
-    
-
-    /* Recorrer los nodos por nivel hasta llegar al final */
-    
 }
 
 int main(int argc, const char * argv[]) {

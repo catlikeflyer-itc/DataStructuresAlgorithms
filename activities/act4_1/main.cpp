@@ -9,12 +9,13 @@
 
 void loadGraph2(int v, int e, Graph<int, int> * graph)
 {
-    /* Implementar */
+
+
 }
 
 void loadGraph(int v, int e, std::vector < std::vector<int> > & graph)
 {
-    /* Implementar */
+
 }
 
 void DFS(std::vector < std::vector<int> > & graph, int u)

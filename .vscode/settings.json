@@ -70,7 +70,8 @@
     "ranges": "cpp",
     "queue": "cpp",
     "stack": "cpp",
-    "set": "cpp"
+    "set": "cpp",
+    "list": "cpp"
   },
   "workbench.colorTheme": "Monokai Pro"
 }

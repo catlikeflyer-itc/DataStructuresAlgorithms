@@ -15,12 +15,12 @@
 template <class V, class E>
 class Graph {
     
-    std::vector < Vertex<V, E> * > nodes;
-    
 public:
     
     Graph() {}
     ~Graph();
+
+    std::vector < Vertex<V, E> * > nodes;
     
     void addVertex(V & );
     void addVertex(Vertex<V,E> * );

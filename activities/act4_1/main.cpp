@@ -10,12 +10,30 @@
 #include <vector>
 #include <ctime>
 #include <stack>
+#include <list>
 
 #include "Graph.hpp"
 
 void loadGraph2(int v, int e, Graph<int, int> * graph)
 {
-    /* Implementar */
+    int xPos, yPos;
+    int count = 0;
+
+    // Adds vertexes to graph
+    for (int i = 0; i < v; ++i){ 
+        graph->addVertex(i);
+    }
+
+    while (count < e){
+        xPos = rand() % (e);
+        yPos = rand() % (e);
+        Vertex<int, int> * xVal = graph->nodes[xPos];
+        Vertex<int, int> * yVal = graph->nodes[yPos];
+
+        count++;
+    }
+
+    std::cout << *graph << std::endl;
 }
 
 void loadGraph(int v, int e, std::vector < std::vector<int> > & graph)
@@ -46,7 +64,6 @@ void loadGraph(int v, int e, std::vector < std::vector<int> > & graph)
 
 void DFS(std::vector < std::vector<int> > & graph, int u)
 {
-
     bool * visited = new bool[graph.size()];
     std::stack<int> next;
     int current;
@@ -77,7 +94,51 @@ void DFS(std::vector < std::vector<int> > & graph, int u)
 
 void BFS(Graph<int, int> * graph, int u)
 {
-    /* Implementar */
+    std::list<int> q;
+    std::vector<int> values;
+    Vertex <int, int> * temp;
+    
+    bool *visited = new bool[q.size()]; 
+
+    for(int i = 0; i < q.size(); i++) 
+        visited[i] = false; 
+  
+    // Marcar el nodo inicial com pasado
+    visited[u] = true; 
+    q.push_back(u); 
+   
+    
+    while (!q.empty()){
+        /* Almacenar el primer valor de la queue en auxiliar*/
+        temp = q.front();
+        std::cout << temp->getInfo() << std::endl;
+        q.pop_front();
+
+        if (temp->getIsVisited() == false){
+            for (int i = 0; i<graph->getNumEdges(cuenta); i++){
+                Edge<int, int> * arista = graph->getEdge(cuenta, i);
+                valor = arista->getTarget()->getInfo();
+                if (find(valores.begin(), valores.end(), valor) == valores.end()){
+                    valores.push_back(valor);
+                    q.push(arista->getTarget()); 
+                }
+            }
+            aux->setIsVisited();
+            cuenta = q.front()->getInfo();
+        }
+    }
+
+    int cuenta = 0;
+    int valor;
+    /* Defición de queue para alamcenar los nodos */
+    std::queue< Vertex <int, int>* > q;
+    std::vector<int> valores;
+    /* Nodo auxiliar para comparar */
+    q.push(graph->getVertex(cuenta));
+    
+
+    /* Recorrer los nodos por nivel hasta llegar al final */
+    
 }
 
 int main(int argc, const char * argv[]) {

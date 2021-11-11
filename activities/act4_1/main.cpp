@@ -4,23 +4,75 @@
 //
 //  Created by Vicente Cubells on 13/11/20.
 //
+
 #include <iostream>
-#include "graph.hpp"
+#include <random>
+#include <vector>
+#include <ctime>
+#include <stack>
+
+#include "Graph.hpp"
 
 void loadGraph2(int v, int e, Graph<int, int> * graph)
 {
-
-
+    /* Implementar */
 }
 
 void loadGraph(int v, int e, std::vector < std::vector<int> > & graph)
 {
 
+    std::srand(std::time(nullptr));
+    int a, b;
+
+    for(int i = 0; i < graph.size(); i++){
+        for(int j = 0; j < graph.size(); j++){
+            graph[i].push_back(0);
+        }
+    }
+
+    while(e != 0){
+        a = std::rand() % (v);
+        b = std::rand() % (v);
+
+        if(graph[a][b] == 1 || a == b){
+            continue;
+        }
+
+        graph[a][b] = 1;
+
+        e--;
+    }
 }
 
 void DFS(std::vector < std::vector<int> > & graph, int u)
 {
-    /* Implementar */
+
+    bool * visited = new bool[graph.size()];
+    std::stack<int> next;
+    int current;
+    bool vis_curr;
+
+    for(int i = 0; i < graph.size(); i++){
+        visited[i] = false;
+    }
+
+    next.push(u);
+
+    while(!next.empty()){
+        current = next.top();
+        next.pop();
+
+        if(!visited[current]){
+            std::cout << current << "  ";
+            visited[current] = true;
+        }
+
+        for(int i = 0; i < graph.size(); i++){
+            if(!visited[i]){
+                next.push(i);
+            }
+        }
+    }
 }
 
 void BFS(Graph<int, int> * graph, int u)
@@ -29,7 +81,6 @@ void BFS(Graph<int, int> * graph, int u)
 }
 
 int main(int argc, const char * argv[]) {
-    
     /* Definir número de vértices y aristas */
     const int vertices = 10;
     const int aristas = 15;

@@ -112,8 +112,6 @@ void BFS(Graph<int, int> * graph, int u)
         std::cout << u << " "; 
         Q.pop_front(); 
 
-        Vertex <int, int>& start = graph->nodes[u].begin()
-
         // Get all adjacent vertices of the dequeued 
         // vertex s. If a adjacent has not been visited,  
         // then mark it visited and enqueue it 

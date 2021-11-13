@@ -94,39 +94,36 @@ void DFS(std::vector < std::vector<int> > & graph, int u)
 
 void BFS(Graph<int, int> * graph, int u)
 {
-    std::list<int> q;
-    std::vector<int> values;
-    Vertex <int, int> * temp;
+    std::list<int> Q;
     
-    bool *visited = new bool[q.size()]; 
-
-    for(int i = 0; i < q.size(); i++) 
-        visited[i] = false; 
+    bool *visitedNodes = new bool[graph->nodes.size()]; 
+    for(int i = 0; i < graph->nodes.size(); i++) 
+        visitedNodes[i] = false; 
   
     // Marcar el nodo inicial com pasado
-    visited[u] = true; 
-    q.push_back(u); 
+    visitedNodes[u] = true; 
+    Q.push_back(u); 
    
-    
-    while (!q.empty()){
-        /* Almacenar el primer valor de la queue en auxiliar*/
-        temp = q.front();
-        std::cout << temp->getInfo() << std::endl;
-        q.pop_front();
+    std::list<int>::iterator i; 
+  
+    while(!Q.empty()){ 
+        // Dequeue a vertex from queue and print it 
+        u = Q.front(); 
+        std::cout << u << " "; 
+        Q.pop_front(); 
 
-        if (temp->getIsVisited() == false){
-            for (int i = 0; i<graph->getNumEdges(cuenta); i++){
-                Edge<int, int> * arista = graph->getEdge(cuenta, i);
-                valor = arista->getTarget()->getInfo();
-                if (find(valores.begin(), valores.end(), valor) == valores.end()){
-                    valores.push_back(valor);
-                    q.push(arista->getTarget()); 
-                }
-            }
-            aux->setIsVisited();
-            cuenta = q.front()->getInfo();
-        }
-    }
+        Vertex <int, int>& start = graph->nodes[u].begin()
+
+        // Get all adjacent vertices of the dequeued 
+        // vertex s. If a adjacent has not been visited,  
+        // then mark it visited and enqueue it 
+        for (i = graph->nodes[u].begin(); i != graph->nodes[u].end(); ++i){ 
+            if (!visitedNodes[*i]){ 
+                visitedNodes[*i] = true; 
+                Q.push_back(*i); 
+            } 
+        } 
+    } 
 }
 
 int main(int argc, const char * argv[]) {

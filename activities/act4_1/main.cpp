@@ -26,7 +26,6 @@ void loadGraph2(int v, int e, Graph<int, int> * graph)
         graph->addVertex(i);
     }
     
-    // * New addition (returns a segmentation fault)
     for (int j = 0; j < e; j++){
         // Create random edges from existing vertexes
         Vertex <int, int> * v1 = graph->nodes[rand() % (v)];
@@ -37,13 +36,6 @@ void loadGraph2(int v, int e, Graph<int, int> * graph)
             count++;
         }
     }
-    /* while (count < e){
-        xPos = rand() % (e);
-        yPos = rand() % (e);
-        Vertex<int, int> * xVal = graph->nodes[xPos];
-        Vertex<int, int> * yVal = graph->nodes[yPos];
-        count++;
-    } */
 
     std::cout << *graph << std::endl;
 }
@@ -114,7 +106,7 @@ void BFS(Graph<int, int> * graph, int u)
     for(int i = 0; i < graph->nodes.size(); i++) 
         visitedNodes[i] = false; 
   
-    // Marcar el nodo inicial com pasado
+    // Set initial node as visited and enqueue it
     visitedNodes[u] = true; 
     Q.push_back(u); 
    

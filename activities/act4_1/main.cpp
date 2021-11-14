@@ -15,7 +15,9 @@
 #include "Graph.hpp"
 
 void loadGraph2(int v, int e, Graph<int, int> * graph)
-{
+{    
+    std::srand(std::time(nullptr));
+
     int count = 0;
 
     // Adds vertexes to graph
@@ -26,18 +28,19 @@ void loadGraph2(int v, int e, Graph<int, int> * graph)
     // * New addition (returns a segmentation fault)
     for (int j = 0; j < e; j++){
         // Create random edges from existing vertexes
-        Vertex <int, int> * v1 = graph->nodes[rand() * (v)];
-        Vertex <int, int> * v2 = graph->nodes[rand() * (v)];
+        Vertex <int, int> * v1 = graph->nodes[rand() % (v)];
+        Vertex <int, int> * v2 = graph->nodes[rand() % (v)];
 
-        if (count < e) graph->addEdge(v1, v2, count);
-        count++;
+        if (count < e && v1 != v2) {
+            graph->addEdge(v1, v2, count);
+            count++;
+        }
     }
     /* while (count < e){
         xPos = rand() % (e);
         yPos = rand() % (e);
         Vertex<int, int> * xVal = graph->nodes[xPos];
         Vertex<int, int> * yVal = graph->nodes[yPos];
-
         count++;
     } */
 

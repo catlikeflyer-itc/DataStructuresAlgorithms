@@ -36,13 +36,6 @@ void loadGraph2(int v, int e, Graph<int, int> * graph)
             count++;
         }
     }
-    /* while (count < e){
-        xPos = rand() % (e);
-        yPos = rand() % (e);
-        Vertex<int, int> * xVal = graph->nodes[xPos];
-        Vertex<int, int> * yVal = graph->nodes[yPos];
-        count++;
-    } */
 
     std::cout << *graph << std::endl;
 }
@@ -71,6 +64,8 @@ void loadGraph(int v, int e, std::vector < std::vector<int> > & graph)
 
         e--;
     }
+
+    std::cout << &graph << std::endl;
 }
 
 void DFS(std::vector < std::vector<int> > & graph, int u)

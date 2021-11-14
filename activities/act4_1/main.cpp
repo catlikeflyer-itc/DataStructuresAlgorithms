@@ -16,14 +16,22 @@
 
 void loadGraph2(int v, int e, Graph<int, int> * graph)
 {
-    int xPos, yPos;
     int count = 0;
 
     // Adds vertexes to graph
     for (int i = 0; i < v; ++i){ 
         graph->addVertex(i);
     }
+    
+    // * New addition (returns a segmentation fault)
+    for (int j = 0; j < e; j++){
+        // Create random edges from existing vertexes
+        Vertex <int, int> * v1 = graph->nodes[rand() * (v)];
+        Vertex <int, int> * v2 = graph->nodes[rand() * (v)];
 
+        if (count < e) graph->addEdge(v1, v2, count);
+        count++;
+    }
     /* while (count < e){
         xPos = rand() % (e);
         yPos = rand() % (e);

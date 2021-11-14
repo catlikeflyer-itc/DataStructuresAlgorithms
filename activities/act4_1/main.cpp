@@ -3,6 +3,7 @@
 //  actividad_4-1
 //
 //  Created by Vicente Cubells on 13/11/20.
+//  Implemented by Emiliano Cabrera and Do Hyun Nam
 //
 
 #include <iostream>
@@ -14,6 +15,11 @@
 
 #include "Graph.hpp"
 
+/*
+Generates a graph using a multilist.
+
+O(2n)
+*/
 void loadGraph2(int v, int e, Graph<int, int> * graph)
 {    
     std::srand(std::time(nullptr));
@@ -25,12 +31,13 @@ void loadGraph2(int v, int e, Graph<int, int> * graph)
         graph->addVertex(i);
     }
     
-    // * New addition (returns a segmentation fault)
+    // Create random connections between vertexes
     for (int j = 0; j < e; j++){
-        // Create random edges from existing vertexes
+        // Select random vertexes
         Vertex <int, int> * v1 = graph->nodes[rand() % (v)];
         Vertex <int, int> * v2 = graph->nodes[rand() % (v)];
 
+        // Check count number is below number of edges given and random v are not the same
         if (count < e && v1 != v2) {
             graph->addEdge(v1, v2, count);
             count++;
@@ -40,6 +47,11 @@ void loadGraph2(int v, int e, Graph<int, int> * graph)
     std::cout << *graph << std::endl;
 }
 
+/*
+Generates graph using an adjacent matrix.
+
+O(n^2+n)
+*/
 void loadGraph(int v, int e, std::vector < std::vector<int> > & graph)
 {
 

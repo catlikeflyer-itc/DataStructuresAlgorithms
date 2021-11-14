@@ -3,7 +3,7 @@
 //  actividad_4-1
 //
 //  Created by Vicente Cubells on 13/11/20.
-//  Implemented by Emiliano Cabrera and Do Hyun Nam
+//  Edited by Do Hyun Nam - A01025276 and Emiliano Cabrera - A01025453 on 13/11/21
 //
 
 #include <iostream>
@@ -15,11 +15,6 @@
 
 #include "Graph.hpp"
 
-/*
-Generates a graph using a multilist.
-
-O(2n)
-*/
 void loadGraph2(int v, int e, Graph<int, int> * graph)
 {    
     std::srand(std::time(nullptr));
@@ -31,79 +26,80 @@ void loadGraph2(int v, int e, Graph<int, int> * graph)
         graph->addVertex(i);
     }
     
-    // Create random connections between vertexes
+    // * New addition (returns a segmentation fault)
     for (int j = 0; j < e; j++){
-        // Select random vertexes
+        // Create random edges from existing vertexes
         Vertex <int, int> * v1 = graph->nodes[rand() % (v)];
         Vertex <int, int> * v2 = graph->nodes[rand() % (v)];
 
-        // Check count number is below number of edges given and random v are not the same
         if (count < e && v1 != v2) {
             graph->addEdge(v1, v2, count);
             count++;
         }
     }
+    /* while (count < e){
+        xPos = rand() % (e);
+        yPos = rand() % (e);
+        Vertex<int, int> * xVal = graph->nodes[xPos];
+        Vertex<int, int> * yVal = graph->nodes[yPos];
+        count++;
+    } */
 
     std::cout << *graph << std::endl;
 }
 
-/*
-Generates graph using an adjacent matrix.
-
-O(n^2+n)
-*/
+// creation of a Graph data structure as an adjacency matrix. Time complexity of O(n^2).
 void loadGraph(int v, int e, std::vector < std::vector<int> > & graph)
 {
 
     std::srand(std::time(nullptr));
     int a, b;
 
-    for(int i = 0; i < graph.size(); i++){
+    for(int i = 0; i < graph.size(); i++){ // loop that fills the v X v sized matrix with 0's
         for(int j = 0; j < graph.size(); j++){
             graph[i].push_back(0);
         }
     }
 
-    while(e != 0){
+    while(e != 0){ // randomly creates e connections between the v different objects and inserts them into the matrix as 1's
         a = std::rand() % (v);
         b = std::rand() % (v);
 
-        if(graph[a][b] == 1 || a == b){
+        if(graph[a][b] == 1 || a == b){ // prevents duplicate connections from being created and also self-connections 
             continue;
         }
 
-        graph[a][b] = 1;
+        graph[a][b] = 1; // creates one-directional connections
 
         e--;
     }
-
-    std::cout << &graph << std::endl;
 }
 
+// DFS traversal of the adjacency matrix graph. Time complexity of O(n^2).
 void DFS(std::vector < std::vector<int> > & graph, int u)
 {
-    bool * visited = new bool[graph.size()];
+    bool * visited = new bool[graph.size()]; // boolean list to mark nodes as visited or not
     std::stack<int> next;
     int current;
     bool vis_curr;
 
-    for(int i = 0; i < graph.size(); i++){
+    for(int i = 0; i < graph.size(); i++){ // sets all nodes as unvisited
         visited[i] = false;
     }
 
     next.push(u);
 
-    while(!next.empty()){
+    while(!next.empty()){ // iterates as long as there are unvisited nodes in the queue
         current = next.top();
         next.pop();
 
-        if(!visited[current]){
+        if(!visited[current]){ // prints a node and marks it as visited, as long as it was unvisited
             std::cout << current << "  ";
             visited[current] = true;
         }
 
-        for(int i = 0; i < graph.size(); i++){
-            if(!visited[i]){
+        for(int i = 0; i < graph.size(); i++){ // iterates as long as there are unvisited nodes in the matrix
+            if(graph[current][i] == 1 && !visited[i]){
                 next.push(i);
             }
         }

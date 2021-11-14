@@ -99,7 +99,7 @@ void DFS(std::vector < std::vector<int> > & graph, int u)
         }
 
         for(int i = 0; i < graph.size(); i++){ // iterates as long as there are unvisited nodes in the matrix
-            if(!visited[i]){
+            if(graph[current][i] == 1 && !visited[i]){
                 next.push(i);
             }
         }

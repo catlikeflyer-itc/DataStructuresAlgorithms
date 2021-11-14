@@ -24,14 +24,14 @@ void loadGraph2(int v, int e, Graph<int, int> * graph)
         graph->addVertex(i);
     }
 
-    while (count < e){
+    /* while (count < e){
         xPos = rand() % (e);
         yPos = rand() % (e);
         Vertex<int, int> * xVal = graph->nodes[xPos];
         Vertex<int, int> * yVal = graph->nodes[yPos];
 
         count++;
-    }
+    } */
 
     std::cout << *graph << std::endl;
 }
@@ -104,7 +104,7 @@ void BFS(Graph<int, int> * graph, int u)
     visitedNodes[u] = true; 
     Q.push_back(u); 
    
-    std::list<int>::iterator i; 
+    std::vector<Vertex<int,int>*>::iterator i;
   
     while(!Q.empty()){ 
         // Dequeue a vertex from queue and print it 
@@ -113,12 +113,13 @@ void BFS(Graph<int, int> * graph, int u)
         Q.pop_front(); 
 
         // Get all adjacent vertices of the dequeued 
-        // vertex s. If a adjacent has not been visited,  
+        // vertex u. If a adjacent has not been visited,  
         // then mark it visited and enqueue it 
-        for (i = graph->nodes[u].begin(); i != graph->nodes[u].end(); ++i){ 
-            if (!visitedNodes[*i]){ 
-                visitedNodes[*i] = true; 
-                Q.push_back(*i); 
+        //for (i = graph->nodes.begin(); i != graph->nodes.end(); ++i){ 
+        for (int j = u; j < graph->nodes.size(); j++){ 
+            if (!visitedNodes[j]){ 
+                visitedNodes[j] = true; 
+                Q.push_back(j); 
             } 
         } 
     } 

@@ -1,13 +1,22 @@
+/*
+ *
+ * Main file
+ * main.cpp
+ * Emiliano Cabrera A01025453, Do Hyun Nam A01025276
+ * 
+ */
+
 #include <iostream>
 #include <vector>
 #include <map>
-#include "reader.hpp"
-#include "compConnections.hpp"
 #include <set>
 #include <cwctype> 
 #include <ctime>
 #include <string>
+
 #include "graph.hpp"
+#include "reader.hpp"
+#include "compConnections.hpp"
 
 class Date{
     public:
@@ -106,3 +115,40 @@ int compsWithInConnections(std::map<std::string, CompConnections> comps){
     }
     return n;
 } 
+
+int main(int argc, const char * argv[]){
+    Reader r; 
+    std::vector<Registry> data = r.readFile();
+    std::vector<Registry>::iterator vec_it;
+    
+    std::set<std::pair<std::string,std::string>> connections_set, repeater_set;
+    std::set<std::pair<std::string,std::string>>::iterator set_it, set_it_2;
+
+    Graph<std::string> connections_graph;
+
+    for(vec_it = data.begin(); vec_it != data.end(); vec_it++){
+        if(isInternal(vec_it -> sourceIp) || isInternal(vec_it -> destinationIp)) connections_set.insert(make_pair(vec_it -> sourceIp, vec_it -> destinationIp));
+    }
+
+    repeater_set = connections_set;
+
+    bool flag;
+
+    for(set_it = connections_set.begin(); set_it != connections_set.end(); set_it++){
+        connections_graph.add_node(set_it -> first);
+
+        flag = false;
+
+        for(set_it_2 = repeater_set.begin(); set_it_2 != repeater_set.end(); set_it_2++){
+            if(set_it -> second == set_it_2 -> first) flag = true;
+        }
+        
+        if(!flag) connections_graph.add_node(set_it -> second);
+    }
+
+    for(set_it = connections_set.begin(); set_it != connections_set.end(); set_it++){
+        connections_graph.add_edge_element(set_it -> first, set_it -> second);
+    }
+
+
+}

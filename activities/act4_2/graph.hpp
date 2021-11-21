@@ -1,7 +1,7 @@
 #ifndef graph_hpp
 #define graph_hpp
 
-#include<iostream> 
+#include <iostream> 
 #include <list>
 #include <vector>
 #include <queue>
@@ -13,7 +13,7 @@ class GraphVertex
 {
 private:
     T val;
-    std::vector<int> adj;
+    std::vector<GraphVertex<T>> adj;
 public: 
     ~GraphVertex() {};
     GraphVertex() {};
@@ -22,9 +22,10 @@ public:
     T get_val() {return val;};
     void set_val(T _val) {val = _val;};
 
-    std::vector<int> get_adj() {return adj;};
-    void add_to_adj(int idx) {
-        adj.push_back(idx);
+    std::vector<GraphVertex<T>> get_adj() {return adj;};
+    void add_to_adj(T idx) {
+        GraphVertex<T> gv = new GraphVertex<T>(idx);
+        adj.push_back(gv);
     };
 
     friend bool operator == (GraphVertex<T> d, GraphVertex<T> dd){
@@ -45,18 +46,18 @@ public:
 
     void add_node(T val)
     {
-        GraphVertex<T> node(val);
+        GraphVertex<T> node = new GraphVertex<T>(val);
         nodes.push_back(node);
     };
 
-    void add_edge(int src, int dst)
+    void add_edge(T src, T dst)
     {
         nodes[src].add_to_adj(dst);
         if (!is_directed)
             nodes[dst].add_to_adj(src);
     };
 
-    void add_edge_element(string s, string d){
+    void add_edge_element(T s, T d){
         GraphVertex<T> src(s);
         GraphVertex<T> dst(d);
         auto it_src = std::find(nodes.begin(), nodes.end(), src);

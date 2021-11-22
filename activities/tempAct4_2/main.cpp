@@ -84,8 +84,7 @@ bool esAnomalo(string nombre){
 }
 
 bool esInterna(string IPInput){
-    string IPBase = "172.26.89.0";
-    // 172.26.89.0 == 172.26.89.142
+    string IPBase = "192.169.29.0";
     for(int i=0; i<10; i++){
         if( IPBase[i] != IPInput[i] ) return false;
     }
@@ -305,14 +304,13 @@ int main(void){
     llenarComputadoras(todasLasComputadoras, datos);
 
     // Una ip interna, que llamaremos A, la cual se comunica con algunas otras computadoras internas.
-    string IP_INTERNA_A = "172.26.89.118"; //Jennifer
+    string IP_INTERNA_A = "192.168.29.143";
     CompConnections A = todasLasComputadoras[IP_INTERNA_A];
-
     // Sitio con nombre anómalo
     string IP_ANOMALA_B = encontrarAnomalos(todasLasComputadoras); 
     CompConnections B = todasLasComputadoras[IP_ANOMALA_B];
     // Sitio con mucho tráfico en un día
-    string IP_TRAFICO_C = "64.158.210.175"; //Groupon que tuvo más de 400 visitas en un día
+    string IP_TRAFICO_C = "195.86.236.187"; // Protonmail
     CompConnections C = todasLasComputadoras[IP_TRAFICO_C];
 
     /* 1. Utilizando un grafo con las conexiones entre las ip de la red interna, 

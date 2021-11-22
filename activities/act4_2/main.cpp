@@ -135,11 +135,11 @@ int main(int argc, const char * argv[]){
     std::set<std::string> dates = getDateAmount(data);
     std::set<std::string>::iterator dates_it;
     
-    std::set<std::pair<std::string,std::string>> connections_set;
-    std::set<std::pair<std::string,std::string>>::iterator set_it;
+    std::set<std::pair<std::string,std::string> > connections_set;
+    std::set<std::pair<std::string,std::string> >::iterator set_it;
 
-    std::vector<std::set<std::pair<std::string,std::string>>> set_vector;
-    std::vector<std::set<std::pair<std::string,std::string>>>::iterator set_vec_it;
+    std::vector<std::set<std::pair<std::string,std::string> > > set_vector;
+    std::vector<std::set<std::pair<std::string,std::string> > >::iterator set_vec_it;
 
     std::vector<Graph<std::string> *> graph_vector;
     std::vector<Graph<std::string> *>::iterator gr_vec_it;
@@ -157,7 +157,7 @@ int main(int argc, const char * argv[]){
     }
 
     bool flag;
-    std::vector<GraphVertex<std::string>> gv_vec_it;
+    std::vector<GraphVertex<std::string> > gv_vec_it;
 
     for(set_vec_it = set_vector.begin(); set_vec_it != set_vector.end(); set_vec_it++){
         Graph<std::string> * connections_graph = new Graph<std::string>();
@@ -188,10 +188,10 @@ int main(int argc, const char * argv[]){
     // 1. vertice con mas conexiones a la red interna
     int dia, graf, max = 0;
 
-    std::vector<GraphVertex<std::string>> graph_nodes;
-    std::vector<GraphVertex<std::string>>::iterator vec_it_2;
+    std::vector<GraphVertex<std::string> > graph_nodes;
+    std::vector<GraphVertex<std::string> >::iterator vec_it_2;
 
-    std::vector<std::pair<GraphVertex<std::string>,int>>::iterator vec_it_3;
+    std::vector<std::pair<GraphVertex<std::string>,int> >::iterator vec_it_3;
 
     GraphVertex<std::string> gv;
 

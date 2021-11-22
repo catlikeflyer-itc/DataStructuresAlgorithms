@@ -2,23 +2,21 @@
 #define compConnections_hpp
 #include <string>
 #include <list>
-#include "connection.hpp"
-#include <iostream>
-#include "registry.hpp"
 #include <vector>
+#include "connection.hpp"
+#include "registry.hpp"
+#include <iostream>
 
 class CompConnections{
     public:
         CompConnections(std::string IP, std::string name){
-            this -> IP = IP;
-            this -> name = name; 
+            this->IP = IP;
+            this->name = name; 
         };
-
         CompConnections(){
-            this -> IP = "";
-            this -> name = "";
+            this->IP = "";
+            this->name = "";
         };
-
         ~CompConnections() {}; 
 
         std::string IP;
@@ -26,37 +24,37 @@ class CompConnections{
         std::list<Connection> inConnections; //leer de última a primera
         std::list<Connection> outConnections; //leer de primera a última
 
-        void insertIncomingConnections(std::string IP, int port, std::string host, std::string date){
+        void insertToInConnections(std::string IP, int port, std::string host, tm date){
             Connection c(IP, port, host, date);
             inConnections.push_front(c);
         }
 
-        void insertOutgoingConnections(std::string IP, int port, std::string host, std::string date){
+        void insertToOutConnections(std::string IP, int port, std::string host, tm date){
             Connection c(IP, port, host, date); 
             outConnections.push_back(c);
         }
 
-        std::string lastIncomingConnection(){
+        std::string lastInConnection(){
             return inConnections.front().getIP(); 
         }
 
         void fill(std::vector<Registry> data){
-            for (int i = 0; i < data.size(); i++){
-                if (data[i].destinationIp == this -> IP){
-                    this -> insertIncomingConnections(
+            for(int i=0; i<data.size(); i++){
+                if (data[i].destinationIp == this->IP){
+                    this->insertToInConnections(
                         data[i].sourceIp, 
                         data[i].sourcePort,
                         data[i].sourceName,
-                        data[i].dateString
+                        data[i].date
                     );
                 } 
 
-                if (data[i].sourceIp == this -> IP){
-                    this -> insertOutgoingConnections(
+                if (data[i].sourceIp == this->IP ){
+                    this->insertToOutConnections(
                         data[i].destinationIp, 
                         data[i].destinationPort,
                         data[i].destinationName,
-                        data[i].dateString
+                        data[i].date
                     );
                 } 
             }

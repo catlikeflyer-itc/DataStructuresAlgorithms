@@ -1,7 +1,7 @@
-#ifndef graph_hpp
-#define graph_hpp
+#ifndef _GRAPH_H_
+#define _GRAPH_H_
 
-#include <iostream> 
+#include<iostream> 
 #include <list>
 #include <vector>
 #include <queue>
@@ -13,7 +13,7 @@ class GraphVertex
 {
 private:
     T val;
-    std::vector<std::pair<GraphVertex<T>,int>> adj;
+    std::vector<int> adj;
 public: 
     ~GraphVertex() {};
     GraphVertex() {};
@@ -22,9 +22,9 @@ public:
     T get_val() {return val;};
     void set_val(T _val) {val = _val;};
 
-    std::vector<std::pair<GraphVertex<T>,int>> get_adj() {return adj;};
-    void add_to_adj(GraphVertex<T> idx, int idv) { // destination , value
-        adj.push_back(make_pair(idx,idv));
+    std::vector<int> get_adj() {return adj;};
+    void add_to_adj(int idx) {
+        adj.push_back(idx);
     };
 
     friend bool operator == (GraphVertex<T> d, GraphVertex<T> dd){
@@ -36,7 +36,7 @@ template <class T>
 class Graph
 {
 private:
-    std::vector<GraphVertex<T>> nodes;
+    std::vector<GraphVertex<T> > nodes;
     bool is_directed;
 
 public:
@@ -49,14 +49,14 @@ public:
         nodes.push_back(node);
     };
 
-    void add_edge(int src, int dst, int edv)
+    void add_edge(int src, int dst)
     {
-        nodes[src].add_to_adj(nodes[dst], edv);
+        nodes[src].add_to_adj(dst);
         if (!is_directed)
-            nodes[dst].add_to_adj(nodes[src], edv);
+            nodes[dst].add_to_adj(src);
     };
 
-    void add_edge_element(T s, T d, int v){
+    void add_edge_element(string s, string d){
         GraphVertex<T> src(s);
         GraphVertex<T> dst(d);
         auto it_src = std::find(nodes.begin(), nodes.end(), src);
@@ -65,35 +65,31 @@ public:
         if(it_src != nodes.end() && it_dst != nodes.end()){
             int i_src = it_src - nodes.begin();
             int i_dst = it_dst - nodes.begin();
-            add_edge(i_src, i_dst, v); 
+            add_edge(i_src, i_dst);
             // std::cout<<i_src<<"->"<<i_dst<<std::endl;
         } // Si no existen
         else {
-            std::cout<<"(error) no existen"<< std::endl;
+            std::cout<<"(error) no existen"<<endl;
         }
     }
 
-    std::vector<GraphVertex<T>> getNodes(){
-        return nodes;
-    }
-
-    /* void printNeighbors(){
+    void printNeighbors(){
         for(int i = 0; i < nodes.size(); i++){
             if(nodes[i].get_adj().size() != 0){
                 std::cout<< nodes[i].get_val() <<":\t"<<nodes[i].get_adj().size()<<std::endl;
             }
         }
-    } */
+    }
 
-    /* map<T, int> saveNeigbhors(){
+    map<T, int> saveNeigbhors(){
         map<T, int> count;
         for(int i = 0; i < nodes.size(); i++){
             count[ nodes[i].get_val() ] = nodes[i].get_adj().size();
         }
         return count;
-    } */
+    }
 
-    /* void BFS(int start_vertex)
+    void BFS(int start_vertex)
     {
         std::vector<int> visited(nodes.size(), 0); 
         std::queue<int> neighbors; 
@@ -119,9 +115,9 @@ public:
         }
 
         std::cout << std::endl;
-    }; */
+    };
 
-    /* void DFS(int start_vertex)
+    void DFS(int start_vertex)
     {
         std::vector<int> visited(nodes.size(), 0);
         std::stack<int> neighbors;
@@ -150,11 +146,11 @@ public:
             }   
         }
         std::cout << std::endl;
-    } */
+    }
 
-    /* int size(){
+    int size(){
         return nodes.size();
-    } */
+    }
 };
 
 #endif

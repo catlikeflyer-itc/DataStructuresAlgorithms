@@ -1,21 +1,13 @@
-/*
- *
- * Main file
- * main.cpp
- * Emiliano Cabrera A01025453, Do Hyun Nam A01025276
- * 
- */
-#include "graph.hpp"
-#include "reader.hpp"
-#include "compConnections.hpp"
 #include <iostream>
 #include <vector>
 #include <map>
 #include "reader.hpp"
+#include "compConnections.hpp"
 #include <set>
 #include <cwctype> 
 #include <ctime>
 #include <string>
+#include "graph.hpp"
 
 using namespace std;
 
@@ -24,9 +16,6 @@ class Date{
         tm date;
         Date( tm date ){
             this->date = date;
-            // this->date.tm_mday = date.tm_mday;
-            // this->date.tm_mon = date.tm_mon; 
-            // this->date.tm_year = date.tm_year; 
         }
 
         friend bool operator == (Date d, Date dd){
@@ -139,12 +128,13 @@ set<string> obtenerIPsEntrantes(map<string, CompConnections> computadoras) {
         if( it->second.name.find(".reto.com") == string::npos /*no lo encontró*/ ){
             n++;
             // Convertir a vector para poder acceder los índices de manera más fácil ;D
-            vector<Connection> conexionesV{begin(it->second.inConnections), end(it->second.inConnections) };
+            vector<Connection> conexionesV {begin(it->second.inConnections), end(it->second.inConnections)};
             set<string> nombresPorComputadoraUnicos;
-            for (int i=0; i< conexionesV.size(); i++ ){
+
+            for(int i=0; i< conexionesV.size(); i++ ){
                 if ( conexionesV[i].port != 67 ){
                     nombresPorComputadoraUnicos.insert(conexionesV[i].host);
-                    ipsUnicas.insert( conexionesV[i].ip );
+                    ipsUnicas.insert( conexionesV[i].IP );
                 }
             }
         }
@@ -226,10 +216,10 @@ void conexionesDiariasEnGrafos( map<Date, Graph<string> > &grafosPorDia, set<Dat
             // Iterar todas las conexiones salientes
             for(list<Connection>::iterator conexion = i_conexionesSalientes.begin(); conexion != i_conexionesSalientes.end(); ++conexion){
                 // Si es interna, agregar conexion
-                if(esInterna(conexion->ip) && (conexion->date == *hoy)){
-                    grafo_i.add_edge_element(i_ip, conexion->ip);
+                if( esInterna(conexion->IP) && (conexion->date == *hoy) ){
+                    grafo_i.add_edge_element(i_ip, conexion->IP);
                     // Si destino  == IP_A, entonces guardar en map<Date, int>
-                    if(conexion->ip == IP_A){
+                    if(conexion->IP == IP_A){
                         conexionesEntrantesPorDia[*hoy]++;
                     }
                     if(i_ip == IP_A){
@@ -245,12 +235,13 @@ void conexionesDiariasEnGrafos( map<Date, Graph<string> > &grafosPorDia, set<Dat
  //Obtener IP con más conexiones por día
  map<Date, string> maxConexionesPorDia(map<Date, Graph<string> > grafosPorDia){
     map<Date, string> maxConexionesPorDia; 
-    for(map<Date, Graph<string>>::iterator it = grafosPorDia.begin(); it != grafosPorDia.end(); ++it){
+    for(map<Date, Graph<string> >::iterator it = grafosPorDia.begin(); it != grafosPorDia.end(); ++it){
         Graph<string> grafo_hoy = it->second;
         
         map<string, int> numeroDeConexiones = grafo_hoy.saveNeigbhors();
         string ipConMasConexiones = "";
         int maxConexiones = 0;
+
         // Iterar ips en mapa de cantidad de ocurrencias diarias
         for(map<string, int>::iterator ips = numeroDeConexiones.begin(); ips != numeroDeConexiones.end(); ++ips){
             if(ips->second >= maxConexiones){
@@ -279,7 +270,7 @@ bool esWeb(Connection c){
     return false;
 }
 
-void conexionesWebEnGrafo(map<Date, Graph<string>> &grafosPorDiaWeb, set<Date> todasLasFechas, string IP_i, map<Date, int> &conexionesEntrantesPorDiaWeb, map<string, CompConnections> todasLasComputadoras){
+void conexionesWebEnGrafo(map<Date, Graph<string> > &grafosPorDiaWeb, set<Date> todasLasFechas, string IP_i, map<Date, int> &conexionesEntrantesPorDiaWeb, map<string, CompConnections> todasLasComputadoras){
     for (set<Date>::iterator hoy = todasLasFechas.begin(); hoy != todasLasFechas.end(); ++hoy){
         Graph<string> grafo_i;
         conexionesEntrantesPorDiaWeb[*hoy] = 0;
@@ -295,8 +286,8 @@ void conexionesWebEnGrafo(map<Date, Graph<string>> &grafosPorDiaWeb, set<Date> t
             // Si es web, agregar conexion
             for(list<Connection>::iterator conexion = i_conexionesSalientes.begin(); conexion != i_conexionesSalientes.end(); ++conexion){
                 if( esWeb(*conexion) && (conexion->date == *hoy)){
-                    grafo_i.add_edge_element(i_ip, conexion->ip);
-                    if(conexion->ip == IP_i){
+                    grafo_i.add_edge_element(i_ip, conexion->IP);
+                    if(conexion->IP == IP_i){
                         conexionesEntrantesPorDiaWeb[*hoy]++;
                     }
                 }
@@ -327,7 +318,7 @@ int main(void){
     /* 1. Utilizando un grafo con las conexiones entre las ip de la red interna, 
     determina la cantidad de computadoras con las que se ha conectado A por día. 
     ¿Es A el vértice que más conexiones salientes hacia la red interna tiene? */
-    map<Date, Graph<string>> grafosPorDia;
+    map<Date, Graph<string> > grafosPorDia;
     set<Date> todasLasFechas = obtenerFechas(datos);
     map<Date, int> conexionesEntrantesPorDia;
     map<Date, int> conexionesSalientesPorDia;
@@ -353,7 +344,7 @@ int main(void){
     
    /* 3. Utilizando el mismo grafo del punto anterior, indica cuántas computadoras 
     se han conectado a C por día */
-    map<Date, Graph<string>> grafosPorDiaWeb;
+    map<Date, Graph<string> > grafosPorDiaWeb;
     map<Date, int> conexionesEntrantesPorDiaWeb;
     conexionesWebEnGrafo(grafosPorDiaWeb, todasLasFechas, IP_ANOMALA_B, conexionesEntrantesPorDiaWeb, todasLasComputadoras); 
     cout << "3. Utilizando un grafo de conexiones a sitios web, determina cuántas computadoras se han conectado a B por día." << endl; 

@@ -135,11 +135,11 @@ int main(int argc, const char * argv[]){
     std::set<std::string> dates = getDateAmount(data);
     std::set<std::string>::iterator dates_it;
     
-    std::set<std::pair<std::string,std::string> > connections_set, repeater_set;
-    std::set<std::pair<std::string,std::string> >::iterator set_it, set_it_2;
+    std::set<std::pair<std::string,std::string>> connections_set;
+    std::set<std::pair<std::string,std::string>>::iterator set_it;
 
-    std::vector<Graph<std::string> > graph_vector;
-    std::vector<std::set<std::pair<std::string,std::string> > > set_vector;
+    std::vector<std::set<std::pair<std::string,std::string>>> set_vector;
+    std::vector<std::set<std::pair<std::string,std::string>>>::iterator set_vec_it;
 
     std::vector<Graph<std::string> *> graph_vector;
     std::vector<Graph<std::string> *>::iterator gr_vec_it;
@@ -185,22 +185,41 @@ int main(int argc, const char * argv[]){
         }
     }
 
-    // 1.
-    std::vector<GraphVertex<std::string> > graph_nodes = connections_graph.getNodes();
-    std::vector<GraphVertex<std::string> >::iterator vec_it_2;
-    std::vector<std::pair<GraphVertex<std::string>,int> >::iterator vec_it_3;
-    int max;
+    // 1. vertice con mas conexiones a la red interna
+    int dia, graf, max = 0;
+
+    std::vector<GraphVertex<std::string>> graph_nodes;
+    std::vector<GraphVertex<std::string>>::iterator vec_it_2;
+
+    std::vector<std::pair<GraphVertex<std::string>,int>>::iterator vec_it_3;
+
     GraphVertex<std::string> gv;
 
-    for(vec_it_2 = graph_nodes.begin(); vec_it_2 != graph_nodes.end(); vec_it_2++){
-        for(vec_it_3 = vec_it_2 -> get_adj().begin(); vec_it_3 < vec_it_2 -> get_adj().end(); vec_it_3++){
-            if(vec_it_3 -> second > max) {
-                max = vec_it_3 -> second;
-                gv = vec_it_3 -> first;
+    for(int i = 0; i < graph_vector.size(); i++){
+        graph_nodes = graph_vector[i] -> getNodes();
+        flag = false;
+
+        for(vec_it_2 = graph_nodes.begin(); vec_it_2 != graph_nodes.end(); vec_it_2++){
+            for(vec_it_3 = vec_it_2 -> get_adj().begin(); vec_it_3 < vec_it_2 -> get_adj().end(); vec_it_3++){
+                if(vec_it_3 -> second > max) {
+                    max = vec_it_3 -> second;
+                    gv = vec_it_3 -> first;
+                    flag = true;
+                }
             }
         }
+
+        if(flag = true) graf = i;
     }
 
+    dates_it = dates.begin();
+    for(int i = 0; i <= graf; i++){
+        dates_it++;
+    }
+
+    std::cout << "1.- Vertice que mas conexiones salientes tiene hacia la red interna" << std::endl;
+    std::cout << gv.get_val() << ": " <<  max  << "\tDia: " << *dates_it << std::endl << std::endl;
+    
 
     // 2.
 

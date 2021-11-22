@@ -10,7 +10,7 @@ class Connection{
         std::string ip;
         int port;
         std::string host;
-        tm date;
+        std::string date;
 
         Connection(){}
 
@@ -20,7 +20,7 @@ class Connection{
             this -> host = host;
         }
 
-        Connection(std::string IP, int puerto, std::string host, tm date){
+        Connection(std::string IP, int puerto, std::string host, std::string date){
             this->ip = IP;
             this->port = puerto;
             this->host = host;
@@ -32,9 +32,9 @@ class Connection{
         std::string getIP(){
             return ip; 
         }
-        void imprimirFecha(){
+        /* void imprimirFecha(){
             std::cout << this -> date.tm_mday << "/" << this -> date.tm_mon+1 << "/" << this -> date.tm_year+1900;
-        }
+        } */
 }; 
 
 #endif

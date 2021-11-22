@@ -26,12 +26,12 @@ class CompConnections{
         std::list<Connection> inConnections; //leer de última a primera
         std::list<Connection> outConnections; //leer de primera a última
 
-        void insertIncomingConnections(std::string IP, int port, std::string host, tm date){
+        void insertIncomingConnections(std::string IP, int port, std::string host, std::string date){
             Connection c(IP, port, host, date);
             inConnections.push_front(c);
         }
 
-        void insertOutgoingConnections(std::string IP, int port, std::string host, tm date){
+        void insertOutgoingConnections(std::string IP, int port, std::string host, std::string date){
             Connection c(IP, port, host, date); 
             outConnections.push_back(c);
         }
@@ -47,7 +47,7 @@ class CompConnections{
                         data[i].sourceIp, 
                         data[i].sourcePort,
                         data[i].sourceName,
-                        data[i].date
+                        data[i].dateString
                     );
                 } 
 
@@ -56,7 +56,7 @@ class CompConnections{
                         data[i].destinationIp, 
                         data[i].destinationPort,
                         data[i].destinationName,
-                        data[i].date
+                        data[i].dateString
                     );
                 } 
             }

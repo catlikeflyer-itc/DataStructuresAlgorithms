@@ -23,9 +23,8 @@ public:
     void set_val(T _val) {val = _val;};
 
     std::vector<std::pair<GraphVertex<T>,int>> get_adj() {return adj;};
-    void add_to_adj(T idx, int idv) { // destination , value
-        GraphVertex<T> gv = new GraphVertex<T>(idx);
-        adj.push_back(make_pair(gv,idv));
+    void add_to_adj(GraphVertex<T> idx, int idv) { // destination , value
+        adj.push_back(make_pair(idx,idv));
     };
 
     friend bool operator == (GraphVertex<T> d, GraphVertex<T> dd){
@@ -46,15 +45,15 @@ public:
 
     void add_node(T val)
     {
-        GraphVertex<T> node = new GraphVertex<T>(val);
+        GraphVertex<T> node(val);
         nodes.push_back(node);
     };
 
-    void add_edge(T src, T dst, int edv)
+    void add_edge(int src, int dst, int edv)
     {
-        nodes[src].add_to_adj(dst, edv);
+        nodes[src].add_to_adj(nodes[dst], edv);
         if (!is_directed)
-            nodes[dst].add_to_adj(src, edv);
+            nodes[dst].add_to_adj(nodes[src], edv);
     };
 
     void add_edge_element(T s, T d, int v){
@@ -70,7 +69,7 @@ public:
             // std::cout<<i_src<<"->"<<i_dst<<std::endl;
         } // Si no existen
         else {
-            std::cout<<"(error) no existen"<<endl;
+            std::cout<<"(error) no existen"<< std::endl;
         }
     }
 
@@ -78,23 +77,23 @@ public:
         return nodes;
     }
 
-    void printNeighbors(){
+    /* void printNeighbors(){
         for(int i = 0; i < nodes.size(); i++){
             if(nodes[i].get_adj().size() != 0){
                 std::cout<< nodes[i].get_val() <<":\t"<<nodes[i].get_adj().size()<<std::endl;
             }
         }
-    }
+    } */
 
-    map<T, int> saveNeigbhors(){
+    /* map<T, int> saveNeigbhors(){
         map<T, int> count;
         for(int i = 0; i < nodes.size(); i++){
             count[ nodes[i].get_val() ] = nodes[i].get_adj().size();
         }
         return count;
-    }
+    } */
 
-    void BFS(int start_vertex)
+    /* void BFS(int start_vertex)
     {
         std::vector<int> visited(nodes.size(), 0); 
         std::queue<int> neighbors; 
@@ -120,9 +119,9 @@ public:
         }
 
         std::cout << std::endl;
-    };
+    }; */
 
-    void DFS(int start_vertex)
+    /* void DFS(int start_vertex)
     {
         std::vector<int> visited(nodes.size(), 0);
         std::stack<int> neighbors;
@@ -151,11 +150,11 @@ public:
             }   
         }
         std::cout << std::endl;
-    }
+    } */
 
-    int size(){
+    /* int size(){
         return nodes.size();
-    }
+    } */
 };
 
 #endif

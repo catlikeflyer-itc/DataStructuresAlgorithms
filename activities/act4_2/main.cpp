@@ -18,7 +18,7 @@
 #include "reader.hpp"
 #include "compConnections.hpp"
 
-class Date{
+/* class Date{
     public:
         tm date;
         Date( tm date ){
@@ -53,16 +53,16 @@ class Date{
             return std::to_string(this->date.tm_mday) + "/" + std::to_string(this->date.tm_mon+1) + "/" + std::to_string(this->date.tm_year+1900);
         }
 
-};
+}; */
 
 // Imprimir vectores
-void print_vector(std::vector<Registry> arr){
+/* void print_vector(std::vector<Registry> arr){
     for (int i = 0; i < arr.size(); i++) arr[i].print();
     std::cout << std::endl;
-};
+}; */
 
 // Búsqueda secuencial
-int sequentialSearch(std::vector<Registry> d, bool (*condition)(Registry r) ){
+/* int sequentialSearch(std::vector<Registry> d, bool (*condition)(Registry r) ){
     for (int i = 0; i<d.size(); i++){
         if (condition(d[i]) ) return i;
     }
@@ -74,7 +74,7 @@ int sequentialSearch( std::vector<Registry> d, bool (*condition)(Registry a, Reg
         if (condition(d[i], r) ) return i;
     }
     return -1;
-}
+} */
 
 
 bool isAbnormal(std::string name){
@@ -116,83 +116,85 @@ int compsWithInConnections(std::map<std::string, CompConnections> comps){
     return n;
 } 
 
+std::set<std::string> getDateAmount(std::vector<Registry> d){
+    std::vector<Registry>::iterator it;
+    std::set<std::string> dates;
+
+    for(it = d.begin(); it != d.end(); it++){
+        dates.insert(it -> dateString);
+    }
+
+    return dates;
+}
+
 int main(int argc, const char * argv[]){
     Reader r; 
     std::vector<Registry> data = r.readFile();
     std::vector<Registry>::iterator vec_it;
+
+    std::set<std::string> dates = getDateAmount(data);
+    std::set<std::string>::iterator dates_it;
     
-    std::set<std::pair<std::string,std::string>> connections_set, repeater_set;
-    std::set<std::pair<std::string,std::string>>::iterator set_it, set_it_2;
+    std::set<std::pair<std::string,std::string>> connections_set;
+    std::set<std::pair<std::string,std::string>>::iterator set_it;
 
-    std::vector<Graph<std::string>> graph_vector;
     std::vector<std::set<std::pair<std::string,std::string>>> set_vector;
+    std::vector<std::set<std::pair<std::string,std::string>>>::iterator set_vec_it;
 
-    Graph<std::string> connections_graph;
+    std::vector<Graph<std::string> *> graph_vector;
+    std::vector<Graph<std::string> *>::iterator gr_vec_it;
 
-    std::string prev_date = "", curr_date;
-    int graph_spot = 0, set_spot = 0;    
+    for(dates_it = dates.begin(); dates_it != dates.end(); dates_it++){
+        connections_set.clear();
 
-    for(vec_it = data.begin(); vec_it != data.end(); vec_it++){
-        curr_date = vec_it -> dateString;
-        if(curr_date != prev_date && vec_it != data.begin()) set_spot++;
-        if(isInternal(vec_it -> sourceIp) || isInternal(vec_it -> destinationIp)) connections_set.insert(make_pair(vec_it -> sourceIp, vec_it -> destinationIp));
-        
-        prev_date = curr_date;
+        for(vec_it = data.begin(); vec_it != data.end(); vec_it++){
+            if(vec_it -> dateString == *dates_it){
+                if(isInternal(vec_it -> sourceIp) || isInternal(vec_it -> destinationIp)) connections_set.insert(make_pair(vec_it -> sourceIp, vec_it -> destinationIp));            
+            }
+        }
+
+        set_vector.push_back(connections_set);
     }
 
-    repeater_set = connections_set;
-
     bool flag;
+    std::vector<GraphVertex<std::string>> gv_vec_it;
 
-    for(set_it = connections_set.begin(); set_it != connections_set.end(); set_it++){
-        connections_graph.add_node(set_it -> first);
+    for(set_vec_it = set_vector.begin(); set_vec_it != set_vector.end(); set_vec_it++){
+        Graph<std::string> * connections_graph = new Graph<std::string>();
 
-        flag = false;
-
-        for(set_it_2 = repeater_set.begin(); set_it_2 != repeater_set.end(); set_it_2++){
-            if(set_it -> second == set_it_2 -> first) flag = true;
+        for(set_it = set_vec_it -> begin(); set_it != set_vec_it -> end(); set_it++){
+            connections_graph -> add_node(set_it -> first);    
         }
-        
-        if(!flag) connections_graph.add_node(set_it -> second);
+
+        graph_vector.push_back(connections_graph);
     }
 
     int con_val;
 
-    for(set_it = connections_set.begin(); set_it != connections_set.end(); set_it++){
-        con_val = 0;
+    for(int i = 0; i < graph_vector.size(); i++){
+        for(set_vec_it = set_vector.begin(); set_vec_it != set_vector.end(); set_vec_it++){
+            for(set_it = set_vec_it -> begin(); set_it != set_vec_it -> end(); set_it++){
+                con_val = 0;
 
-        for(vec_it = data.begin(); vec_it != data.end(); vec_it++){
-            if(vec_it -> sourceIp == set_it -> first && vec_it -> destinationIp == set_it -> second) con_val++;
+                for(vec_it = data.begin(); vec_it != data.end(); vec_it++){
+                    if(vec_it -> sourceIp == set_it -> first && vec_it -> destinationIp == set_it -> second) con_val++;
+                }
 
-        }
-
-        connections_graph.add_edge_element(set_it -> first, set_it -> second, con_val);
-    }
-
-    // 1.
-    std::vector<GraphVertex<std::string>> graph_nodes = connections_graph.getNodes();
-    std::vector<GraphVertex<std::string>>::iterator vec_it_2;
-    std::vector<std::pair<GraphVertex<std::string>,int>>::iterator vec_it_3;
-    int max;
-    GraphVertex<std::string> gv;
-
-    for(vec_it_2 = graph_nodes.begin(); vec_it_2 != graph_nodes.end(); vec_it_2++){
-        for(vec_it_3 = vec_it_2 -> get_adj().begin(); vec_it_3 < vec_it_2 -> get_adj().end(); vec_it_3++){
-            if(vec_it_3 -> second > max) {
-                max = vec_it_3 -> second;
-                gv = vec_it_3 -> first;
+                graph_vector[i] -> add_edge_element(set_it -> first, set_it -> second, con_val);
             }
         }
     }
 
-    std::cout << "1.- Vertice que mas conexiones salientes tiene hacia la red interna" << std::endl;
-    std::cout << gv.get_val() << ": " <<  max << std::endl << std::endl;
+    // 1.
+
 
     // 2.
 
 
     // 3.
 
+
     // 4.
+
 
 }

@@ -28,8 +28,8 @@ class Registry{
         int destinationPort; 
         std::string destinationName; 
 
-        void print();
-        void printDate();
+        /* void print();
+        void printDate(); */
 };
 
 Registry::Registry(
@@ -62,7 +62,7 @@ Registry::Registry(
      // TODO: Convertir a ints
 };
 
-void Registry::print(){
+/* void Registry::print(){
     this -> printDate();
     std::cout << "\t" << this -> hour
     << "\t" << this -> sourceIp
@@ -72,7 +72,7 @@ void Registry::print(){
     << "\t" << this -> destinationPort
     << "\t" << this -> destinationName
     << std::endl << "========================" << std::endl;
-}
+} */
 
 /* void Registry::printDate(){
     std::cout << this -> date.tm_mday << "/" << this -> date.tm_mon+1 << "/" << this -> date.tm_year+1900;

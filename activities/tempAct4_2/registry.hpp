@@ -1,5 +1,5 @@
 #ifndef registry_hpp 
-#define Reistry_hpp
+#define registry_hpp
 #include <ctime>
 #include <string>
 

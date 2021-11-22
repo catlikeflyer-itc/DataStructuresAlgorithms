@@ -1,6 +1,6 @@
 #ifndef registry_hpp
 #define registry_hpp
-#include <ctime>
+//#include <ctime>
 #include <string>
 
 class Registry{
@@ -18,7 +18,7 @@ class Registry{
 
         Registry();
 
-        tm date; 
+        //tm date; 
         std::string dateString;
         std::string hour; 
         std::string sourceIp; 
@@ -42,9 +42,9 @@ Registry::Registry(
     std::string _destinationPort,
     std::string _destinationName
 ){
-    struct tm tm;
-    const char *f = _date.c_str();
-    strptime(f, "%d-%m-%y", &this -> date);
+    //struct tm tm;
+    //const char *f = _date.c_str();
+    //strptime(f, "%d-%m-%y", &this -> date);
     this -> dateString = _date;
     this -> hour = _hour;
     this -> sourceIp = _sourceIp;
@@ -74,8 +74,8 @@ void Registry::print(){
     << std::endl << "========================" << std::endl;
 }
 
-void Registry::printDate(){
+/* void Registry::printDate(){
     std::cout << this -> date.tm_mday << "/" << this -> date.tm_mon+1 << "/" << this -> date.tm_year+1900;
-}
+} */
 
 #endif

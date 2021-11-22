@@ -121,11 +121,11 @@ int main(int argc, const char * argv[]){
     std::vector<Registry> data = r.readFile();
     std::vector<Registry>::iterator vec_it;
     
-    std::set<std::pair<std::string,std::string>> connections_set, repeater_set;
-    std::set<std::pair<std::string,std::string>>::iterator set_it, set_it_2;
+    std::set<std::pair<std::string,std::string> > connections_set, repeater_set;
+    std::set<std::pair<std::string,std::string> >::iterator set_it, set_it_2;
 
-    std::vector<Graph<std::string>> graph_vector;
-    std::vector<std::set<std::pair<std::string,std::string>>> set_vector;
+    std::vector<Graph<std::string> > graph_vector;
+    std::vector<std::set<std::pair<std::string,std::string> > > set_vector;
 
     Graph<std::string> connections_graph;
 
@@ -170,9 +170,9 @@ int main(int argc, const char * argv[]){
     }
 
     // 1.
-    std::vector<GraphVertex<std::string>> graph_nodes = connections_graph.getNodes();
-    std::vector<GraphVertex<std::string>>::iterator vec_it_2;
-    std::vector<std::pair<GraphVertex<std::string>,int>>::iterator vec_it_3;
+    std::vector<GraphVertex<std::string> > graph_nodes = connections_graph.getNodes();
+    std::vector<GraphVertex<std::string> >::iterator vec_it_2;
+    std::vector<std::pair<GraphVertex<std::string>,int> >::iterator vec_it_3;
     int max;
     GraphVertex<std::string> gv;
 

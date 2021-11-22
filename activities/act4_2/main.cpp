@@ -220,9 +220,19 @@ int main(int argc, const char * argv[]){
     std::cout << "1.- Vertice que mas conexiones salientes tiene hacia la red interna" << std::endl;
     std::cout << gv.get_val() << ": " <<  max  << "\tDia: " << *dates_it << std::endl << std::endl;
     
+    // 2. conexiones al vertice previo
+    Graph<std::string> * graph_2 = graph_vector[graf];
+    std::vector<GraphVertex<std::string>> gvv = graph_2 -> getNodes();
 
-    // 2.
+    int count;
+    
+    for(int i = 0; i < gvv.size(); i++){
+        for(int j = 0; j < gvv[i].get_adj().size(); j++){
+            if(gvv[i].get_adj()[j].first == gv) count++;
+        }
+    }
 
+    std::cout << "Tiene " << count << " conexiones entrantes." << std::endl << std::endl;
 
     // 3.
 

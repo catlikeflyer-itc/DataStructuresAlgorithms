@@ -1,37 +1,39 @@
-//
-//  main.cpp
-//  HashMap
-//
-//  Emiliano Cabrera - A01025453
-//  Do Hyun Nam - A01025276
-//
+/*
+ *
+ * Main file
+ * main.cpp
+ * Emiliano Cabrera A01025453, Do Hyun Nam A01025276
+ * 
+ */
 
 #include <iostream>
-#include "HashMap.cpp"
+#include "hash.cpp"
 
 int main(int argc, const char * argv[]) {
+    Hash<int,int> * hash_map = new Hash<int,int>(5);
+
+    std::cout << "[---START PUT---]" << std::endl;
     
-    int capacity = 5;
+    hash_map->put(1,1);
+    hash_map->put(5,5);
+    hash_map->put(11,11);
+    hash_map->put(15,15);
+    hash_map->put(2,2);
+    hash_map->put(8,8);
+
+    std::cout << "[---END PUT---]" << std::endl;
     
-    /* Crear un HashMap */
-    HashMap<int, int> * tabla = new HashMap<int, int>(capacity);
+    std::cout << "[---START GET---]" << std::endl;
+
+    int a = hash_map->get(5), b = hash_map->get(15), c = hash_map->get(8);
+
+    std::cout << "[---END GET---]" << std::endl;
     
-    /* Insertar elementos */
-    std::cout << tabla->put(1, 1) << std::endl;
-    std::cout << tabla->put(5, 5) << std::endl;
-    std::cout << tabla->put(11, 11) << std::endl;
-    std::cout << tabla->put(15, 15) << std::endl;
-    std::cout << tabla->put(2, 2) << std::endl;
-    std::cout << tabla->put(8, 8) << std::endl;
+    std::cout << "[---START PRINT---]" << std::endl;
     
-    std::cout << tabla->get(5) << std::endl;
-    std::cout << tabla->get(15) << std::endl;
-    std::cout << tabla->get(8) << std::endl;
+    std::cout << "5: " << a << std::endl;
+    std::cout << "15: " << b << std::endl;
+    std::cout << "8: " << c << std::endl;
     
-    std::cout << *tabla;
-    
-    /* Eliminar la tabla */
-    delete tabla;
-    
-    return 0;
+    std::cout << "[---END PRINT---]" << std::endl;
 }

@@ -9,13 +9,14 @@
 #include <vector>
 #include <stack>
 #include <iostream>
+#include <list>
 
 template <class K, class V>
 class HashMap {
     int _capacity = 0;
     
-    std::vector<std::stack<K> *> _keys; // vector de stacks que guarda las llaves
-    std::vector<std::stack<V> *>  _values; // vector de stacks que guarda los valores
+    std::vector<std::vector<K>> _keys; // vector de stacks que guarda las llaves
+    std::vector<std::vector<V>>  _values; // vector de stacks que guarda los valores
     std::vector<int> _status; // vector  que indica en que posicion va el desbordamiento  del vector correspondiente, es decir, cuantos <key,value> se han insertado en un mismo indice. Empieza en 0.
     
     int _size = 0;
@@ -42,11 +43,12 @@ template <class K, class V>
 HashMap<K,V>::HashMap(int capacity)
 {
     this->_capacity = capacity;
-    this->_status = std::vector<std::string>(capacity);
-    this->_keys = std::vector<K>(capacity);
-    this->_values = std::vector<V>(capacity);
+
+    this->_status = std::vector<int>(capacity);
+    this->_keys = std::vector<std::vector<K>>(capacity);
+    this->_values = std::vector<std::vector<V>>(capacity);
     
-    fill(_status.begin(), _status.end(), "vacio");
+    fill(_status.begin(), _status.end(), 0);
 }
 
 template <class K, class V>
@@ -93,9 +95,9 @@ bool HashMap<K,V>::put(K key,V value)
     int indice = hash_function(key);
     
     if (indice > -1) {
-        this->_keys[indice] = key; // insert into the inner, corresponding stack [MISSING]
-        this->_values[indice] = value; // insert into the inner, corresponding stack [MISSING]
         this->_status[indice]++; // increment specific size value
+        this->_keys[indice][_status[indice]] = key; // insert into the inner, corresponding stack [MISSING?]
+        this->_values[indice][_status[indice]] = value; // insert into the inner, corresponding stack [MISSING?]
         
         return true;
     }
@@ -131,8 +133,12 @@ V HashMap<K,V>::get(K key)
     int steps = 0;
     
     int indice = hash_function(key);
-    
-    while (!found && steps < this->_capacity) {
+
+    for(int i = 0; i < _values.at(indice); i++){
+
+    }
+
+    /* while (!found && steps < this->_capacity) {
         if (this->_status[indice] == "ocupado") {
             if (this->_keys[indice] == key) {
                 found = true;
@@ -149,7 +155,7 @@ V HashMap<K,V>::get(K key)
         }
         
         ++steps;
-    }
+    } */
    
     if (found) return this->_values[indice];
     else

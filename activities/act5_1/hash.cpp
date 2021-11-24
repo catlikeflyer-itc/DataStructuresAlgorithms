@@ -6,7 +6,7 @@
  * 
  */
 
-#include <list>
+#include <vector>
 #include <iostream>
 
 template <class Key, class Val>
@@ -14,8 +14,7 @@ class Hash{
     private:
         int _capacity = 0;
 
-        std::list<Key> * _keys;
-        std::list<Val> * _values;
+        std::vector<std::vector<std::pair<Key,Val>>> _values;
 
         int hashFunction(Key) const;
 
@@ -39,9 +38,7 @@ int Hash<Key,Val>::hashFunction(Key k) const{
 template <class Key, class Val>
 Hash<Key,Val>::Hash(int cap){
     this-> _capacity = cap;
-
-    this-> _keys = new list<Key>[this-> _capacity];
-    this-> _values = new list<Val>[this-> _capacity];
+    this-> _values = std::vector<std::vector<std::pair<Key,Val>>>(cap);
 }
 
 template <class Key, class Val>
@@ -60,16 +57,19 @@ template <class Key, class Val>
 void Hash<Key,Val>::put(Key k, Val v){
     int index = hashFunction(k);
 
-    this-> _values[index].push_back(v);
+    this->_values.at(index).push_back(std::make_pair(k,v)); // doesn't work
+    //                     ^--- does not detect a vector from here. It does not allow function calls after the first access operator, be it .at() or [ ].
 }
 
 template <class Key, class Val>
-Val Hash<Key,Val>::get(Key k){
+Val Hash<Key,Val>::get(Key k){ // doesn't work
     int index = hashFunction(k), int_index = 0;
 
     for(int i = 0; i < this-> _keys[index].size(); i++){
         if(this-> _keys[index][i] == k) int_index = i;
+        //                    ^--- does not detect a vector from here. It does not allow function calls after the first access operator, be it .at() or [ ].
     }
 
-    return this-> _values[index][int_index];
+    return this->_values.at(index).at(int_index).first;
+    //                            ^--- does not detect a vector from here. It does not allow function calls after the first access operator, be it .at() or [ ].
 }

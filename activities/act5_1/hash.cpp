@@ -14,7 +14,7 @@ class Hash{
     private:
         int _capacity = 0;
 
-        std::vector<std::vector<std::pair<Key,Val>>> _values;
+        std::vector<std::vector<std::pair<Key, Val>>> _values;
 
         int hashFunction(Key) const;
 
@@ -25,6 +25,7 @@ class Hash{
 
         void put(Key,Val);
         Val get(Key);
+        void deleteVal(Key);
         
     template <typename Kn, typename Vn>
     friend std::ostream & operator <<(std::ostream & os, const Hash<Kn,Vn> & hm);
@@ -44,7 +45,6 @@ Hash<Key,Val>::Hash(int cap){
 template <class Key, class Val>
 Hash<Key,Val>::~Hash(){
     delete this-> _status;
-    delete this-> _keys;
     delete this-> _values;
 }
 
@@ -57,19 +57,36 @@ template <class Key, class Val>
 void Hash<Key,Val>::put(Key k, Val v){
     int index = hashFunction(k);
 
-    this->_values.at(index).push_back(std::make_pair(k,v)); // doesn't work
-    //                     ^--- does not detect a vector from here. It does not allow function calls after the first access operator, be it .at() or [ ].
+    this->_values.at(index).push_back(std::make_pair(k,v));
 }
 
 template <class Key, class Val>
-Val Hash<Key,Val>::get(Key k){ // doesn't work
-    int index = hashFunction(k), int_index = 0;
+Val Hash<Key,Val>::get(Key k){
+    int index = hashFunction(k), i;
+    bool flag = false;
 
-    for(int i = 0; i < this-> _keys[index].size(); i++){
-        if(this-> _keys[index][i] == k) int_index = i;
-        //                    ^--- does not detect a vector from here. It does not allow function calls after the first access operator, be it .at() or [ ].
+    for(i = 0; i < this->_values[index].size(); i++){
+        if(this->_values[index][i].first == k){
+            flag = true;
+            break;
+        }
     }
 
-    return this->_values.at(index).at(int_index).first;
-    //                            ^--- does not detect a vector from here. It does not allow function calls after the first access operator, be it .at() or [ ].
+    if(flag) return this->_values.at(index).at(i).first;
+    return -404;
+}
+
+template <class Key, class Val>
+void Hash<Key,Val>::deleteVal(Key k){
+    int index = hashFunction(k), i;
+    bool flag = false;
+
+    for(i = 0; i < this->_values[index].size(); i++){
+        if(this->_values[index][i].first == k){
+            flag = true;
+            break;
+        }
+    }
+
+    if(flag) this->_values.at(index).erase(_values.at(index).begin() + i);
 }

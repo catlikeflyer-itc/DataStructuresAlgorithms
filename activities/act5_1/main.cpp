@@ -7,6 +7,7 @@
  */
 
 #include <iostream>
+#include <vector>
 #include "hash.cpp"
 
 int main(int argc, const char * argv[]) {
@@ -24,16 +25,23 @@ int main(int argc, const char * argv[]) {
     std::cout << "[---END PUT---]" << std::endl;
     
     std::cout << "[---START GET---]" << std::endl;
-
-    int a = hash_map->get(5), b = hash_map->get(15), c = hash_map->get(8);
+        
+    std::cout << "5: " << hash_map->get(5) << std::endl;
+    std::cout << "15: " << hash_map->get(15) << std::endl;
+    std::cout << "8: " << hash_map->get(8) << std::endl;
 
     std::cout << "[---END GET---]" << std::endl;
+
+    std::cout << "[---START DELETE---]" << std::endl;
+
+    hash_map->deleteVal(15);
+    hash_map->deleteVal(11);
+
+    std::cout << "[---END DELETE---]" << std::endl;
     
     std::cout << "[---START PRINT---]" << std::endl;
-    
-    std::cout << "5: " << a << std::endl;
-    std::cout << "15: " << b << std::endl;
-    std::cout << "8: " << c << std::endl;
-    
+
+    std::cout << hash_map->get(11) << std::endl;
+
     std::cout << "[---END PRINT---]" << std::endl;
 }

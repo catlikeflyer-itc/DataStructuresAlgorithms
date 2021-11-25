@@ -53,6 +53,7 @@ int Hash<Key,Val>::capacity() const{
     return this-> _capacity;
 }
 
+// input function, time complexity of O(1)
 template <class Key, class Val>
 void Hash<Key,Val>::put(Key k, Val v){
     int index = hashFunction(k);
@@ -60,6 +61,7 @@ void Hash<Key,Val>::put(Key k, Val v){
     this->_values.at(index).push_back(std::make_pair(k,v));
 }
 
+// extraction function, time complexity of O(n)
 template <class Key, class Val>
 Val Hash<Key,Val>::get(Key k){
     int index = hashFunction(k), i;
@@ -76,6 +78,7 @@ Val Hash<Key,Val>::get(Key k){
     return -404;
 }
 
+//deletion function, time complexity of O(n)
 template <class Key, class Val>
 void Hash<Key,Val>::deleteVal(Key k){
     int index = hashFunction(k), i;

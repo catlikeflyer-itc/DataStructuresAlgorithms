@@ -1,6 +1,7 @@
 .vscode/settings.json
 .vscode/
 **/.DS_Store/
+.DS_Store/
 
 *.zip/
 *.tar.zx

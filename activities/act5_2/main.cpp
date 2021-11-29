@@ -10,12 +10,13 @@
 
 using namespace std;
 
-// Imprimir vectores
+// Imprimir vectores, complejidad temporal de O(n)
 void print_vector(vector<Registry> arr){
     for (int i = 0; i < arr.size(); i++) arr[i].print();
     cout << endl;
 };
 
+// Agregar dominios al set, complejidad temporal de O(n)
 void agregarNoRetoASet(set<string> s, vector<Registry> datos){
     for(int i=0; i<5000; i++){
         if(datos[i].sourceName.find(".reto.com") || datos[i].sourceName.find("-") ){
@@ -23,16 +24,18 @@ void agregarNoRetoASet(set<string> s, vector<Registry> datos){
         }
     }
 }
-
+ // llena los objetos CompConnectios para cada objeto del diccionario, complejidad temporal de O(n)
 void llenarComputadoras(map<string, CompConnections> &computadoras, vector<Registry> datos){
     // throwback a nuestro debugging de una hora, porque no estábamos editando el map original :)
-    for(int i=0; i<6000; i++){ //Cambiar a datos.size()
+    // joya, la cúspide del intelecto :D
+    for(int i=0; i<datos.size(); i++){
         CompConnections c(datos[i].sourceIp, datos[i].sourceName);
         c.fill(datos);
         computadoras.insert(pair<string, CompConnections>(datos[i].sourceIp,c));
     }
 }
 
+// Hace todo lo anterior, complejidad temporal de O(n)
 void agregarNoRetoASetyLlenarComputadoras(set<string> s, map<string, CompConnections> &computadoras, vector<Registry> datos){
     for(size_t i=0; i<datos.size(); i++){
         if(datos[i].sourceName.find(".reto.com") || datos[i].sourceName.find("-") ){
@@ -53,6 +56,7 @@ void agregarNoRetoASetyLlenarComputadoras(set<string> s, map<string, CompConnect
     }
 }
 
+// Verifica si el dominio es anómalo, complejidad temporal de O(n)
 bool esAnomalo(string nombre){
     // largo
     // caracteres alfanumericos
@@ -65,6 +69,7 @@ bool esAnomalo(string nombre){
     return false; 
 }
 
+// Verifica si la IP pertenece a la red interna, complejidad temporal de O(n)
 bool esInterna(string IPInput){
     string IPBase = "192.169.29.0";
     for(int i=0; i<10; i++){
@@ -73,6 +78,7 @@ bool esInterna(string IPInput){
     return true; 
 }
 
+// Regresa la IP del dominio anómalo, complejidad temporal de O(n)
 string encontrarAnomalos(map<string, CompConnections> computadoras){
     map<string, CompConnections>::iterator it;
     for (it = computadoras.begin(); it != computadoras.end(); it++){
@@ -81,7 +87,7 @@ string encontrarAnomalos(map<string, CompConnections> computadoras){
     return "";
 }
 
-
+// Cuenta las conexiones entrantes a cada computadora, complejidad temporal de O(n)
 int computadorasConConexionesEntrantes(map<string, CompConnections> computadoras){ 
     int n = 0;
     map<string, CompConnections>::iterator it;
@@ -91,6 +97,7 @@ int computadorasConConexionesEntrantes(map<string, CompConnections> computadoras
     return n;
 } 
 
+// Obtiene las IP entrantes de todas las computadoras, complejidad temporal de O(n^2)
 set<string> obtenerIPsEntrantes(map<string, CompConnections> computadoras) {
     set<string> ipsUnicas;
     map<string, CompConnections>::iterator it;
@@ -119,6 +126,7 @@ set<string> obtenerIPsEntrantes(map<string, CompConnections> computadoras) {
    return ipsUnicas; 
 }
 
+// main
 int main(void){
     Reader r; 
     vector<Registry> datos = r.readFile(); 
